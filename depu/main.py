@@ -92,7 +92,7 @@ def handle(game_area_left, game_area_top, rtSit):
     logging.info('完成决策， 结果 %s %s' %(kind, no))
     if kind==0:
         #弃牌
-        target = 290, 550
+        target = 350, 550
     elif kind == 1 or kind==2:
         # 追加
         target = 450, 550
@@ -130,7 +130,8 @@ def run_game(q):
                 logging.info('开始解析图像')
                 rt = analysisImg(game_area_image.convert('L'))
                 logging.info('完成解析图像')
-                handle(game_area_left, game_area_top, rt)
+                if(rt is not None):
+                    handle(game_area_left, game_area_top, rt)
         else:
             lastkey = keyboard.Key.esc
             pass

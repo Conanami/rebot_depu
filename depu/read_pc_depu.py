@@ -343,10 +343,12 @@ def getCardlist(wholeimg,first_suit_sample_img,first_num_sample_img, \
 def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
                         second_suit_sample_img,second_num_sample_img, \
                         pub_suit_sample_img,pub_num_sample_img, \
-                        dc_num_sample_img,chip_num_sample_img,status_sample_img,call_num_sample_img,btnsample_img):
+                        dc_num_sample_img,chip_num_sample_img,status_sample_img,call_num_sample_img,btnsample_img,foldsample_img):
     
     rtSit=situation()
-    
+    foldbox=(270,540,270+50,540+22)
+    if( MatchPicToSample(wholeimg,foldbox,foldsample_img[0])==False ): return None
+
     #得到7张牌的情况
     thres=200
     rtSit.cardlist=getCardlist(wholeimg,first_suit_sample_img,first_num_sample_img, \
@@ -573,6 +575,9 @@ class sampleconfig:
         #btn位样本
         btnsample=[r'depu\samples\btn_sample.png']
         self.btnsample_img=file2img(btnsample)
+        #fold按钮样本
+        foldsample=[r'depu\samples\fold_btn.png']
+        self.foldsample_img=file2img(foldsample)
 
         #跟注大小数字
         call_num_sample=[r'depu\samples\call_num\call_0.png', \
@@ -606,13 +611,15 @@ def analysisImg(wholeimg):
                         config.chip_num_sample_img,
                         config.status_sample_img,
                         config.call_num_sample_img,
-                        config.btnsample_img)
+                        config.btnsample_img,
+                        config.foldsample_img)
 
     #入库
-    result = rtSit.todict()
-    result['createtime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    conn = sqlite3.connect('game.db')
-    df = pd.DataFrame.from_records([result])
-    pd.io.sql.to_sql(df, 'depu_log', conn, if_exists='append', index=False)
+    if(rtSit is not None):
+        result = rtSit.todict()
+        result['createtime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        conn = sqlite3.connect('game.db')
+        df = pd.DataFrame.from_records([result])
+        pd.io.sql.to_sql(df, 'depu_log', conn, if_exists='append', index=False)
     return rtSit
 
