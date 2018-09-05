@@ -1,0 +1,12 @@
+/logs/
+/target/
+.settings/
+.classpath
+.project
+.idea
+*.iml
+*.pyc
+*.mkm
+*.zip
+/tmp/
+*.db
