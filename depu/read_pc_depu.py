@@ -435,10 +435,11 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     bbbox=picbox(592,335,592+bbWidth,335+bbHeight)
     blind = SinglePicToNum(wholeimg,bbbox,numstart,dc_num_sample_img,num_step,point_step)
     #print(blind)
-    smallblind=blind.split('/')[0]
-    
-    rtSit.bb=float(smallblind)*2
-
+    if '/' in str(blind):
+        smallblind=blind.split('/')[0]
+        rtSit.bb=float(smallblind)*2
+    else:
+        rtSit.bb=float(blind)*2
     #找到谁是BTN位
     btnWidth=22
     btnHeight=22

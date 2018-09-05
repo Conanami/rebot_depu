@@ -97,13 +97,15 @@ def beforeFlopDecision(Sit,callchip):
         if(InOpenRange(myhand) and callchip>0 and callchip<=4*Sit.bb): 
             return (2,callchip)
         #底池赔率合适，啥牌都可以玩
-        if(callchip/Sit.potsize<0.13 and callchip<=3*Sit.bb and callchip>0): return (2,callchip)
+        if(callchip/Sit.potsize<0.15 and callchip<=3*Sit.bb and callchip>0): return (2,callchip)
+        #小盲单挑大盲可以玩
+        if(callchip/Sit.potsize<0.34 and callchip<=Sit.bb and callchip>0): return (2,callchip)
         if(InSuperRange(myhand)):
             if(callchip==0): return (3,1)
             if(callchip>0 and callchip<Sit.bb*3): return (3,3)
             if(callchip>=Sit.bb*3): return (3,4)
         #如果是大盲白看牌
-        if(callchip==0): return (1,0)
+        if(callchip==0): return (2,0)
         return (0,0)
     else:
         return (0,-1)
@@ -114,8 +116,8 @@ def InOpenRange(myhand):
     if(InSuperRange(myhand)): return False
     #两张高牌
     if(myhand[0].num+myhand[1].num>=22 and myhand[0].num>=10 and myhand[1].num>=10): return True
-    #带A的同花
-    if(myhand[0].suit==myhand[1].suit and (myhand[0].num==14 or myhand[1].num==14)): return True
+    #带AK的同花
+    if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
     #大的连牌和中的口袋对
     if(abs(myhand[0].num-myhand[1].num)<=1 and myhand[0].num>=6): return True
     return False
@@ -134,8 +136,10 @@ def makeDecision(rtSit):
     pubnum=getPubnum(rtSit)
     #如果是翻牌前
     if(pubnum==0):
-        return beforeFlopDecision(rtSit,callchip)
+        finalDecision=beforeFlopDecision(rtSit,callchip)
     elif(pubnum>=3):
+        #如果没有读到底池大小
+        if(rtSit.potsize==0): finalDecision=(-1,-1)
         #计算当前牌的胜率
         myWinrate=calcuWinrate(rtSit)
         #得到当前还剩几个人在底池中
@@ -147,5 +151,15 @@ def makeDecision(rtSit):
         print('最后胜率%.2f' % finalWinrate)
         #翻牌后的决策
         mydecision=afterFlopDecision(pubnum,finalWinrate,callchip,rtSit.potsize,leftman,rtSit.chiplist[0],rtSit.bb)
-        return mydecision
-    return (0,-1)
+        finalDecision=mydecision
+    #如果要加注，要根据自己的筹码实际情况
+    if(finalDecision[0]==3):
+        if(rtSit.chiplist[0]<rtSit.callchip): finalDecision=(2,0)
+        if(rtSit.chiplist[0]>=rtSit.callchip):
+            if(finalDecision[1]==3 and rtSit.chiplist[0]>=0.66*rtSit.potsize and rtSit.chiplist[0]<rtSit.potsize):
+                finalDecision=(3,2)
+            if(finalDecision[1]==2 and rtSit.chiplist[0]>=0.5*rtSit.potsize and rtSit.chiplist[0]<0.66*rtSit.potsize):
+                finalDecision=(3,1)
+            if(finalDecision[1]==1 and rtSit.chiplist[0]<0.5*rtSit.potsize):
+                finalDecision=(2,0)
+    return finalDecision
