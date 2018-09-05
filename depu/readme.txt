@@ -1,4 +1,9 @@
  
+
+read_pc_depu 该类对外公开 analysisImg 方法，完成图片的解析 以及数据入库
+
+player.py  完成决策
+
 makeDecision函数
  
 （0，X）弃牌
