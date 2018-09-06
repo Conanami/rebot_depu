@@ -60,15 +60,15 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         #底池赔率合适，坚决跟
         if(callchip/potsize<finalWinrate): return (2,callchip)      
         #偶尔下注半个底池偷
-        if(leftman<=3 and callchip==0 and potsize/bigblind<15 and random.random()>0.5): return (3,1)
+        if(leftman<=3 and callchip==0 and potsize/bigblind<15 and random.random()>0.1): return (3,1)
         #过牌看牌
         if(callchip==0): return (2,0)
     elif(pubnum==4):
-        if(finalWinrate>=0.98): return (3,4)
+        if(finalWinrate>=0.95): return (3,4)
         if(callchip/potsize<finalWinrate and callchip<=potsize/4): return (2,callchip)
         if(callchip/potsize>finalWinrate and callchip/bigblind>20): return (0,0)
         #偶尔下注半个底池偷
-        if(callchip==0 and leftman==2 and potsize/bigblind<=15 and random.random()>0.5): return (3,1)
+        if(callchip==0 and leftman<=3 and potsize/bigblind<=15 and random.random()>0.1): return (3,1)
         #过牌看牌
         if(callchip==0): return (2,0)
     elif(pubnum==5):
@@ -76,7 +76,7 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         if(callchip/potsize<finalWinrate and callchip<=potsize/4): return (2,callchip)
         if(callchip/potsize>finalWinrate): return (0,0)
         #偶尔下注半个底池偷
-        if(callchip==0 and leftman==2 and potsize/bigblind<=15 and random.random()>0.5): return (3,1)
+        if(callchip==0 and leftman==2 and potsize/bigblind<=15 and random.random()>0.1): return (3,1)
         #过牌看牌
         if(callchip==0): return (2,0)
         return (0,0)

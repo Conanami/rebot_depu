@@ -449,7 +449,7 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
         else:
             rtSit.bb=float(blind)*2
     except:
-        rtSit.bb=min(rtSit.betlist)
+        rtSit.bb=max(min(rtSit.betlist),100)
     #找到谁是BTN位
     btnWidth=22
     btnHeight=22
