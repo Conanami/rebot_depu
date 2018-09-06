@@ -57,9 +57,9 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         #钓到大鱼
         if(finalWinrate>=0.98 and callchip>=potsize/2): return (3,4)
         #胜率比较高
-        if(finalWinrate>0.95 and callchip<(potsize-callchip)): return (3,3)
+        if(finalWinrate>0.95 and callchip<(potsize-callchip) and potsize<=20*bigblind): return (3,3)
         #比较大
-        if(finalWinrate>=0.7 and callchip<potsize/3): return (3,2)
+        if(finalWinrate>=0.7 and callchip<potsize/3 and potsize<=20*bigblind): return (3,2)
         if(callchip/potsize>finalWinrate): return (0,0) 
          #偶尔下注半个底池偷
         if(leftman<=3 and callchip==0 and potsize/bigblind<15 and random.random()>0.7): return (3,1) 
@@ -73,7 +73,7 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         #超大牌则陷阱
         if(finalWinrate>=0.98): return (2,0)
         #比较大则下一个底池
-        if(finalWinrate>=0.7): return (3,3)
+        if(finalWinrate>=0.7 and potsize<=20*bigblind): return (3,3)
         if(finalWinrate>=0.6 and callchip==0 and random.random()>0.2): return (3,1)
         #偶尔下注半个底池偷
         if(callchip==0 and leftman<=3 and potsize/bigblind<=15 and random.random()>0.5): return (3,1)
@@ -87,7 +87,7 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         return (0,0)
     elif(pubnum==5):
         if(finalWinrate>=0.98): return (3,4)
-        if(finalWinrate>=0.75 and callchip==0 and random.random()>0.2): return (3,1)
+        if(finalWinrate>=0.75 and callchip==0 and random.random()>0.2 and potsize<=20*bigblind): return (3,1)
         #偶尔下注半个底池偷
         if(callchip==0 and leftman==2 and potsize/bigblind<=15 and random.random()>0.3): return (3,1)
         if(callchip/potsize<finalWinrate and finalWinrate>0.6 and callchip<=potsize/3): return (2,callchip)
