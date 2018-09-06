@@ -49,7 +49,7 @@ def get_gamescreen_area():
         return 0,0,0,0
 
     window_left,window_top,window_right,window_bottom = win32gui.GetWindowRect(hwnd)
-    logging.info('find window size complete %s %s %s %s ' % (window_left,window_top,window_right,window_bottom))
+    # logging.info('find window size complete %s %s %s %s ' % (window_left,window_top,window_right,window_bottom))
     if min(window_left,window_top) < 0\
         or window_right > screen_width\
         or window_bottom > screen_height:
@@ -124,7 +124,7 @@ def run_game(q):
             #检测目标是否存在
             game_area_left, game_area_top, game_area_width, game_area_height = get_gamescreen_area()
             if game_area_left:
-                # pyautogui.moveTo(game_area_left,game_area_top)
+                pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(game_area_left, game_area_top, game_area_width, game_area_height)
                 game_area_image.save(r'tmp/%s/dz_%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
                 logging.info('开始解析图像')
