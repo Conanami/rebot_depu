@@ -60,6 +60,13 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         if(finalWinrate>0.95 and callchip<(potsize-callchip) and potsize<=20*bigblind): return (3,3)
         #比较大
         if(finalWinrate>=0.7 and callchip<potsize/3 and potsize<=20*bigblind): return (3,2)
+        #有一定的胜率不轻易弃牌，伪装自己
+        if(finalWinrate>=0.5):
+            if(callchip==0):
+                if(random.random()>0.5): return (3,1)
+                else:return (2,0)
+            elif(callchip<potsize-callchip): return (2,0)
+                
         if(callchip/potsize>finalWinrate): return (0,0) 
          #偶尔下注半个底池偷
         if(leftman<=3 and callchip==0 and potsize/bigblind<15 and random.random()>0.7): return (3,1) 
@@ -79,7 +86,7 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         if(callchip==0 and leftman<=3 and potsize/bigblind<=15 and random.random()>0.5): return (3,1)
         
         #胜率还占优
-        if(callchip/potsize<finalWinrate and callchip<=potsize/3 and finalWinrate>0.5): return (2,callchip)
+        if(callchip/potsize<finalWinrate and callchip<=potsize/3 and potsize<=20*bigblind): return (2,callchip)
         if(callchip/potsize>finalWinrate and callchip/bigblind>20): return (0,0)
         
         #过牌看牌
@@ -90,7 +97,7 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
         if(finalWinrate>=0.75 and callchip==0 and random.random()>0.2 and potsize<=20*bigblind): return (3,1)
         #偶尔下注半个底池偷
         if(callchip==0 and leftman==2 and potsize/bigblind<=15 and random.random()>0.3): return (3,1)
-        if(callchip/potsize<finalWinrate and finalWinrate>0.6 and callchip<=potsize/3): return (2,callchip)
+        if(callchip/potsize<finalWinrate and finalWinrate>0.45 and potsize<=20*bigblind): return (2,callchip)
         if(callchip/potsize>finalWinrate): return (0,0)
         
         #过牌看牌
@@ -163,7 +170,9 @@ def makeDecision(rtSit):
     #如果是翻牌前
     if(pubnum==0):
         finalDecision=beforeFlopDecision(rtSit,callchip)
-    elif(pubnum>=1):
+    elif(pubnum==1 or pubnum==2): finalDecision=(2,0)
+    #如果是翻牌后
+    elif(pubnum>=3):
         #如果没有读到底池大小
         if(rtSit.potsize==0): finalDecision=(-1,-1)
         #计算当前牌的胜率
@@ -188,4 +197,7 @@ def makeDecision(rtSit):
                 finalDecision=(3,1)
             if(finalDecision[1]==1 and rtSit.chiplist[0]<0.5*rtSit.potsize):
                 finalDecision=(2,0)
+        if(rtSit.potsize<=3*rtSit.bb):
+            if(finalDecision[1]==1): finalDecision=(3,3)
+            if(finalDecision[1]==2): finalDecision=(3,3)
     return finalDecision
