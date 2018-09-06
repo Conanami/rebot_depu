@@ -154,7 +154,7 @@ def matchPic(img,sample,thres=127):
     #print(samecnt/(rows*cols))
     
     if(thres==127):
-        meetValue=0.92
+        meetValue=0.90
     else:
         meetValue=0.88
     
@@ -347,7 +347,8 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     
     rtSit=situation()
     foldbox=(270,540,270+50,540+22)
-    if( MatchPicToSample(wholeimg,foldbox,foldsample_img[0])==False ): return None
+    if( MatchPicToSample(wholeimg,foldbox,foldsample_img[0])==False and
+        MatchPicToSample(wholeimg,foldbox,foldsample_img[1])==False ): return None
 
     #得到7张牌的情况
     thres=200
@@ -436,12 +437,19 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     bbHeight=15
     bbbox=picbox(592,335,592+bbWidth,335+bbHeight)
     blind = SinglePicToNum(wholeimg,bbbox,numstart,dc_num_sample_img,num_step,point_step)
-    #print(blind)
-    if '/' in str(blind):
-        smallblind=blind.split('/')[0]
-        rtSit.bb=float(smallblind)*2
-    else:
-        rtSit.bb=float(blind)*2
+    print(blind)
+    try:
+        if '/' in str(blind):
+            smallblind=blind.split('/')[0]
+            bigblind=blind.split('/')[1]
+            if(float(smallblind)>0):
+                rtSit.bb=float(smallblind)*2
+            elif(float(bigblind)>0):
+                rtSit.bb=float(bigblind)
+        else:
+            rtSit.bb=float(blind)*2
+    except:
+        rtSit.bb=min(rtSit.betlist)
     #找到谁是BTN位
     btnWidth=22
     btnHeight=22
@@ -575,8 +583,10 @@ class sampleconfig:
         #btn位样本
         btnsample=[r'depu\samples\btn_sample.png']
         self.btnsample_img=file2img(btnsample)
+        
         #fold按钮样本
-        foldsample=[r'depu\samples\fold_btn.png']
+        foldsample=[r'depu\samples\fold_btn.png',\
+                    r'depu\samples\fold_btn2.png' ]
         self.foldsample_img=file2img(foldsample)
 
         #跟注大小数字

@@ -365,13 +365,14 @@ def winRate(list1):
 
 #同类比较
 def CompareDetail(list1,list2,bothtype,cardcnt):
+    if(cardcnt<=0): return 0
     #高牌比较
     if(bothtype==2):
         if(len(list1)==0 and len(list2)==0 or list1 is None or list2 is None): return 0
         tmplist1=sorted(list1,key=lambda card:card.num, reverse=True)
         tmplist2=sorted(list2,key=lambda card:card.num, reverse=True)
         if(cardcnt<=len(tmplist1)): compareCnt=cardcnt
-        else: compareCnt=len(tmplist1)
+        else: compareCnt=min(len(tmplist1),len(tmplist2))
         for i in range(compareCnt):
             if(tmplist1[i].num>tmplist2[i].num): return 1
             elif(tmplist1[i].num<tmplist2[i].num): return 2

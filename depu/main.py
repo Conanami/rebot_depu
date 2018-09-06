@@ -95,7 +95,7 @@ def handle(game_area_left, game_area_top, rtSit):
         target = 350, 550
     elif kind == 1 or kind==2:
         # 追加
-        target = 450, 550
+        target = 508, 550
     elif kind ==3:
         if no==1:
             target = 590, 550
