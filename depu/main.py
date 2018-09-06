@@ -105,16 +105,17 @@ def handle(game_area_left, game_area_top, rtSit):
         elif no==3:
             target = 800, 550
         elif no==4:
-            allin()
+            allin(game_area_left,game_area_top)
             
     if target[0]:
         pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1])
         pyautogui.click()
 
-def allin():
-    pyautogui.moveTo(300,600)
-    pyautogui.dragTo(663,600,1.0)
-    pyautogui.moveTo(750,600)           
+#全下
+def allin(game_area_left,game_area_top):
+    pyautogui.moveTo(game_area_left+300,game_area_top+600)
+    pyautogui.dragTo(game_area_left+663,game_area_top+600,1.5)
+    pyautogui.moveTo(game_area_left+750,game_area_top+600)           
     pyautogui.click()
 
 @async
@@ -130,7 +131,7 @@ def run_game(q):
             print('wait')
             time.sleep(1.0)
             continue
-        elif lastkey == keyboard.KeyCode.from_char('r'):
+        elif (lastkey == keyboard.KeyCode.from_char('r') or lastkey == keyboard.KeyCode.from_char('R')):
             #检测目标是否存在
             game_area_left, game_area_top, game_area_width, game_area_height = get_gamescreen_area()
             if game_area_left:
