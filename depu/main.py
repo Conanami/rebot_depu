@@ -126,7 +126,7 @@ def run_game(q):
             if game_area_left:
                 pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(game_area_left, game_area_top, game_area_width, game_area_height)
-                game_area_image.save(r'tmp/%s/dz_%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
+                game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
                 logging.info('开始解析图像')
                 rt = analysisImg(game_area_image.convert('L'))
                 logging.info('完成解析图像')
