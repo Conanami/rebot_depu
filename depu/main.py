@@ -114,7 +114,7 @@ def handle(game_area_left, game_area_top, rtSit):
 #全下
 def allin(game_area_left,game_area_top):
     pyautogui.moveTo(game_area_left+300,game_area_top+600)
-    pyautogui.dragTo(game_area_left+663,game_area_top+600,1.5)
+    pyautogui.dragTo(game_area_left+663,game_area_top+600,1.0)
     pyautogui.moveTo(game_area_left+750,game_area_top+600)           
     pyautogui.click()
 

@@ -37,11 +37,16 @@ class situation:
             result['my1'] = '%s|%s' % (self.cardlist[0].num, self.cardlist[0].suit)
             result['my2'] = '%s|%s' % (self.cardlist[1].num, self.cardlist[1].suit)
         
-        result['pub1'] = None
-        result['pub2'] = None
-        result['pub3'] = None
-        result['pub4'] = None
-        result['pub5'] = None
+            result['pub1'] = None
+            result['pub2'] = None
+            result['pub3'] = None
+            result['pub4'] = None
+            result['pub5'] = None
+            if len(self.cardlist)==3:
+                result['pub1'] = '%s|%s' % (self.cardlist[2].num, self.cardlist[2].suit)
+            if len(self.cardlist)==4:
+                result['pub1'] = '%s|%s' % (self.cardlist[2].num, self.cardlist[2].suit)
+                result['pub2'] = '%s|%s' % (self.cardlist[3].num, self.cardlist[3].suit)
         if len(self.cardlist)>=5:
             result['pub1'] = '%s|%s' % (self.cardlist[2].num, self.cardlist[2].suit)
             result['pub2'] = '%s|%s' % (self.cardlist[3].num, self.cardlist[3].suit)
@@ -291,7 +296,7 @@ def getCardlist(wholeimg,first_suit_sample_img,first_num_sample_img, \
                         second_suit_sample_img,second_num_sample_img, \
                         pub_suit_sample_img,pub_num_sample_img,thres):
     rtlist=[]
-    numlist=[2,3,4,5,6,7,8,9,10,11,12,13,14,10,8,12,13]
+    numlist=[2,3,4,5,6,7,8,9,10,11,12,13,14,10,8,12,13,4,5]
     #clist=['2','3','4','5','6','7','8','9','T','J','Q','K','A','T','8','Q']
 
     #第一张牌
@@ -333,6 +338,7 @@ def getCardlist(wholeimg,first_suit_sample_img,first_num_sample_img, \
         pubnumbox=((423+i*62),237,(439+i*62),261)
         tmpcard=readCard(wholeimg,pubsuitbox,pub_suit_sample_img,pubnumbox,pub_num_sample_img,numlist,thres)
         if tmpcard:
+            print(tmpcard)
             rtlist.append(tmpcard)
         else:
             break
@@ -538,7 +544,9 @@ class sampleconfig:
                         r'depu\samples\pub_num\p_tr.png',
                         r'depu\samples\pub_num\p_8r.png',
                         r'depu\samples\pub_num\p_qr.png',
-                        r'depu\samples\pub_num\p_kr.png']
+                        r'depu\samples\pub_num\p_kr.png',
+                        r'depu\samples\pub_num\p_4r.png',
+                        r'depu\samples\pub_num\p_5r.png',]
         self.pub_num_sample_img=file2img(pub_num_sample)
 
 

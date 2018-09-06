@@ -49,34 +49,50 @@ def getCallchip(rtSit):
 
 #返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，第二个是准备放入的筹码量，只有在2，3的时候有值，
 def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigblind):
+    print("potsize:"+str(potsize))
+    print("blind:"+str(bigblind))
     if(pubnum==0):
         return "before Flop"
-    elif(pubnum==3):
-        #胜率比较高
-        if(finalWinrate>0.95 and callchip<(potsize-callchip)): return (3,3)
+    elif(pubnum>=1 and pubnum<=3):
         #钓到大鱼
         if(finalWinrate>=0.98 and callchip>=potsize/2): return (3,4)
-        if(callchip/potsize>finalWinrate): return (0,0)  
+        #胜率比较高
+        if(finalWinrate>0.95 and callchip<(potsize-callchip)): return (3,3)
+        #比较大
+        if(finalWinrate>=0.7 and callchip<potsize/3): return (3,2)
+        if(callchip/potsize>finalWinrate): return (0,0) 
+         #偶尔下注半个底池偷
+        if(leftman<=3 and callchip==0 and potsize/bigblind<15 and random.random()>0.7): return (3,1) 
         #底池赔率合适，坚决跟
-        if(callchip/potsize<finalWinrate): return (2,callchip)      
-        #偶尔下注半个底池偷
-        if(leftman<=3 and callchip==0 and potsize/bigblind<15 and random.random()>0.1): return (3,1)
+        if(callchip/potsize<finalWinrate and finalWinrate>0.45): return (2,callchip)      
+       
         #过牌看牌
         if(callchip==0): return (2,0)
+        return (0,0)
     elif(pubnum==4):
-        if(finalWinrate>=0.95): return (3,4)
-        if(callchip/potsize<finalWinrate and callchip<=potsize/4): return (2,callchip)
-        if(callchip/potsize>finalWinrate and callchip/bigblind>20): return (0,0)
+        #超大牌则陷阱
+        if(finalWinrate>=0.98): return (2,0)
+        #比较大则下一个底池
+        if(finalWinrate>=0.7): return (3,3)
+        if(finalWinrate>=0.6 and callchip==0 and random.random()>0.2): return (3,1)
         #偶尔下注半个底池偷
-        if(callchip==0 and leftman<=3 and potsize/bigblind<=15 and random.random()>0.1): return (3,1)
+        if(callchip==0 and leftman<=3 and potsize/bigblind<=15 and random.random()>0.5): return (3,1)
+        
+        #胜率还占优
+        if(callchip/potsize<finalWinrate and callchip<=potsize/3 and finalWinrate>0.5): return (2,callchip)
+        if(callchip/potsize>finalWinrate and callchip/bigblind>20): return (0,0)
+        
         #过牌看牌
         if(callchip==0): return (2,0)
+        return (0,0)
     elif(pubnum==5):
         if(finalWinrate>=0.98): return (3,4)
-        if(callchip/potsize<finalWinrate and callchip<=potsize/4): return (2,callchip)
-        if(callchip/potsize>finalWinrate): return (0,0)
+        if(finalWinrate>=0.75 and callchip==0 and random.random()>0.2): return (3,1)
         #偶尔下注半个底池偷
-        if(callchip==0 and leftman==2 and potsize/bigblind<=15 and random.random()>0.1): return (3,1)
+        if(callchip==0 and leftman==2 and potsize/bigblind<=15 and random.random()>0.3): return (3,1)
+        if(callchip/potsize<finalWinrate and finalWinrate>0.6 and callchip<=potsize/3): return (2,callchip)
+        if(callchip/potsize>finalWinrate): return (0,0)
+        
         #过牌看牌
         if(callchip==0): return (2,0)
         return (0,0)
@@ -86,6 +102,7 @@ def afterFlopDecision(pubnum,finalWinrate,callchip,potsize,leftman,mychip,bigbli
 def beforeFlopDecision(Sit,callchip):
     myhand=[]
     pubcnt=0
+    leftman=getSurvivor(Sit)
     for i in range(len(Sit.cardlist)):
         if(i<2):
             myhand.append(Sit.cardlist[i])
@@ -93,17 +110,25 @@ def beforeFlopDecision(Sit,callchip):
             pubcnt=pubcnt+1
     #如果中间有牌，或者两张牌没有读出来，则返回弃牌
     if(pubcnt==0 and len(myhand)==2):
-        if(InOpenRange(myhand) and callchip==0): return (3,random.randint(1,3))
-        if(InOpenRange(myhand) and callchip>0 and callchip<=4*Sit.bb): 
-            return (2,callchip)
-        #底池赔率合适，啥牌都可以玩
-        if(callchip/Sit.potsize<0.15 and callchip<=3*Sit.bb and callchip>0): return (2,callchip)
-        #小盲单挑大盲可以玩
-        if(callchip/Sit.potsize<0.34 and callchip<=Sit.bb and callchip>0): return (2,callchip)
+        
         if(InSuperRange(myhand)):
             if(callchip==0): return (3,1)
             if(callchip>0 and callchip<Sit.bb*3): return (3,3)
             if(callchip>=Sit.bb*3): return (3,4)
+        
+        if(InOpenRange(myhand) and callchip==0): return (3,random.randint(1,2))
+        #如果是开局牌，则可以跟别人
+        if(InOpenRange(myhand) and callchip>0 and callchip<=Sit.bb*7): 
+            if(callchip==Sit.bb): return (3,1)
+            else: return (2,callchip)
+        #底池赔率合适，啥牌都可以玩
+        if(callchip/Sit.potsize<0.15 and callchip<=3*Sit.bb): return (2,callchip)
+        #小盲单挑大盲可以玩
+        if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb): return (2,callchip)
+        #两个人单挑
+        if(leftman==2):
+            if(random.random()>0.5): return (3,1)
+            else: return (2,callchip)
         #如果是大盲白看牌
         if(callchip==0): return (2,0)
         return (0,0)
@@ -134,10 +159,11 @@ def makeDecision(rtSit):
     if(callchip==0): callchip=rtSit.callchip
     #得到当前公共牌的数量
     pubnum=getPubnum(rtSit)
+    finalDecision=(0,-1)
     #如果是翻牌前
     if(pubnum==0):
         finalDecision=beforeFlopDecision(rtSit,callchip)
-    elif(pubnum>=3):
+    elif(pubnum>=1):
         #如果没有读到底池大小
         if(rtSit.potsize==0): finalDecision=(-1,-1)
         #计算当前牌的胜率
