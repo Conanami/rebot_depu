@@ -345,6 +345,13 @@ def getCardlist(wholeimg,first_suit_sample_img,first_num_sample_img, \
 
     return rtlist
 
+#判断是否需要解析整个图片，该方法对外公开
+def NeedAnalyse(wholeimg):
+    foldbox=(270,540,270+50,540+22)
+    if( MatchPicToSample(wholeimg,foldbox,config.foldsample_img[0])==False and
+        MatchPicToSample(wholeimg,foldbox,config.foldsample_img[1])==False ): return False
+    else: return True
+
 #读整个图片，获取所有信息
 def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
                         second_suit_sample_img,second_num_sample_img, \
@@ -352,10 +359,8 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
                         dc_num_sample_img,chip_num_sample_img,status_sample_img,call_num_sample_img,btnsample_img,foldsample_img):
     
     rtSit=situation()
-    foldbox=(270,540,270+50,540+22)
-    if( MatchPicToSample(wholeimg,foldbox,foldsample_img[0])==False and
-        MatchPicToSample(wholeimg,foldbox,foldsample_img[1])==False ): return None
-
+       
+    
     #得到7张牌的情况
     thres=200
     rtSit.cardlist=getCardlist(wholeimg,first_suit_sample_img,first_num_sample_img, \
@@ -618,6 +623,8 @@ config = sampleconfig()
 
 def analysisImg(wholeimg):
     ''' 解析图片, 需要传入 灰度图像 该方法对外公开 '''
+    
+    #解析              
     rtSit=GetSituation(wholeimg,
                         config.first_suit_sample_img,
                         config.first_num_sample_img,

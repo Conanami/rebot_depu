@@ -14,6 +14,7 @@ from threading import Thread
 from pynput import keyboard
 from pynput.keyboard import Listener
 from read_pc_depu import analysisImg
+from read_pc_depu import NeedAnalyse
 from multiprocessing import Queue
 import player as p
 
@@ -121,6 +122,7 @@ def allin(game_area_left,game_area_top):
 @async
 def run_game(q):
     lastkey = keyboard.Key.esc
+    needCnt = 0
     while True:
         if not q.empty():
             key =  q.get(True)
@@ -137,12 +139,19 @@ def run_game(q):
             if game_area_left:
                 #pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(game_area_left, game_area_top, game_area_width, game_area_height)
-                logging.info('开始解析图像')
-                rt = analysisImg(game_area_image.convert('L'))
-                logging.info('完成解析图像')
-                if(rt is not None):
-                    game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
-                    handle(game_area_left, game_area_top, rt)
+                #如果需要解析
+                logging.info('是否需要解析:'+str(needCnt))
+                if ( NeedAnalyse (game_area_image.convert('L'))): 
+                    if(needCnt>=2):
+                        logging.info('开始解析图像')
+                        rt = analysisImg(game_area_image.convert('L'))
+                        logging.info('完成解析图像')
+                        if(rt is not None):
+                            game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
+                            handle(game_area_left, game_area_top, rt)
+                    else: needCnt=needCnt+1
+                else:
+                    needCnt=0
         else:
             lastkey = keyboard.Key.esc
             pass
