@@ -395,9 +395,10 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     y2=559
     callbox=picbox(x1,y1,x2,y2)
     numstart=0
-    callchip=SinglePicToNum(wholeimg,callbox,numstart,call_num_sample_img,11,4)
+    callchip=SinglePicToNum(wholeimg,callbox,numstart,call_num_sample_img,11,4,200)
     if(callchip<=0): callchip=0
     rtSit.callchip=callchip
+    print(rtSit.callchip)
     
     #print('potsize:'+str(potsize))
     
