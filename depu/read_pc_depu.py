@@ -565,6 +565,7 @@ class sampleconfig:
 
 
         #底池和大小盲的字符样本
+        #如果没有小数点的，就把dc_dot换成dc_wan，否则容易错
         dc_num_sample=[r'depu\samples\dc_num\dc_0.png', \
                     r'depu\samples\dc_num\dc_1.png', \
                     r'depu\samples\dc_num\dc_2.png', \
@@ -575,7 +576,7 @@ class sampleconfig:
                     r'depu\samples\dc_num\dc_7.png', \
                     r'depu\samples\dc_num\dc_8.png', \
                     r'depu\samples\dc_num\dc_9.png', \
-                    r'depu\samples\dc_num\dc_dot.png', \
+                    r'depu\samples\dc_num\dc_wan.png', \
                     r'depu\samples\dc_num\dc_wan.png', \
                     r'depu\samples\dc_num\dc_slash.png' ]
         self.dc_num_sample_img=file2img(dc_num_sample)

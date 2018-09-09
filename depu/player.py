@@ -85,7 +85,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         return (0,0)
     elif(pubnum==4):
         #超大牌则陷阱
-        if(finalWinrate>=0.98): return (2,0)
+        if(singleWinrate>=0.97): return (2,0)
         #比较大则下一个底池
         if(finalWinrate>=0.9 and rtSit.potsize<=20*rtSit.bb): return (3,3)
         #下注遭遇强烈反加注
@@ -93,7 +93,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(finalWinrate<0.93): return (0,0)
             else: return (3,4)
         if(rtSit.betlist[0]>5*rtSit.bb and max(rtSit.betlist)>3*rtSit.betlist[0] and singleWinrate<0.94): return (0,0)
-        if(finalWinrate>=0.75 and rtSit.callchip<rtSit.potsize/3): return (2,0)
+        if(finalWinrate>=0.9 and rtSit.callchip<=rtSit.potsize/2): return (2,0)
+        if(finalWinrate>=0.75 and rtSit.callchip<=rtSit.potsize/3): return (2,0)
         if(finalWinrate>=0.6 and rtSit.callchip==0 and random.random()>0.2 and rtSit.potsize<=20*rtSit.bb): return (3,1)
         #偶尔下注半个底池偷
         if(rtSit.callchip==0 and leftman<=3 and rtSit.potsize/rtSit.bb<=15 and random.random()>0.5): return (3,1)
@@ -101,6 +102,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         #胜率还占优
         if(rtSit.callchip/(rtSit.potsize+rtSit.callchip)<finalWinrate and rtSit.callchip<=rtSit.potsize/3 and rtSit.potsize<=20*rtSit.bb): 
             return (2,rtSit.callchip)
+               
         #转牌弱一点了
         if(rtSit.callchip/rtSit.potsize>finalWinrate and rtSit.callchip/rtSit.bb>20): return (0,0)
         
@@ -210,10 +212,10 @@ def makeDecision(rtSit):
         print('我的胜率%.2f' % myWinrate)
         print('剩余人数%d ' % leftman)
         finalWinrate=math.pow(myWinrate,leftman-1)
-        if(IsDrawFlush(rtSit.cardlist)): 
+        if(IsDrawFlush(rtSit.cardlist) and pubnum==3):
             print('同花听牌，胜率增加%.2f' % 0.18)
             finalWinrate=finalWinrate+0.18
-        if(IsDrawStraight(rtSit.cardlist)): 
+        if(IsDrawStraight(rtSit.cardlist) and pubnum==3): 
             print('顺子听牌，胜率增加%.2f' % 0.16)
             finalWinrate=finalWinrate+0.16
         
