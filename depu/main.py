@@ -33,7 +33,7 @@ def async(f):
     return wrapper
 
 def grab_screen(left,top,right,bottom):
-        return PIL.ImageGrab.grab((left,top,right,bottom))
+    return PIL.ImageGrab.grab((left,top,right,bottom))
 
 def copy_part_image(image_,left,top,right,bottom):
     return image_.crop((left,top,right,bottom))
@@ -155,7 +155,7 @@ def run_game(q):
         else:
             lastkey = keyboard.Key.esc
             pass
-        time.sleep(0.5)
+        time.sleep(0.8)
 
 if __name__ == '__main__':
     q = Queue()

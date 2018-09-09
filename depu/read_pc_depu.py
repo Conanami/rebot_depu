@@ -7,6 +7,7 @@ import math
 import random
 import pandas as pd
 import sqlite3
+from dealer import card
 
 
 '''
@@ -87,7 +88,7 @@ class situation:
     def __str__(self):
         return str(self.todict())
 
-
+'''
 #定义一个牌的类
 class card:
     def __init__(self,suit,num):
@@ -102,6 +103,7 @@ class card:
             return "na"
         else:
             return clist[self.num] + "|" + suitlist[self.suit]
+'''
 
 #定义一个图片框类
 class picbox:
@@ -159,7 +161,7 @@ def matchPic(img,sample,thres=127):
     #print(samecnt/(rows*cols))
     
     if(thres==127):
-        meetValue=0.90
+        meetValue=0.91
     else:
         meetValue=0.88
     
@@ -250,12 +252,18 @@ def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,t
             return (float(numstr))
         except:
             return 0
+
 #得到每个人的数字
-def PicListToNum(wholeimg,betboxlist,start,chip_num_sample_img,num_step,point_step):
+def PicListToNum(wholeimg,betboxlist,start,chip_num_sample_img,num_step,point_step,statuslist=[1,1,1,1,1,1]):
     rtlist=[]
+    i=0
     for betbox in betboxlist:
-        betsize=SinglePicToNum(wholeimg,betbox,start,chip_num_sample_img,num_step,point_step)
-        rtlist.append(betsize)
+        if(statuslist[i]==0):
+            rtlist.append(0)
+        else:
+            betsize=SinglePicToNum(wholeimg,betbox,start,chip_num_sample_img,num_step,point_step)
+            rtlist.append(betsize)
+        i=i+1
     return rtlist
 
 #把文件列表全部载入内存中
@@ -359,21 +367,18 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
                         dc_num_sample_img,chip_num_sample_img,status_sample_img,call_num_sample_img,btnsample_img,foldsample_img):
     
     rtSit=situation()
-       
     
     #得到7张牌的情况
     thres=200
     rtSit.cardlist=getCardlist(wholeimg,first_suit_sample_img,first_num_sample_img, \
                         second_suit_sample_img,second_num_sample_img, \
                         pub_suit_sample_img,pub_num_sample_img,thres)
-    
+  
 
     thres=127  
     num_step=7
     point_step=3
     
-    
-
     #底池大小范围
     x1=530
     x2=620
@@ -387,7 +392,7 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,dc_num_sample_img,num_step,point_step)
     
     rtSit.potsize=potsize
-    
+
     #得到需要跟注的数量
     x1=445
     y1=543
@@ -398,10 +403,23 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     callchip=SinglePicToNum(wholeimg,callbox,numstart,call_num_sample_img,11,4,200)
     if(callchip<=0): callchip=0
     rtSit.callchip=callchip
-    print(rtSit.callchip)
+    #print(rtSit.callchip)
     
     #print('potsize:'+str(potsize))
+
+    #读所有的状态
     
+    staWidth=30
+    staHeight=16
+    staboxlist=[picbox(555,389,555+staWidth,389+staHeight), \
+                picbox(156,210,156+staWidth,210+staHeight), \
+                picbox(342,57,342+staWidth,57+staHeight), \
+                picbox(759,57,759+staWidth,57+staHeight), \
+                picbox(951,210,951+staWidth,210+staHeight), \
+                picbox(779,388,779+staWidth,388+staHeight)
+                ]
+    numstart=0
+    rtSit.statuslist=PicListToStatus(wholeimg,staboxlist,status_sample_img)    
    
     #下面是读筹码的情况
        
@@ -416,33 +434,23 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
                 picbox(737,157,737+chipWidth,157+chipHeight),  \
                 picbox(928,310,928+chipWidth,310+chipHeight),  \
                 picbox(756,488,756+chipWidth,488+chipHeight)  ]
-    rtSit.chiplist=PicListToNum(wholeimg,chipboxlist,numstart,chip_num_sample_img,num_step,point_step)
+    rtSit.chiplist=PicListToNum(wholeimg,chipboxlist,numstart,chip_num_sample_img,num_step,point_step,rtSit.statuslist)
 
     #读所有的下注
-    betWidth=60
-    betHeight=15
-    betboxlist=[picbox(549,362,549+betWidth,362+betHeight), \
-                picbox(243,323,243+betWidth,323+betHeight), \
-                picbox(344,185,344+betWidth,185+betHeight), \
-                picbox(761,185,761+betWidth,185+betHeight), \
-                picbox(859,310,859+betWidth,310+betHeight), \
-                picbox(778,357,778+betWidth,357+betHeight)
-    ]
-    rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,chip_num_sample_img,num_step,point_step)
+    if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
+    else:
+        betWidth=60
+        betHeight=15
+        betboxlist=[picbox(549,362,549+betWidth,362+betHeight), \
+                    picbox(243,323,243+betWidth,323+betHeight), \
+                    picbox(344,185,344+betWidth,185+betHeight), \
+                    picbox(761,185,761+betWidth,185+betHeight), \
+                    picbox(859,310,859+betWidth,310+betHeight), \
+                    picbox(778,357,778+betWidth,357+betHeight)
+        ]
+        rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,chip_num_sample_img,num_step,point_step)
     
-    #读所有的状态
     
-    staWidth=30
-    staHeight=16
-    staboxlist=[picbox(555,389,555+staWidth,389+staHeight), \
-                picbox(156,210,156+staWidth,210+staHeight), \
-                picbox(342,57,342+staWidth,57+staHeight), \
-                picbox(759,57,759+staWidth,57+staHeight), \
-                picbox(951,210,951+staWidth,210+staHeight), \
-                picbox(779,388,779+staWidth,388+staHeight)
-                ]
-    numstart=0
-    rtSit.statuslist=PicListToStatus(wholeimg,staboxlist,status_sample_img)
 
     #得到大盲注，玩的级别
     bbWidth=80

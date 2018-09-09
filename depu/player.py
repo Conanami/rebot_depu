@@ -3,6 +3,8 @@ import dealer
 import math
 import random
 #import readpot
+from dealer import IsDrawFlush
+from dealer import IsDrawStraight
 
 #得到目前的公共牌数量
 def getPubnum(rtSit):
@@ -70,13 +72,14 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(leftman>2): return (3,1)
                 else:return (2,0)
             elif(rtSit.callchip<rtSit.potsize-rtSit.callchip): return (2,0)
-                
-        if(rtSit.callchip/rtSit.potsize>finalWinrate): return (0,0) 
-         #偶尔下注半个底池偷
+        
+        
+        #偶尔下注半个底池偷
         if(leftman<=3 and rtSit.callchip==0 and rtSit.potsize/rtSit.bb<15 and random.random()>0.7): return (3,1) 
         #底池赔率合适，坚决跟
-        if(rtSit.callchip/rtSit.potsize<finalWinrate and finalWinrate>0.45 and rtSit.potsize<20*rtSit.bb): return (2,rtSit.callchip)      
-       
+        if(rtSit.callchip/(rtSit.potsize+rtSit.callchip)<finalWinrate and rtSit.potsize<20*rtSit.bb): return (2,rtSit.callchip)      
+        #底池赔率不合适
+        if(rtSit.callchip/(rtSit.potsize+rtSit.callchip)>finalWinrate): return (0,0) 
         #过牌看牌
         if(rtSit.callchip==0): return (2,0)
         return (0,0)
@@ -96,8 +99,9 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         if(rtSit.callchip==0 and leftman<=3 and rtSit.potsize/rtSit.bb<=15 and random.random()>0.5): return (3,1)
         
         #胜率还占优
-        if(rtSit.callchip/rtSit.potsize<finalWinrate and rtSit.callchip<=rtSit.potsize/3 and rtSit.potsize<=20*rtSit.bb): 
+        if(rtSit.callchip/(rtSit.potsize+rtSit.callchip)<finalWinrate and rtSit.callchip<=rtSit.potsize/3 and rtSit.potsize<=20*rtSit.bb): 
             return (2,rtSit.callchip)
+        #转牌弱一点了
         if(rtSit.callchip/rtSit.potsize>finalWinrate and rtSit.callchip/rtSit.bb>20): return (0,0)
         
         #过牌看牌
@@ -135,8 +139,8 @@ def beforeFlopDecision(Sit,callchip):
     if(pubcnt==0 and len(myhand)==2):
         
         if(InSuperRange(myhand)):
-            if(callchip==0): return (3,1)
-            if(callchip>0 and callchip<Sit.bb*3): return (3,3)
+            if(callchip==0): return (3,4)
+            if(callchip>0 and callchip<Sit.bb*3): return (3,4)
             if(callchip>=Sit.bb*3): return (3,4)
         
         if(InOpenRange(myhand) and callchip==0): return (2,random.randint(1,2))
@@ -152,7 +156,7 @@ def beforeFlopDecision(Sit,callchip):
             else: return (2,callchip)
         #两个人单挑
         if(leftman[1]==2 and callchip>=3*Sit.bb):
-            if(random.random()>0.9): return (2,1)
+            if(random.random()>0.96): return (2,1)
             else: return (0,0)
         #如果是大盲白看牌
         if(callchip==0): return (2,0)
@@ -165,13 +169,15 @@ def InOpenRange(myhand):
     #print(str(myhand[0].suit)+","+str(myhand[0].num)+"|"+str(myhand[1].suit)+","+str(myhand[1].num))
     if(InSuperRange(myhand)): return False
     #两张高牌
-    if(myhand[0].num+myhand[1].num>=24 and myhand[0].num>=10 and myhand[1].num>=10): return True
+    if(myhand[0].num+myhand[1].num>=22): return True
     #带AK的同花
     if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
+    #口袋对
+    if(myhand[0].num==myhand[1].num): return True
     #大的连牌和中的口袋对
-    if(abs(myhand[0].num-myhand[1].num)<=1 and myhand[0].num>=6): return True
+    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].num>=8 and myhand[1].num>=8): return True
     #同花连牌
-    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=9 or myhand[1].num>=9)): 
+    if(abs(myhand[0].num-myhand[1].num)<=3 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=9 or myhand[1].num>=9)): 
         return True
     return False
 
@@ -204,6 +210,13 @@ def makeDecision(rtSit):
         print('我的胜率%.2f' % myWinrate)
         print('剩余人数%d ' % leftman)
         finalWinrate=math.pow(myWinrate,leftman-1)
+        if(IsDrawFlush(rtSit.cardlist)): 
+            print('同花听牌，胜率增加%.2f' % 0.18)
+            finalWinrate=finalWinrate+0.18
+        if(IsDrawStraight(rtSit.cardlist)): 
+            print('顺子听牌，胜率增加%.2f' % 0.16)
+            finalWinrate=finalWinrate+0.16
+        
         print('最后胜率%.2f' % finalWinrate)
         #翻牌后的决策
         mydecision=afterFlopDecision(pubnum,myWinrate,finalWinrate,leftman,rtSit)

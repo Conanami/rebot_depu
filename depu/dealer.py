@@ -351,10 +351,10 @@ def winRate(list1):
                 list2.append(d.cardset[i])
                 list2.append(d.cardset[j])
                 #d.printCard(list2)
-                if(Judge(list1,list2,len(list1))==1):
+                if(Judge(list1,list2,min(len(list1),5))==1):
                     wincnt=wincnt+1
                     cnt=cnt+1
-                elif(Judge(list1,list2,len(list1))==2):
+                elif(Judge(list1,list2,min(len(list1),5))==2):
                     cnt=cnt+1
     #print(cnt)
     #print(wincnt)
