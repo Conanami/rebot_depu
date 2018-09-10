@@ -84,7 +84,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         if(rtSit.callchip/(rtSit.potsize+rtSit.callchip)>finalWinrate): return (0,0) 
         #持续下注
         if(rtSit.callchip==0): 
-            if(random.random()>0.7): return (3,1)
+            if(random.random()>0.4): return (3,1)
             return (2,0)
         return (0,0)
     elif(pubnum==4):
@@ -201,7 +201,7 @@ def InSuperRange(myhand):
 def makeDecision(rtSit):
     #得到要跟注多少筹码
     callchip=getCallchip(rtSit)
-    if(rtSit.callchip<rtSit.bb): rtSit.callchip=callchip
+    if(callchip==0): callchip=rtSit.callchip
     #得到当前公共牌的数量
     pubnum=getPubnum(rtSit)
     finalDecision=(0,-1)

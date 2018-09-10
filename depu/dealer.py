@@ -358,9 +358,9 @@ def winRate(list1):
                     cnt=cnt+1
     #print(cnt)
     #print(wincnt)
+    #print("怎么会超过1")
     rtrate=wincnt/cnt
-    if(IsDrawStraight(list1)): rtrate=rtrate+0.16
-    if(IsDrawFlush(list1)): rtrate=rtrate+0.18
+    
     return rtrate
 
 #同类比较

@@ -425,6 +425,7 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
        
     
     #读所有人手里还剩的筹码
+    
     numstart=0
     chipWidth=78
     chipHeight=15
@@ -435,7 +436,7 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
                 picbox(928,310,928+chipWidth,310+chipHeight),  \
                 picbox(756,488,756+chipWidth,488+chipHeight)  ]
     rtSit.chiplist=PicListToNum(wholeimg,chipboxlist,numstart,chip_num_sample_img,num_step,point_step,rtSit.statuslist)
-
+    
     #读所有的下注
     if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
     else:
@@ -453,6 +454,7 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     
 
     #得到大盲注，玩的级别
+    '''
     bbWidth=80
     bbHeight=15
     bbbox=picbox(592,335,592+bbWidth,335+bbHeight)
@@ -470,6 +472,9 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
             rtSit.bb=float(blind)*2
     except:
         rtSit.bb=max(min(rtSit.betlist),100)
+    '''
+    rtSit.bb=10
+    '''
     #找到谁是BTN位
     btnWidth=22
     btnHeight=22
@@ -483,7 +488,9 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     
     btn=findSampleInList(wholeimg,btnsample_img[0],btnboxlist)
     #print(btn)
-    rtSit.position=btn
+    '''
+    rtSit.position=0
+
     return rtSit
 
 
@@ -565,7 +572,7 @@ class sampleconfig:
 
 
         #底池和大小盲的字符样本
-        #如果没有小数点的，就把dc_dot换成dc_wan，否则容易错
+        #如果没有小数点的，就把dc_dot换成dc_wan
         dc_num_sample=[r'depu\samples\dc_num\dc_0.png', \
                     r'depu\samples\dc_num\dc_1.png', \
                     r'depu\samples\dc_num\dc_2.png', \
