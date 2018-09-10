@@ -87,6 +87,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         if(rtSit.callchip==0 and rtSit.potsize<20*rtSit.bb): 
             if(random.random()>0.3): return (3,1)
             return (2,0)
+        if(rtSit.callchip==0): return (2,0)
         return (0,0)
     elif(pubnum==4):
         #超大牌则陷阱
@@ -101,7 +102,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         if(rtSit.betlist[0]>5*rtSit.bb and max(rtSit.betlist)>3*rtSit.betlist[0] and singleWinrate<0.94): return (0,0)
         if(finalWinrate>=0.9 and rtSit.callchip<=rtSit.potsize/2): return (3,4)
         if(finalWinrate>=0.75):
-            if rtSit.callchip<=rtSit.potsize/3: return (3,4)
+            if rtSit.callchip<=rtSit.potsize/3 and rtSit.potsize<20*rtSit.bb : return (3,1)
+            else: return (2,0)
         #突然碰到大加注，就弃牌吧
         if(rtSit.callchip>3*(rtSit.potsize-rtSit.callchip) and singleWinrate<=0.9): return (0,0)
         
@@ -110,7 +112,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         if(rtSit.callchip==0 and leftman<=3 and rtSit.potsize/rtSit.bb<=15 and random.random()>0.5): return (3,1)
         
         #胜率还占优
-        if(rtSit.callchip/(rtSit.potsize+rtSit.callchip)<finalWinrate and rtSit.callchip<=rtSit.potsize/3 and rtSit.potsize<=20*rtSit.bb): 
+        if(rtSit.callchip/(rtSit.potsize+rtSit.callchip)<finalWinrate and finalWinrate>0.4 
+        and rtSit.callchip<=rtSit.potsize/3 and rtSit.potsize<=20*rtSit.bb): 
             return (2,rtSit.callchip)
                
         #转牌弱一点了
@@ -120,6 +123,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         if(rtSit.callchip==0 and rtSit.potsize<20*rtSit.bb): 
             if(random.random()>0.5): return (3,1)
             return (2,0)
+        if(rtSit.callchip==0): return (2,0)
         return (0,0)
     elif(pubnum==5):
         if(finalWinrate>=0.96): return (3,4)
@@ -139,6 +143,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
         if(rtSit.callchip==0 and rtSit.potsize<20*rtSit.bb): 
             if(random.random()>0.8): return (3,1)
             return (2,0)
+        if(rtSit.callchip==0): return (2,0)
         return (0,0)
     return (0,-1)
 
@@ -208,7 +213,8 @@ def InSuperRange(myhand):
 def makeDecision(rtSit):
     #得到要跟注多少筹码
     callchip=getCallchip(rtSit)
-    if(rtSit.callchip<rtSit.bb): rtSit.callchip=callchip
+    rtSit.callchip=max(callchip,rtSit.callchip)
+    callchip=rtSit.callchip
     #得到当前公共牌的数量
     pubnum=getPubnum(rtSit)
     finalDecision=(0,-1)
