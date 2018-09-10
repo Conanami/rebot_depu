@@ -229,8 +229,8 @@ def makeDecision(rtSit):
         print('剩余人数%d ' % leftman)
         finalWinrate=math.pow(myWinrate,leftman-1)
         if(IsDrawFlush(rtSit.cardlist) and pubnum==3):
-            print('同花听牌，胜率增加%.2f' % 0.18)
-            finalWinrate=finalWinrate+0.18
+            print('同花听牌，胜率增加%.2f' % 0.3)
+            finalWinrate=finalWinrate+0.3
         if(IsDrawStraight(rtSit.cardlist) and pubnum==3): 
             print('顺子听牌，胜率增加%.2f' % 0.3)
             finalWinrate=finalWinrate+0.3
