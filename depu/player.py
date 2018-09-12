@@ -74,7 +74,7 @@ def getPubList(rtSit):
         publist.append(mycardlist[i])
     return publist
 
-#返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，第二个是准备放入的筹码量，只有在2，3的时候有值，
+#返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，对应不同按键
 #待整理的函数
 def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
     print("potsize:"+str(rtSit.potsize))
@@ -340,9 +340,9 @@ def InOpenRange(myhand):
     #print(str(myhand[0].suit)+","+str(myhand[0].num)+"|"+str(myhand[1].suit)+","+str(myhand[1].num))
     if(InSuperRange(myhand)): return False
     #两张高牌
-    if(myhand[0].num+myhand[1].num>=24): return True
+    if(myhand[0].num+myhand[1].num>=18): return True
     #带AK的同花
-    if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14)): return True
+    if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
     #口袋对
     if(myhand[0].num==myhand[1].num): return True
     #大的连牌和中的口袋对
@@ -354,7 +354,8 @@ def InOpenRange(myhand):
 
 #只有AA,KK,QQ跟人推
 def InSuperRange(myhand):
-    if(myhand[0].num==myhand[1].num and myhand[0].num>=12): return True
+    if(myhand[0].num==myhand[1].num and myhand[0].num>=10): return True
+    if(myhand[0].num+myhand[1].num>=26): return True
     else: return False
 
 #做出决定
