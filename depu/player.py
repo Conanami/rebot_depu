@@ -355,7 +355,7 @@ def InOpenRange(myhand):
 #只有AA,KK,QQ跟人推
 def InSuperRange(myhand):
     if(myhand[0].num==myhand[1].num and myhand[0].num>=10): return True
-    if(myhand[0].num+myhand[1].num>=26): return True
+    #if(myhand[0].num+myhand[1].num>=26): return True
     else: return False
 
 #做出决定

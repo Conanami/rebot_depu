@@ -42,7 +42,7 @@ def copy_part_image(image_,left,top,right,bottom):
 
 def get_total_area():
     '''   获取整个应用区域  '''
-    window_title = findTitle('玩家BenJamin.Thomas登录')
+    window_title = findTitle('玩家scipio0303登录')
     print(window_title)
     if not window_title:
         print('没有找到应用')
