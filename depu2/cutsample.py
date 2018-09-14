@@ -38,11 +38,11 @@ def cutsample():
     
     #切割半个万字出来
     #box=(594,187,601,202)
-    img=Image.open(r'..\tmp\pokerstars\11224249.png')  #打开图像
+    img=Image.open(r'..\tmp\pokerstars\14180436.png')  #打开图像
     
 
     
-    x1=433
+    x1=569
     y1=538
     w=40
     h=20

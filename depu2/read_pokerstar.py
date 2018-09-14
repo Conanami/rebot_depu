@@ -372,8 +372,13 @@ def NeedAnalyse(wholeimg):
     h=20
     thres=200
     foldbox=(x,y,x+w,y+h)
-    return MatchPicToSample(wholeimg,foldbox,config.foldsample_img[0],thres)
+    IsFold=MatchPicToSample(wholeimg,foldbox,config.foldsample_img[0],thres)
     
+    x=569
+    checkbox=(x,y,x+w,y+h)
+    IsCheck=MatchPicToSample(wholeimg,checkbox,config.foldsample_img[1],thres)
+    if(IsFold or IsCheck): return True
+    else: return False
 
 #从筹码量直接取得statuslist
 def GetStatusList(chiplist):
@@ -537,7 +542,8 @@ class sampleconfig:
         
         
         #fold按钮样本
-        foldsample=[r'.\samples\fold_btn.png']
+        foldsample=[r'.\samples\fold_btn.png',
+                    r'.\samples\check_btn.png']
         self.foldsample_img=file2img(foldsample)
 
         

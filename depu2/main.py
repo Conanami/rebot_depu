@@ -126,15 +126,15 @@ def run_game(q):
             continue
         elif lastkey == keyboard.KeyCode.from_char('p'):
             # 截屏
-            '''
+            
             print('take photo')
             window_left,window_top,window_right,window_bottom  = get_total_area()
             pyautogui.moveTo(window_left,window_top)
             total_image = grab_screen(window_left,window_top, window_right, window_bottom)
-            total_image.save(r'tmp\pokerstars\%s.png' % time.strftime("%d%H%M%S", time.localtime()))
+            total_image.save(r'..\tmp\pokerstars\%s.png' % time.strftime("%d%H%M%S", time.localtime()))
 
             lastkey = keyboard.Key.esc
-            '''
+            
         elif (lastkey == keyboard.KeyCode.from_char('r') or lastkey == keyboard.KeyCode.from_char('R')):
             #检测目标是否存在
             '''
