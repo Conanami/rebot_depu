@@ -20,6 +20,7 @@ class situation:
     def __init__(self):
         #每个人的手牌
         self.handlist=[]
+        self.myseat=0
         #公共牌
         self.cardlist=[]
         #后手筹码
@@ -36,28 +37,28 @@ class situation:
     def todict(self):
         ''' 结果转换为 dict对象 '''
         result = {}
-        if len(self.cardlist)>=2:
-            result['my1'] = '%s|%s' % (self.cardlist[0].num, self.cardlist[0].suit)
-            result['my2'] = '%s|%s' % (self.cardlist[1].num, self.cardlist[1].suit)
+        if len(self.handlist)>=0:
+            result['my1'] = '%s|%s' % (self.handlist[self.myseat][0].num, self.handlist[self.myseat][0].suit)
+            result['my2'] = '%s|%s' % (self.handlist[self.myseat][1].num, self.handlist[self.myseat][1].suit)
         
             result['pub1'] = None
             result['pub2'] = None
             result['pub3'] = None
             result['pub4'] = None
             result['pub5'] = None
-            if len(self.cardlist)==3:
-                result['pub1'] = '%s|%s' % (self.cardlist[2].num, self.cardlist[2].suit)
-            if len(self.cardlist)==4:
-                result['pub1'] = '%s|%s' % (self.cardlist[2].num, self.cardlist[2].suit)
-                result['pub2'] = '%s|%s' % (self.cardlist[3].num, self.cardlist[3].suit)
+            if len(self.cardlist)==1:
+                result['pub1'] = '%s|%s' % (self.cardlist[0].num, self.cardlist[0].suit)
+            if len(self.cardlist)==2:
+                result['pub1'] = '%s|%s' % (self.cardlist[0].num, self.cardlist[0].suit)
+                result['pub2'] = '%s|%s' % (self.cardlist[1].num, self.cardlist[1].suit)
+        if len(self.cardlist)>=3:
+            result['pub1'] = '%s|%s' % (self.cardlist[0].num, self.cardlist[0].suit)
+            result['pub2'] = '%s|%s' % (self.cardlist[1].num, self.cardlist[1].suit)
+            result['pub3'] = '%s|%s' % (self.cardlist[2].num, self.cardlist[2].suit)
+        if len(self.cardlist)>=4:
+            result['pub4'] = '%s|%s' % (self.cardlist[3].num, self.cardlist[3].suit)
         if len(self.cardlist)>=5:
-            result['pub1'] = '%s|%s' % (self.cardlist[2].num, self.cardlist[2].suit)
-            result['pub2'] = '%s|%s' % (self.cardlist[3].num, self.cardlist[3].suit)
-            result['pub3'] = '%s|%s' % (self.cardlist[4].num, self.cardlist[4].suit)
-        if len(self.cardlist)>=6:
-            result['pub4'] = '%s|%s' % (self.cardlist[5].num, self.cardlist[5].suit)
-        if len(self.cardlist)>=7:
-            result['pub5'] = '%s|%s' % (self.cardlist[6].num, self.cardlist[6].suit)
+            result['pub5'] = '%s|%s' % (self.cardlist[4].num, self.cardlist[4].suit)
         result['chip1'] = self.chiplist[0] 
         result['chip2'] = self.chiplist[1]
         result['chip3'] = self.chiplist[2]
@@ -65,6 +66,7 @@ class situation:
         result['chip5'] = self.chiplist[4]
         result['chip6'] = self.chiplist[5]
         
+        result['myseat']=self.myseat
         result['potsize'] = self.potsize
 
         
@@ -77,7 +79,7 @@ class situation:
         result['dc6'] = self.betlist[5]
         
         result['btnpos'] = self.position 
-        '''
+        
         result['status1'] = self.statuslist[0]
         result['status2'] = self.statuslist[1]
         result['status3'] = self.statuslist[2]
@@ -88,8 +90,9 @@ class situation:
         result['bbnum'] = self.bb
         
         result['callchip'] = self.callchip
-        '''
+        
         return result
+    
     def __str__(self):
         return str(self.todict())
 
@@ -279,7 +282,7 @@ def PicListToStatus(wholeimg,staboxlist,status_sample_img,thres=127):
         rtlist.append(getNumFromList(wholeimg,mybox,status_sample_img,thres))
     return rtlist
 
-
+#读牌
 def readCard(wholeimg,suitbox,suit_sample_img,numbox,num_sample_img,numlist,thres):
     rtcard=card(-1,-1)
     tmpnum=getNumFromList(wholeimg,numbox,num_sample_img,thres)
@@ -363,19 +366,28 @@ def getHandCard(wholeimg,sixboxlist,pub_suit_sample_img,pub_num_sample_img,numli
 
 #判断是否需要解析整个图片，该方法对外公开
 def NeedAnalyse(wholeimg):
-    foldbox=(270,540,270+50,540+22)
-    if( MatchPicToSample(wholeimg,foldbox,config.foldsample_img[0])==False and
-        MatchPicToSample(wholeimg,foldbox,config.foldsample_img[1])==False ): return False
-    else: return True
+    x=433
+    y=538
+    w=40
+    h=20
+    thres=200
+    foldbox=(x,y,x+w,y+h)
+    return MatchPicToSample(wholeimg,foldbox,config.foldsample_img[0],thres)
+    
 
 #从筹码量直接取得statuslist
 def GetStatusList(chiplist):
     statuslist=[]
     for i in range(6):
-        if chiplist[i]<0: statuslist[i]=0
-        else: statuslist[i]=1 
+        if chiplist[i]<0: statuslist.append(0)
+        else: statuslist.append(1) 
     return statuslist
 
+#判断得到自己的位置
+def getSeat(handlist):
+    for i in range(len(handlist)):
+        if handlist[i][0] and handlist[i][1]:
+            return i 
 
 #读整个图片，获取所有信息
 def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sample_img,pub_num_sample_img,btnsample_img):
@@ -385,6 +397,7 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     #得到手牌的情况
     thres=250
     rtSit.cardlist,rtSit.handlist=getCardlist(wholeimg,pub_suit_sample_img,pub_num_sample_img,thres)
+    rtSit.myseat=getSeat(rtSit.handlist)
     #dealer.printCard(rtSit.cardlist)
     
     #读所有人手里还剩的筹码
@@ -446,47 +459,16 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     btn=findSampleInList(wholeimg,btnsample_img[0],btnboxlist,thres)
     rtSit.position=btn
     rtSit.statuslist=GetStatusList(rtSit.chiplist)
-    #pokerstar要读窗体TITLE
+    
+    #pokerstar获得大盲注级别，要读窗体TITLE
     rtSit.bb=100
-
-    
-       
-    
-    
-    
-    
-    
-    
-
-    #得到大盲注，玩的级别
-    
-    bbWidth=80
-    bbHeight=15
-    bbbox=picbox(592,335,592+bbWidth,335+bbHeight)
-    blind = SinglePicToNum(wholeimg,bbbox,numstart,dc_num_sample_img,num_step,point_step)
-    print(blind)
-    try:
-        if '/' in str(blind):
-            smallblind=blind.split('/')[0]
-            bigblind=blind.split('/')[1]
-            if(float(smallblind)>0):
-                rtSit.bb=float(smallblind)*2
-            elif(float(bigblind)>0):
-                rtSit.bb=float(bigblind)
-        else:
-            rtSit.bb=float(blind)*2
-    except:
-        rtSit.bb=max(min(rtSit.betlist),100)
-    
-    rtSit.bb=10
-    
-   
-    #print(btn)
-    '''
-    #rtSit.position=0
+    #获得要跟注的筹码数量
+    rtSit.callchip=GetCallchip(rtSit.betlist,rtSit.myseat)
     
     return rtSit
 
+def GetCallchip(betlist,myseat):
+    return max(max(betlist)-betlist[myseat],0)
 
 class sampleconfig:
     ''' 样本配置类 '''
@@ -551,41 +533,18 @@ class sampleconfig:
          #btn位样本
         btnsample=[r'.\samples\btn_sample.png']
         self.btnsample_img=file2img(btnsample)
-
-        '''
         
         
-        #每个人的状态样本
-        status_sample=[r'depu\samples\status\status_fold.png', \
-                        r'depu\samples\status\status_check.png', \
-                        r'depu\samples\status\status_call.png', \
-                        r'depu\samples\status\status_raise.png' 
-        ]
-        self.status_sample_img=file2img(status_sample)
-        #btn位样本
-        btnsample=[r'depu\samples\btn_sample.png']
-        self.btnsample_img=file2img(btnsample)
         
         #fold按钮样本
-        foldsample=[r'depu\samples\fold_btn.png',\
-                    r'depu\samples\fold_btn2.png' ]
+        foldsample=[r'.\samples\fold_btn.png']
         self.foldsample_img=file2img(foldsample)
 
-        #跟注大小数字
-        call_num_sample=[r'depu\samples\call_num\call_0.png', \
-                        r'depu\samples\call_num\call_1.png', \
-                        r'depu\samples\call_num\call_2.png', \
-                        r'depu\samples\call_num\call_3.png', \
-                        r'depu\samples\call_num\call_4.png', \
-                        r'depu\samples\call_num\call_5.png', \
-                        r'depu\samples\call_num\call_6.png', \
-                        r'depu\samples\call_num\call_7.png', \
-                        r'depu\samples\call_num\call_8.png', \
-                        r'depu\samples\call_num\call_9.png', \
-                        r'depu\samples\call_num\call_dot.png', \
-                        r'depu\samples\call_num\call_wan.png' ]
-        self.call_num_sample_img=file2img(call_num_sample)
-        '''
+        
+        
+
+      
+        
 
 
 # 引用的时候，会默认初始化配置文件
@@ -604,14 +563,14 @@ def analysisImg(wholeimg):
                         )
 
     #入库
-    '''
+    
     if(rtSit is not None):
         result = rtSit.todict()
         result['createtime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         conn = sqlite3.connect('game.db')
         df = pd.DataFrame.from_records([result])
         pd.io.sql.to_sql(df, 'depu_log', conn, if_exists='append', index=False)
-    '''
+    
 
     return rtSit
     

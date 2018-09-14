@@ -8,7 +8,7 @@ def bbb():
     ''' 测试 '''
     start =time.clock()
     
-    file_name=r'..\tmp\pokerstars\13225041.png' 
+    file_name=r'..\tmp\pokerstars\11224450.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     rtSit=analysisImg(wholeimg)
