@@ -12,12 +12,17 @@ def getPubnum(rtSit):
 
 #得到一对一时候牌的胜率,得到目前状态
 def calcuWinrate(rtSit):
+    mycardlist=getMyhand(rtSit)
+    return dealer.winRate(mycardlist)
+
+#得到我的手牌
+def getMyhand(rtSit):
     mycardlist=[]
     for tmpcard in rtSit.handlist[rtSit.myseat]:
         mycardlist.append(tmpcard)
-
     mycardlist.append(rtSit.cardlist)
-    return dealer.winRate(mycardlist)
+    return mycardlist
+
 
 #得到还剩几个人
 def getSurvivor(rtSit):
@@ -254,14 +259,10 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
 
 #翻前决策
 def beforeFlopDecision(Sit,callchip):
-    myhand=[]
-    pubcnt=0
+    myhand=getMyhand(Sit)
+    pubcnt=len(Sit.cardlist)
     leftman=getSurvivor(Sit)
-    for i in range(len(Sit.cardlist)):
-        if(i<2):
-            myhand.append(Sit.cardlist[i])
-        elif(i>=2):
-            pubcnt=pubcnt+1
+    
     #如果中间有牌，或者两张牌没有读出来，则返回弃牌
     if(pubcnt==0 and len(myhand)==2):
         

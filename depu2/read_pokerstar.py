@@ -370,7 +370,7 @@ def NeedAnalyse(wholeimg):
     y=538
     w=40
     h=20
-    thres=200
+    thres=250
     foldbox=(x,y,x+w,y+h)
     IsFold=MatchPicToSample(wholeimg,foldbox,config.foldsample_img[0],thres)
     
