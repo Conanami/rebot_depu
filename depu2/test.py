@@ -1,20 +1,19 @@
 from read_pokerstar import analysisImg
 import time
 from PIL import Image
-#import player as p
+import player as p
 #import random
 
 def bbb():
     ''' 测试 '''
     start =time.clock()
     
-    file_name=r'..\tmp\pokerstars\11224450.png' 
+    file_name=r'..\tmp\dz_0914194249.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     rtSit=analysisImg(wholeimg)
-    
     print(rtSit.todict())
-    #print('决策结果%s %s' % (p.makeDecision(rtSit)))
+    print('决策结果%s %s' % (p.makeDecision(rtSit)))
     #print('决策结果%s %s' % (p.makeTmpDecision(rtSit)))
     #for i in range(15):
     #    print(random.random())

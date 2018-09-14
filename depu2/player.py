@@ -8,6 +8,7 @@ from dealer import IsDrawStraight
 
 #得到目前的公共牌数量
 def getPubnum(rtSit):
+    print("公共牌："+str(len(rtSit.cardlist)))
     return len(rtSit.cardlist)
 
 #得到一对一时候牌的胜率,得到目前状态
@@ -322,7 +323,7 @@ def makeDecision(rtSit):
     callchip=rtSit.callchip
     #得到当前公共牌的数量
     pubnum=getPubnum(rtSit)
-    finalDecision=(0,-1)
+    #finalDecision=(0,-1)
     #如果是翻牌前
     if(pubnum==0):
         finalDecision=beforeFlopDecision(rtSit,callchip)
