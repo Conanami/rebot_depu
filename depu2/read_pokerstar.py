@@ -56,16 +56,17 @@ class situation:
             result['pub4'] = '%s|%s' % (self.cardlist[5].num, self.cardlist[5].suit)
         if len(self.cardlist)>=7:
             result['pub5'] = '%s|%s' % (self.cardlist[6].num, self.cardlist[6].suit)
-        
-        result['potsize'] = self.potsize
-
         result['chip1'] = self.chiplist[0] 
         result['chip2'] = self.chiplist[1]
         result['chip3'] = self.chiplist[2]
         result['chip4'] = self.chiplist[3]
         result['chip5'] = self.chiplist[4]
         result['chip6'] = self.chiplist[5]
+        
+        result['potsize'] = self.potsize
 
+        '''
+        
         result['dc1'] = self.betlist[0] 
         result['dc2'] = self.betlist[1]
         result['dc3'] = self.betlist[2]
@@ -83,27 +84,12 @@ class situation:
         result['bbnum'] = self.bb
         result['btnpos'] = self.position 
         result['callchip'] = self.callchip
-
+        '''
         return result
     def __str__(self):
         return str(self.todict())
 
-'''
-#定义一个牌的类
-class card:
-    def __init__(self,suit,num):
-        self.suit=suit
-        self.num=num
-    def __str__(self):
-        suitlist=['黑','红','梅','方']
-        clist=['na','A','2','3','4','5','6','7','8','9','T','J','Q','K','A']
-        if(self.suit is None or self.num is None):
-            return "none"
-        elif(self.num==-1):
-            return "na"
-        else:
-            return clist[self.num] + "|" + suitlist[self.suit]
-'''
+
 
 #定义一个图片框类
 class picbox:
@@ -142,6 +128,9 @@ def getPos(img,sample):
 #相同大小的图片匹配
 def matchPic(img,sample,thres=127):
     rows,cols=sample.shape
+    irows,icols=img.shape
+    #print( str(rows)+","+str(cols))
+    #print( str(irows)+","+str(icols))
     samecnt=0
     for i in range(rows):
         for j in range(cols):
@@ -159,11 +148,10 @@ def matchPic(img,sample,thres=127):
             if(img[i,j]==sample[i,j]):
                 samecnt=samecnt+1
     #print(samecnt/(rows*cols))
-    
     if(thres==127):
-        meetValue=0.91
+        meetValue=0.97
     else:
-        meetValue=0.88
+        meetValue=0.95
     
     if((samecnt/(rows*cols))>=meetValue):
         return True
@@ -202,7 +190,7 @@ def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,t
     while i<(picbox.x2-num_step):
         #每次挖个num_step像素宽度来比对
         tmpbox=(i,picbox.y1,i+num_step,picbox.y2)
-        #print(i)
+        #print(tmpbox)
         num=getNumFromList(wholeimg,tmpbox,dc_num_sample_img,thres)
         if(num is not None and num>=0 and num<=9): 
             numstr=numstr+str(num)
@@ -210,10 +198,10 @@ def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,t
             #数字样本的宽度
             i=i+num_step
         elif (num==10):
-            #小数点只有在有数字的时候才能出现，只能有一个小数点
-            if(len(numstr)!=0 and numstr.__contains__(".")==False):
-                numstr=numstr+'.'
-                #小数点的宽度
+            # 逗号只能在有数字的时候出现
+            if(len(numstr)!=0):
+                numstr=numstr
+                #逗号的宽度
                 i=i+point_step
             else:
                 #没认出来就慢慢认
@@ -254,14 +242,14 @@ def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,t
             return 0
 
 #得到每个人的数字
-def PicListToNum(wholeimg,betboxlist,start,chip_num_sample_img,num_step,point_step,statuslist=[1,1,1,1,1,1]):
+def PicListToNum(wholeimg,betboxlist,start,chip_num_sample_img,num_step,point_step,thres=127,statuslist=[1,1,1,1,1,1]):
     rtlist=[]
     i=0
     for betbox in betboxlist:
         if(statuslist[i]==0):
             rtlist.append(0)
         else:
-            betsize=SinglePicToNum(wholeimg,betbox,start,chip_num_sample_img,num_step,point_step)
+            betsize=SinglePicToNum(wholeimg,betbox,start,chip_num_sample_img,num_step,point_step,thres)
             rtlist.append(betsize)
         i=i+1
     return rtlist
@@ -283,11 +271,11 @@ def findSampleInList(wholeimg,btnsample_img,btnboxlist):
             return i
 
 #得到一组状态
-def PicListToStatus(wholeimg,staboxlist,status_sample_img):
+def PicListToStatus(wholeimg,staboxlist,status_sample_img,thres=127):
     rtlist=[]
     for tmpbox in staboxlist:
         mybox=(tmpbox.x1,tmpbox.y1,tmpbox.x2,tmpbox.y2)
-        rtlist.append(getNumFromList(wholeimg,mybox,status_sample_img))
+        rtlist.append(getNumFromList(wholeimg,mybox,status_sample_img,thres))
     return rtlist
 
 
@@ -345,36 +333,40 @@ def NeedAnalyse(wholeimg):
     else: return True
 
 #读整个图片，获取所有信息
-def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
-                        second_suit_sample_img,second_num_sample_img, \
-                        pub_suit_sample_img,pub_num_sample_img, \
-                        dc_num_sample_img,chip_num_sample_img,status_sample_img,call_num_sample_img,btnsample_img,foldsample_img):
+def GetSituation(wholeimg, chip_num_sample_img, pub_suit_sample_img,pub_num_sample_img):
     
     rtSit=situation()
     
-    #得到7张牌的情况
+    #得到手牌的情况
     thres=200
     rtSit.cardlist=getCardlist(wholeimg,pub_suit_sample_img,pub_num_sample_img,thres)
-    dealer.printCard(rtSit.cardlist)
-    '''
-    thres=127  
-    num_step=7
-    point_step=3
+    #dealer.printCard(rtSit.cardlist)
+    
+    #读所有人手里还剩的筹码
+    
+    numstart=0
+    chipWidth=90
+    chipHeight=14
+    num_step=9
+    point_step=9
+    chipboxlist=[picbox(382,450,382+chipWidth,450+chipHeight) , \
+                picbox(41,354,41+chipWidth,354+chipHeight),  \
+                picbox(41,182,41+chipWidth,182+chipHeight),  \
+                picbox(337,116,337+chipWidth,116+chipHeight),  \
+                picbox(676,182,676+chipWidth,182+chipHeight),  \
+                picbox(676,354,676+chipWidth,354+chipHeight)  ]
+    rtSit.chiplist=PicListToNum(wholeimg,chipboxlist,numstart,chip_num_sample_img,num_step,point_step,thres)
     
     #底池大小范围
-    x1=530
-    x2=620
-    y1=187
-    y2=202
-       
-    
-    numstart=20
+    x1=400
+    x2=x1+100
+    y1=198
+    y2=y1+14
+    numstart=0
     dcpicbox=picbox(x1,y1,x2,y2)
-    
-    potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,dc_num_sample_img,num_step,point_step)
-    
+    potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,chip_num_sample_img,num_step,point_step,thres)
     rtSit.potsize=potsize
-
+    '''
     #得到需要跟注的数量
     x1=445
     y1=543
@@ -406,18 +398,7 @@ def GetSituation(wholeimg,first_suit_sample_img,first_num_sample_img, \
     #下面是读筹码的情况
        
     
-    #读所有人手里还剩的筹码
     
-    numstart=0
-    chipWidth=78
-    chipHeight=15
-    chipboxlist=[picbox(532,488,532+chipWidth,488+chipHeight) , \
-                picbox(131,310,131+chipWidth,310+chipHeight),  \
-                picbox(319,157,319+chipWidth,157+chipHeight),  \
-                picbox(737,157,737+chipWidth,157+chipHeight),  \
-                picbox(928,310,928+chipWidth,310+chipHeight),  \
-                picbox(756,488,756+chipWidth,488+chipHeight)  ]
-    rtSit.chiplist=PicListToNum(wholeimg,chipboxlist,numstart,chip_num_sample_img,num_step,point_step,rtSit.statuslist)
     
     #读所有的下注
     if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
@@ -548,6 +529,20 @@ class sampleconfig:
                        ]
         self.pub_num_sample_img=file2img(pub_num_sample)
 
+        #筹码和下注的字符样本
+        chip_num_sample=[r'.\samples\chip_num\chip_0.png', \
+                        r'.\samples\chip_num\chip_1.png', \
+                        r'.\samples\chip_num\chip_2.png', \
+                        r'.\samples\chip_num\chip_3.png', \
+                        r'.\samples\chip_num\chip_4.png', \
+                        r'.\samples\chip_num\chip_5.png', \
+                        r'.\samples\chip_num\chip_6.png', \
+                        r'.\samples\chip_num\chip_7.png', \
+                        r'.\samples\chip_num\chip_8.png', \
+                        r'.\samples\chip_num\chip_9.png', \
+                        r'.\samples\chip_num\chip_dot.png'
+        ]
+        self.chip_num_sample_img=file2img(chip_num_sample)
         '''
         #底池和大小盲的字符样本
         #如果没有小数点的，就把dc_dot换成dc_wan
@@ -566,21 +561,8 @@ class sampleconfig:
                     r'depu\samples\dc_num\dc_slash.png' ]
         self.dc_num_sample_img=file2img(dc_num_sample)
 
-        #筹码和下注的字符样本
-        chip_num_sample=[r'depu\samples\chip_num\chip_0.png', \
-                        r'depu\samples\chip_num\chip_1.png', \
-                        r'depu\samples\chip_num\chip_2.png', \
-                        r'depu\samples\chip_num\chip_3.png', \
-                        r'depu\samples\chip_num\chip_4.png', \
-                        r'depu\samples\chip_num\chip_5.png', \
-                        r'depu\samples\chip_num\chip_6.png', \
-                        r'depu\samples\chip_num\chip_7.png', \
-                        r'depu\samples\chip_num\chip_8.png', \
-                        r'depu\samples\chip_num\chip_9.png', \
-                        r'depu\samples\chip_num\chip_dot.png', \
-                        r'depu\samples\chip_num\chip_wan.png' 
-        ]
-        self.chip_num_sample_img=file2img(chip_num_sample)
+        
+        
         #每个人的状态样本
         status_sample=[r'depu\samples\status\status_fold.png', \
                         r'depu\samples\status\status_check.png', \
@@ -622,26 +604,20 @@ def analysisImg(wholeimg):
     ''' 解析图片, 需要传入 灰度图像 该方法对外公开 '''
     
     #解析              
-    rtSit=GetSituation(wholeimg,
-                        config.first_suit_sample_img,
-                        config.first_num_sample_img,
-                        config.second_suit_sample_img,
-                        config.second_num_sample_img,
+    rtSit=GetSituation(wholeimg,config.chip_num_sample_img,
                         config.pub_suit_sample_img,
-                        config.pub_num_sample_img,
-                        config.dc_num_sample_img,
-                        config.chip_num_sample_img,
-                        config.status_sample_img,
-                        config.call_num_sample_img,
-                        config.btnsample_img,
-                        config.foldsample_img)
+                        config.pub_num_sample_img
+                        )
 
     #入库
+    '''
     if(rtSit is not None):
         result = rtSit.todict()
         result['createtime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         conn = sqlite3.connect('game.db')
         df = pd.DataFrame.from_records([result])
         pd.io.sql.to_sql(df, 'depu_log', conn, if_exists='append', index=False)
-    return rtSit
+    '''
 
+    return rtSit
+    

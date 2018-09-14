@@ -419,6 +419,7 @@ def CompareDetail(list1,list2,bothtype,cardcnt):
         return CompareDetail(s1,s2,2,cardcnt)
     return 0
 
+#测试函数
 def ccc():
     starttime=time.clock()
     d=dealer()
