@@ -13,7 +13,7 @@ def getPubnum(rtSit):
 #得到一对一时候牌的胜率,得到目前状态
 def calcuWinrate(rtSit):
     mycardlist=[]
-    for tmpcard in rtSit.myhand[rtSit.myseat]:
+    for tmpcard in rtSit.handlist[rtSit.myseat]:
         mycardlist.append(tmpcard)
 
     mycardlist.append(rtSit.cardlist)
