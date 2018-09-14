@@ -18,7 +18,9 @@ from dealer import card
 #定义一个情况类
 class situation:
     def __init__(self):
-        #牌
+        #每个人的手牌
+        self.handlist=[]
+        #公共牌
         self.cardlist=[]
         #后手筹码
         self.chiplist=[]
@@ -65,7 +67,7 @@ class situation:
         
         result['potsize'] = self.potsize
 
-        '''
+        
         
         result['dc1'] = self.betlist[0] 
         result['dc2'] = self.betlist[1]
@@ -73,7 +75,9 @@ class situation:
         result['dc4'] = self.betlist[3]
         result['dc5'] = self.betlist[4]
         result['dc6'] = self.betlist[5]
-
+        
+        result['btnpos'] = self.position 
+        '''
         result['status1'] = self.statuslist[0]
         result['status2'] = self.statuslist[1]
         result['status3'] = self.statuslist[2]
@@ -82,7 +86,7 @@ class situation:
         result['status6'] = self.statuslist[5]
 
         result['bbnum'] = self.bb
-        result['btnpos'] = self.position 
+        
         result['callchip'] = self.callchip
         '''
         return result
@@ -125,8 +129,17 @@ def getPos(img,sample):
             return x+j
     return -1
 
-#相同大小的图片匹配
+#矩阵匹配算法
 def matchPic(img,sample,thres=127):
+    img[img<thres]=0
+    img[img>=thres]=1
+    sample[sample<thres]=0
+    sample[sample>=thres]=1
+    if(img==sample).all(): return True
+    else: return False
+
+#相同大小的图片匹配
+def matchPic2(img,sample,thres=127):
     rows,cols=sample.shape
     irows,icols=img.shape
     #print( str(rows)+","+str(cols))
@@ -149,9 +162,9 @@ def matchPic(img,sample,thres=127):
                 samecnt=samecnt+1
     #print(samecnt/(rows*cols))
     if(thres==127):
-        meetValue=0.97
+        meetValue=0.98
     else:
-        meetValue=0.95
+        meetValue=0.98
     
     if((samecnt/(rows*cols))>=meetValue):
         return True
@@ -185,8 +198,8 @@ def imreadGreyImg(wholeimg,dcbox):
 def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,thres=127):
     i=picbox.x1+start
     numstr=""
-    isWan=False
-    isSlash=False
+    isQuan=False
+    isXia=False
     while i<(picbox.x2-num_step):
         #每次挖个num_step像素宽度来比对
         tmpbox=(i,picbox.y1,i+num_step,picbox.y2)
@@ -206,40 +219,28 @@ def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,t
             else:
                 #没认出来就慢慢认
                 i=i+1
-            
-        elif (num==12):
-            #如果出现/号，说明是大小盲标记
-            isSlash=True
-            numstr=numstr+'/'
-            #print(num)
-            #数字样本的宽度
-            i=i+point_step
         elif (num==11):
-            #如果出现“万”字则结束了
-            isWan=True
+            isQuan=True
+            i=i+point_step
+        elif (num==12):
+            #如果出现“下”字则结束了
+            isXia=True
             i=picbox.x2
         else:
             #没认出来就慢慢向右移动
             i=i+1
-    if(len(numstr)==0):
+    #如果有全下，则返回0
+    if(isQuan and isXia):
+         return 0
+    elif(len(numstr)==0):
         #啥都没认出来，就返回-1，大概这个位置上没人
         return (-1)
-    elif(isSlash):
-        return numstr
-    elif(isWan):
-        #如果有万，返回数值*10000
-        try:
-            return (float(numstr)*10000)
-        except:
-            return 0
-        #如果有万，返回数值*10000
-        
     else:
-        #如果没有万，就正常返回
+        #如果没有全下，就返回数字
         try:
             return (float(numstr))
         except:
-            return 0
+            return -1
 
 #得到每个人的数字
 def PicListToNum(wholeimg,betboxlist,start,chip_num_sample_img,num_step,point_step,thres=127,statuslist=[1,1,1,1,1,1]):
@@ -264,10 +265,10 @@ def file2img(dc_num_sample):
     return rtlist
 
 #在一组框中找到样本
-def findSampleInList(wholeimg,btnsample_img,btnboxlist):
+def findSampleInList(wholeimg,btnsample_img,btnboxlist,thres=127):
     for i,tmpbox in enumerate(btnboxlist):
         mybox=(tmpbox.x1,tmpbox.y1,tmpbox.x2,tmpbox.y2)
-        if(MatchPicToSample(wholeimg,mybox,btnsample_img)):
+        if(MatchPicToSample(wholeimg,mybox,btnsample_img,thres)):
             return i
 
 #得到一组状态
@@ -322,8 +323,43 @@ def getCardlist(wholeimg,pub_suit_sample_img,pub_num_sample_img,thres):
             pubcard.append(tmpcard)
         else:
             break
+    
+    #读6个人的手牌,最下面那个开始，顺时针依次为0，1，2，3，4，5
+    sixboxlist=[(357,383),(61,287),(61,115),(357,55),(656,115),(656,287)]
+    handcard=getHandCard(wholeimg,sixboxlist,pub_suit_sample_img,pub_num_sample_img,numlist,thres)
+    
+    return pubcard,handcard
 
-    return pubcard
+#读手牌
+def getHandCard(wholeimg,sixboxlist,pub_suit_sample_img,pub_num_sample_img,numlist,thres):
+    #6个人，最下面那个开始，顺时针依次为0，1，2，3，4，5
+    rtHandcard=[]
+    #左右牌之间的距离
+    cardstep=48
+    #数字宽度
+    num_w=11
+    #数字高度
+    num_h=15
+    #花色宽度
+    suit_w=13
+    #花色高度
+    suit_h=15
+    #从数字到花色的Y轴距离
+    c2s_y=15
+    #从数字到花色的X轴距离
+    c2s_x=-1
+
+    for (x,y) in sixboxlist:
+        leftnumbox=(x,y,x+num_w,y+num_h)
+        leftsuitbox=(x+c2s_x,y+c2s_y,x+c2s_x+suit_w,y+c2s_y+suit_h)
+        leftcard=readCard(wholeimg,leftsuitbox,pub_suit_sample_img,leftnumbox,pub_num_sample_img,numlist,thres)
+        print(leftcard)
+        rightnumbox=(x+cardstep,y,x+cardstep+num_w,y+num_h)
+        rightsuitbox=(x+cardstep+c2s_x,y+c2s_y,x+cardstep+c2s_x+suit_w,y+c2s_y+suit_h)
+        rightcard=readCard(wholeimg,rightsuitbox,pub_suit_sample_img,rightnumbox,pub_num_sample_img,numlist,thres)
+        print(rightcard)
+        rtHandcard.append((leftcard,rightcard))
+    return rtHandcard
 
 #判断是否需要解析整个图片，该方法对外公开
 def NeedAnalyse(wholeimg):
@@ -332,14 +368,23 @@ def NeedAnalyse(wholeimg):
         MatchPicToSample(wholeimg,foldbox,config.foldsample_img[1])==False ): return False
     else: return True
 
+#从筹码量直接取得statuslist
+def GetStatusList(chiplist):
+    statuslist=[]
+    for i in range(6):
+        if chiplist[i]<0: statuslist[i]=0
+        else: statuslist[i]=1 
+    return statuslist
+
+
 #读整个图片，获取所有信息
-def GetSituation(wholeimg, chip_num_sample_img, pub_suit_sample_img,pub_num_sample_img):
+def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sample_img,pub_num_sample_img,btnsample_img):
     
     rtSit=situation()
     
     #得到手牌的情况
-    thres=200
-    rtSit.cardlist=getCardlist(wholeimg,pub_suit_sample_img,pub_num_sample_img,thres)
+    thres=250
+    rtSit.cardlist,rtSit.handlist=getCardlist(wholeimg,pub_suit_sample_img,pub_num_sample_img,thres)
     #dealer.printCard(rtSit.cardlist)
     
     #读所有人手里还剩的筹码
@@ -349,6 +394,7 @@ def GetSituation(wholeimg, chip_num_sample_img, pub_suit_sample_img,pub_num_samp
     chipHeight=14
     num_step=9
     point_step=9
+    thres=200
     chipboxlist=[picbox(382,450,382+chipWidth,450+chipHeight) , \
                 picbox(41,354,41+chipWidth,354+chipHeight),  \
                 picbox(41,182,41+chipWidth,182+chipHeight),  \
@@ -366,53 +412,49 @@ def GetSituation(wholeimg, chip_num_sample_img, pub_suit_sample_img,pub_num_samp
     dcpicbox=picbox(x1,y1,x2,y2)
     potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,chip_num_sample_img,num_step,point_step,thres)
     rtSit.potsize=potsize
-    '''
-    #得到需要跟注的数量
-    x1=445
-    y1=543
-    x2=490
-    y2=559
-    callbox=picbox(x1,y1,x2,y2)
-    numstart=0
-    callchip=SinglePicToNum(wholeimg,callbox,numstart,call_num_sample_img,11,4,200)
-    if(callchip<=0): callchip=0
-    rtSit.callchip=callchip
-    #print(rtSit.callchip)
-    
-    #print('potsize:'+str(potsize))
 
-    #读所有的状态
-    
-    staWidth=30
-    staHeight=16
-    staboxlist=[picbox(555,389,555+staWidth,389+staHeight), \
-                picbox(156,210,156+staWidth,210+staHeight), \
-                picbox(342,57,342+staWidth,57+staHeight), \
-                picbox(759,57,759+staWidth,57+staHeight), \
-                picbox(951,210,951+staWidth,210+staHeight), \
-                picbox(779,388,779+staWidth,388+staHeight)
-                ]
+    #读所有的下注
+    #if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
+    #else:
+
+    betWidth=120
+    betHeight=12
+    num_step=8
+    point_step=num_step
+    thres=200
     numstart=0
-    rtSit.statuslist=PicListToStatus(wholeimg,staboxlist,status_sample_img)    
-   
-    #下面是读筹码的情况
+    betboxlist=[picbox(337,344,337+betWidth,344+betHeight), \
+                picbox(200,315,200+betWidth,315+betHeight), \
+                picbox(220,191,220+betWidth,191+betHeight), \
+                picbox(385,158,385+betWidth,158+betHeight), \
+                picbox(483,191,483+betWidth,191+betHeight), \
+                picbox(557,316,557+betWidth,316+betHeight)
+    ]
+    rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,dc_num_sample_img,num_step,point_step,thres)
+
+    #找到谁是BTN位
+    btnWidth=28
+    btnHeight=24
+    btnboxlist=[picbox(459,368,459+btnWidth,368+btnHeight), \
+                picbox(198,332,198+btnWidth,332+btnHeight), \
+                picbox(173,200,173+btnWidth,200+btnHeight), \
+                picbox(332,147,332+btnWidth,147+btnHeight), \
+                picbox(618,205,618+btnWidth,205+btnHeight), \
+                picbox(584,332,584+btnWidth,332+btnHeight)
+    ]
+    
+    btn=findSampleInList(wholeimg,btnsample_img[0],btnboxlist,thres)
+    rtSit.position=btn
+    rtSit.statuslist=GetStatusList(rtSit.chiplist)
+    #pokerstar要读窗体TITLE
+    rtSit.bb=100
+
+    
        
     
     
     
-    #读所有的下注
-    if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
-    else:
-        betWidth=60
-        betHeight=15
-        betboxlist=[picbox(549,362,549+betWidth,362+betHeight), \
-                    picbox(243,323,243+betWidth,323+betHeight), \
-                    picbox(344,185,344+betWidth,185+betHeight), \
-                    picbox(761,185,761+betWidth,185+betHeight), \
-                    picbox(859,310,859+betWidth,310+betHeight), \
-                    picbox(778,357,778+betWidth,357+betHeight)
-        ]
-        rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,chip_num_sample_img,num_step,point_step)
+    
     
     
 
@@ -438,18 +480,7 @@ def GetSituation(wholeimg, chip_num_sample_img, pub_suit_sample_img,pub_num_samp
     
     rtSit.bb=10
     
-    #找到谁是BTN位
-    btnWidth=22
-    btnHeight=22
-    btnboxlist=[ picbox(628,378,628+btnWidth,378+btnHeight), \
-                picbox(245,235,245+btnWidth,235+btnHeight), \
-                picbox(404,169,404+btnWidth,169+btnHeight), \
-                picbox(821,169,821+btnWidth,169+btnHeight), \
-                picbox(887,247,887+btnWidth,247+btnHeight), \
-                picbox(851,384,851+btnWidth,384+btnHeight)
-    ]
-    
-    btn=findSampleInList(wholeimg,btnsample_img[0],btnboxlist)
+   
     #print(btn)
     '''
     #rtSit.position=0
@@ -461,51 +492,7 @@ class sampleconfig:
     ''' 样本配置类 '''
 
     def __init__(self):
-        '''
-        #第一张的花色样本
-        first_suit_sample=[r'depu\samples\first_suit\1_s.png',
-                            r'depu\samples\first_suit\1_h.png',
-                            r'depu\samples\first_suit\1_c.png',
-                            r'depu\samples\first_suit\1_d.png']
-        self.first_suit_sample_img=file2img(first_suit_sample)
-        #第一张的牌数字样本
-        first_num_sample=[r'depu\samples\first_num\1_2.png', \
-                            r'depu\samples\first_num\1_3.png', \
-                            r'depu\samples\first_num\1_4.png', \
-                            r'depu\samples\first_num\1_5.png', \
-                            r'depu\samples\first_num\1_6.png', \
-                            r'depu\samples\first_num\1_7.png', \
-                            r'depu\samples\first_num\1_8.png', \
-                            r'depu\samples\first_num\1_9.png', \
-                            r'depu\samples\first_num\1_t.png', \
-                            r'depu\samples\first_num\1_j.png', \
-                            r'depu\samples\first_num\1_q.png', \
-                            r'depu\samples\first_num\1_k.png', \
-                            r'depu\samples\first_num\1_a.png' ]
-        self.first_num_sample_img=file2img(first_num_sample)
-
-        #第二张的花色样本
-        second_suit_sample=[r'depu\samples\second_suit\2_s.png',
-                            r'depu\samples\second_suit\2_h.png',
-                            r'depu\samples\second_suit\2_c.png',
-                            r'depu\samples\second_suit\2_d.png']
-        self.second_suit_sample_img=file2img(second_suit_sample)
-        #第二张的牌数字样本
-        second_num_sample=[ r'depu\samples\second_num\2_2.png', \
-                            r'depu\samples\second_num\2_3.png', \
-                            r'depu\samples\second_num\2_4.png', \
-                            r'depu\samples\second_num\2_5.png', \
-                            r'depu\samples\second_num\2_6.png', \
-                            r'depu\samples\second_num\2_7.png', \
-                            r'depu\samples\second_num\2_8.png', \
-                            r'depu\samples\second_num\2_9.png', \
-                            r'depu\samples\second_num\2_t.png', \
-                            r'depu\samples\second_num\2_j.png', \
-                            r'depu\samples\second_num\2_q.png', \
-                            r'depu\samples\second_num\2_k.png', \
-                            r'depu\samples\second_num\2_a.png' ]
-        self.second_num_sample_img=file2img(second_num_sample)
-        '''
+        
         #公共牌的花色样本
         pub_suit_sample=[r'.\samples\pub_suit\p_s.png',
                         r'.\samples\pub_suit\p_h.png',
@@ -540,27 +527,32 @@ class sampleconfig:
                         r'.\samples\chip_num\chip_7.png', \
                         r'.\samples\chip_num\chip_8.png', \
                         r'.\samples\chip_num\chip_9.png', \
-                        r'.\samples\chip_num\chip_dot.png'
+                        r'.\samples\chip_num\chip_dot.png',
+                        r'.\samples\chip_num\chip_quan.png',
+                        r'.\samples\chip_num\chip_xia.png'
         ]
         self.chip_num_sample_img=file2img(chip_num_sample)
-        '''
+        
         #底池和大小盲的字符样本
         #如果没有小数点的，就把dc_dot换成dc_wan
-        dc_num_sample=[r'depu\samples\dc_num\dc_0.png', \
-                    r'depu\samples\dc_num\dc_1.png', \
-                    r'depu\samples\dc_num\dc_2.png', \
-                    r'depu\samples\dc_num\dc_3.png', \
-                    r'depu\samples\dc_num\dc_4.png', \
-                    r'depu\samples\dc_num\dc_5.png', \
-                    r'depu\samples\dc_num\dc_6.png', \
-                    r'depu\samples\dc_num\dc_7.png', \
-                    r'depu\samples\dc_num\dc_8.png', \
-                    r'depu\samples\dc_num\dc_9.png', \
-                    r'depu\samples\dc_num\dc_wan.png', \
-                    r'depu\samples\dc_num\dc_wan.png', \
-                    r'depu\samples\dc_num\dc_slash.png' ]
+        dc_num_sample=[r'.\samples\dc_num\dc_0.png', \
+                    r'.\samples\dc_num\dc_1.png', \
+                    r'.\samples\dc_num\dc_2.png', \
+                    r'.\samples\dc_num\dc_3.png', \
+                    r'.\samples\dc_num\dc_4.png', \
+                    r'.\samples\dc_num\dc_5.png', \
+                    r'.\samples\dc_num\dc_6.png', \
+                    r'.\samples\dc_num\dc_7.png', \
+                    r'.\samples\dc_num\dc_8.png', \
+                    r'.\samples\dc_num\dc_9.png', \
+                    r'.\samples\dc_num\dc_dot.png' ]
         self.dc_num_sample_img=file2img(dc_num_sample)
+        
+         #btn位样本
+        btnsample=[r'.\samples\btn_sample.png']
+        self.btnsample_img=file2img(btnsample)
 
+        '''
         
         
         #每个人的状态样本
@@ -605,8 +597,10 @@ def analysisImg(wholeimg):
     
     #解析              
     rtSit=GetSituation(wholeimg,config.chip_num_sample_img,
+                        config.dc_num_sample_img,
                         config.pub_suit_sample_img,
-                        config.pub_num_sample_img
+                        config.pub_num_sample_img,
+                        config.btnsample_img
                         )
 
     #入库
