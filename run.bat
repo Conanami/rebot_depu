@@ -1,0 +1,1 @@
+python d:/gitwork/robot_depu/depu2/main.py

@@ -481,69 +481,69 @@ class sampleconfig:
     def __init__(self):
         
         #公共牌的花色样本
-        pub_suit_sample=[r'.\samples\pub_suit\p_s.png',
-                        r'.\samples\pub_suit\p_h.png',
-                        r'.\samples\pub_suit\p_c.png',
-                        r'.\samples\pub_suit\p_d.png']
+        pub_suit_sample=[r'depu2\samples\pub_suit\p_s.png',
+                        r'depu2\samples\pub_suit\p_h.png',
+                        r'depu2\samples\pub_suit\p_c.png',
+                        r'depu2\samples\pub_suit\p_d.png']
         self.pub_suit_sample_img=file2img(pub_suit_sample)
         #公共牌的数字样本
-        pub_num_sample=[r'.\samples\pub_num\p_2.png',
-                        r'.\samples\pub_num\p_3.png',
-                        r'.\samples\pub_num\p_4.png',
-                        r'.\samples\pub_num\p_5.png',
-                        r'.\samples\pub_num\p_6.png',
-                        r'.\samples\pub_num\p_7.png',
-                        r'.\samples\pub_num\p_8.png',
-                        r'.\samples\pub_num\p_9.png',
-                        r'.\samples\pub_num\p_t.png',
-                        r'.\samples\pub_num\p_j.png',
-                        r'.\samples\pub_num\p_q.png',
-                        r'.\samples\pub_num\p_k.png',
-                        r'.\samples\pub_num\p_a.png'
+        pub_num_sample=[r'depu2\samples\pub_num\p_2.png',
+                        r'depu2\samples\pub_num\p_3.png',
+                        r'depu2\samples\pub_num\p_4.png',
+                        r'depu2\samples\pub_num\p_5.png',
+                        r'depu2\samples\pub_num\p_6.png',
+                        r'depu2\samples\pub_num\p_7.png',
+                        r'depu2\samples\pub_num\p_8.png',
+                        r'depu2\samples\pub_num\p_9.png',
+                        r'depu2\samples\pub_num\p_t.png',
+                        r'depu2\samples\pub_num\p_j.png',
+                        r'depu2\samples\pub_num\p_q.png',
+                        r'depu2\samples\pub_num\p_k.png',
+                        r'depu2\samples\pub_num\p_a.png'
                        ]
         self.pub_num_sample_img=file2img(pub_num_sample)
 
         #筹码和下注的字符样本
-        chip_num_sample=[r'.\samples\chip_num\chip_0.png', \
-                        r'.\samples\chip_num\chip_1.png', \
-                        r'.\samples\chip_num\chip_2.png', \
-                        r'.\samples\chip_num\chip_3.png', \
-                        r'.\samples\chip_num\chip_4.png', \
-                        r'.\samples\chip_num\chip_5.png', \
-                        r'.\samples\chip_num\chip_6.png', \
-                        r'.\samples\chip_num\chip_7.png', \
-                        r'.\samples\chip_num\chip_8.png', \
-                        r'.\samples\chip_num\chip_9.png', \
-                        r'.\samples\chip_num\chip_dot.png',
-                        r'.\samples\chip_num\chip_quan.png',
-                        r'.\samples\chip_num\chip_xia.png'
+        chip_num_sample=[r'depu2\samples\chip_num\chip_0.png', \
+                        r'depu2\samples\chip_num\chip_1.png', \
+                        r'depu2\samples\chip_num\chip_2.png', \
+                        r'depu2\samples\chip_num\chip_3.png', \
+                        r'depu2\samples\chip_num\chip_4.png', \
+                        r'depu2\samples\chip_num\chip_5.png', \
+                        r'depu2\samples\chip_num\chip_6.png', \
+                        r'depu2\samples\chip_num\chip_7.png', \
+                        r'depu2\samples\chip_num\chip_8.png', \
+                        r'depu2\samples\chip_num\chip_9.png', \
+                        r'depu2\samples\chip_num\chip_dot.png',
+                        r'depu2\samples\chip_num\chip_quan.png',
+                        r'depu2\samples\chip_num\chip_xia.png'
         ]
         self.chip_num_sample_img=file2img(chip_num_sample)
         
         #底池和大小盲的字符样本
         #如果没有小数点的，就把dc_dot换成dc_wan
-        dc_num_sample=[r'.\samples\dc_num\dc_0.png', \
-                    r'.\samples\dc_num\dc_1.png', \
-                    r'.\samples\dc_num\dc_2.png', \
-                    r'.\samples\dc_num\dc_3.png', \
-                    r'.\samples\dc_num\dc_4.png', \
-                    r'.\samples\dc_num\dc_5.png', \
-                    r'.\samples\dc_num\dc_6.png', \
-                    r'.\samples\dc_num\dc_7.png', \
-                    r'.\samples\dc_num\dc_8.png', \
-                    r'.\samples\dc_num\dc_9.png', \
-                    r'.\samples\dc_num\dc_dot.png' ]
+        dc_num_sample=[r'depu2\samples\dc_num\dc_0.png', \
+                    r'depu2\samples\dc_num\dc_1.png', \
+                    r'depu2\samples\dc_num\dc_2.png', \
+                    r'depu2\samples\dc_num\dc_3.png', \
+                    r'depu2\samples\dc_num\dc_4.png', \
+                    r'depu2\samples\dc_num\dc_5.png', \
+                    r'depu2\samples\dc_num\dc_6.png', \
+                    r'depu2\samples\dc_num\dc_7.png', \
+                    r'depu2\samples\dc_num\dc_8.png', \
+                    r'depu2\samples\dc_num\dc_9.png', \
+                    r'depu2\samples\dc_num\dc_dot.png' ]
         self.dc_num_sample_img=file2img(dc_num_sample)
         
          #btn位样本
-        btnsample=[r'.\samples\btn_sample.png']
+        btnsample=[r'depu2\samples\btn_sample.png']
         self.btnsample_img=file2img(btnsample)
         
         
         
         #fold按钮样本
-        foldsample=[r'.\samples\fold_btn.png',
-                    r'.\samples\check_btn.png']
+        foldsample=[r'depu2\samples\fold_btn.png',
+                    r'depu2\samples\check_btn.png']
         self.foldsample_img=file2img(foldsample)
 
         

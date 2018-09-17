@@ -13,19 +13,16 @@ import logging
 from threading import Thread
 from pynput import keyboard
 from pynput.keyboard import Listener
-from read_pokerstar import analysisImg
-from read_pokerstar import NeedAnalyse
+# from read_pc_depu import analysisImg
 from multiprocessing import Queue
 from alltitle import findTitle
-import player as p
+# import player as p
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
 
 '''
-    德州扑克截图工具, 按下 P 录制屏幕
-
-    更改启动方式，  修改 玩家BenJamin.Thomas登录 为 自己的账户即可。
+    德州扑克截图工具, 每3秒录制一次屏幕
 '''
 
 def async(f):
@@ -43,7 +40,7 @@ def copy_part_image(image_,left,top,right,bottom):
 
 def get_total_area():
     '''   获取整个应用区域  '''
-    window_title = findTitle('无限注')
+    window_title = findTitle('德州扑克')
     print(window_title)
     if not window_title:
         print('没有找到应用')
@@ -75,45 +72,9 @@ def run_monitor_key(q):
     with Listener(on_release=on_release) as listener:
         listener.join()
 
-def handle(game_area_left, game_area_top, rtSit):
-    '''  处理结果 '''
-    target = 0, 0
-    logging.info('开始决策')
-    kind, no = p.makeDecision(rtSit)
-    #kind, no = 3,4
-    logging.info('完成决策， 结果 %s %s' %(kind, no))
-    if kind==0:
-        #弃牌
-        target = 500, 550
-    elif kind == 1 or kind==2:
-        # 追加
-        target = 640, 550
-    elif kind ==3:
-        if no==1:
-            target = 770, 550
-        elif no==2:
-            target = 700, 480
-        elif no==3:
-            target = 700, 480
-        elif no==4:
-            target = 750, 480
-            #allin(game_area_left,game_area_top)
-            
-    if target[0]:
-        pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1])
-        pyautogui.click()
-
-#全下
-def allin(game_area_left,game_area_top):
-    pyautogui.moveTo(game_area_left+300,game_area_top+600)
-    pyautogui.dragTo(game_area_left+663,game_area_top+600,1.0)
-    pyautogui.moveTo(game_area_left+750,game_area_top+600)           
-    pyautogui.click()
-
 @async
 def run_game(q):
     lastkey = keyboard.Key.esc
-    needCnt=0
     while True:
         if not q.empty():
             key =  q.get(True)
@@ -126,39 +87,23 @@ def run_game(q):
             continue
         elif lastkey == keyboard.KeyCode.from_char('p'):
             # 截屏
-            '''
             print('take photo')
             window_left,window_top,window_right,window_bottom  = get_total_area()
             pyautogui.moveTo(window_left,window_top)
             total_image = grab_screen(window_left,window_top, window_right, window_bottom)
-            total_image.save(r'..\tmp\pokerstars\%s.png' % time.strftime("%d%H%M%S", time.localtime()))
+            total_image.save(r'tmp\pokerstars\%s.png' % time.strftime("%d%H%M%S", time.localtime()))
 
             lastkey = keyboard.Key.esc
-            '''
         elif (lastkey == keyboard.KeyCode.from_char('r') or lastkey == keyboard.KeyCode.from_char('R')):
-            #检测目标是否存在
-            
+            print('take photo')
             window_left,window_top,window_right,window_bottom  = get_total_area()
-            if window_left:
-                #pyautogui.moveTo(game_area_left,game_area_top)
-                game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
-                logging.info('是否需要解析:'+str(needCnt))
-                if ( NeedAnalyse (game_area_image.convert('L'))): 
-                    if(needCnt>=2):
-                        logging.info('开始解析图像')
-                        rt = analysisImg(game_area_image.convert('L'))
-                        logging.info('完成解析图像')
-                        if(rt is not None):
-                            game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
-                            handle(window_left, window_top, rt)
-                    else: needCnt=needCnt+1
-                else:
-                    needCnt=0
-            
+            pyautogui.moveTo(window_left,window_top)
+            total_image = grab_screen(window_left,window_top, window_right, window_bottom)
+            total_image.save(r'tmp\pokerstars\%s.png' % time.strftime("%d%H%M%S", time.localtime()))
         else:
-            lastkey = keyboard.KeyCode.from_char('r') 
+            lastkey = keyboard.Key.esc
             pass
-        time.sleep(0.8)
+        time.sleep(5)
 
 if __name__ == '__main__':
     q = Queue()
