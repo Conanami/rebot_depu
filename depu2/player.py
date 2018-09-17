@@ -336,6 +336,9 @@ def makeDecision(rtSit):
         finalDecision=mydecision
     #如果要加注，要根据自己的筹码和底池的实际情况
     if(finalDecision[0]==3):
+        #如果翻前，要跟注的量已经大于3个盲注了，则3，1，3，2都变成3，3
+        if(rtSit.callchip>3*rtSit.bb and (finalDecision[1]==1 or finalDecision[1]==2)):
+            finalDecision=(3,3)
         #如果翻前，底池大小小于4个盲注，则一个底池下注是灰色
         if(rtSit.potsize<=4*rtSit.bb and pubnum==0):
             if(finalDecision[1]==3): 

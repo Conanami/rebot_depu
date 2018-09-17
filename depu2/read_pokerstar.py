@@ -180,7 +180,7 @@ def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,t
          return 0
     elif(len(numstr)==0):
         #啥都没认出来，就返回-1，大概这个位置上没人
-        return (-1)
+        return -1
     else:
         #如果没有全下，就返回数字
         try:
@@ -385,12 +385,12 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     point_step=num_step
     thres=200
     numstart=0
-    betboxlist=[picbox(337,344,337+betWidth,344+betHeight), \
+    betboxlist=[picbox(330,344,337+betWidth,344+betHeight), \
                 picbox(198,315,200+betWidth,315+betHeight), \
-                picbox(220,191,220+betWidth,191+betHeight), \
-                picbox(385,158,385+betWidth,158+betHeight), \
-                picbox(483,191,483+betWidth,191+betHeight), \
-                picbox(557,316,557+betWidth,316+betHeight)
+                picbox(210,191,220+betWidth,191+betHeight), \
+                picbox(375,158,385+betWidth,158+betHeight), \
+                picbox(470,191,483+betWidth,191+betHeight), \
+                picbox(540,316,557+betWidth,316+betHeight)
     ]
     rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,dc_num_sample_img,num_step,point_step,thres)
 
