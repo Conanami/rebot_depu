@@ -547,9 +547,7 @@ class sampleconfig:
         self.foldsample_img=file2img(foldsample)
 
         
-        
-
-      
+         
         
 
 
