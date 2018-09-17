@@ -112,8 +112,10 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             #print('0000')
         if(leftman>=3):
             if(rtSit.callchip==0):
+                #print("到这里了吗?")
+                #print("我的单挑胜率:"+str(singleWinrate))
                 if(singleWinrate>0.99): return (2,0)
-                if(singleWinrate>0.9): return(3,3)
+                if(singleWinrate>0.87): return(3,3)
                 if(random.random()>0.7): return (3,1)
                 if(IsDrawFlush(rtSit.cardlist)): return (2,0)
                 if(IsDrawStraight(rtSit.cardlist)): return(2,0)
@@ -339,17 +341,17 @@ def makeDecision(rtSit):
             if(finalDecision[1]==3): 
                 finalDecision=(3,2)
         #如果所有筹码小于要跟注的数量，那么直接allin
-        if(rtSit.chiplist[0]<rtSit.callchip): finalDecision=(2,0)
+        if(rtSit.chiplist[rtSit.myseat]<rtSit.callchip): finalDecision=(2,0)
         #如果筹码大于需要跟注的数量
-        if(rtSit.chiplist[0]>=rtSit.callchip):
+        if(rtSit.chiplist[rtSit.myseat]>=rtSit.callchip):
             #如果比2/3底池多，但是不到一个底池，则3，3变3，2
-            if(finalDecision[1]==3 and rtSit.chiplist[0]>=0.66*rtSit.potsize and rtSit.chiplist[0]<rtSit.potsize):
+            if(finalDecision[1]==3 and rtSit.chiplist[rtSit.myseat]>=0.66*rtSit.potsize and rtSit.chiplist[rtSit.myseat]<rtSit.potsize):
                 finalDecision=(3,2)
             #如果比1/2底池多，但是不到2/3个底池，则3，2变3，1
-            if(finalDecision[1]==2 and rtSit.chiplist[0]>=0.5*rtSit.potsize and rtSit.chiplist[0]<0.66*rtSit.potsize):
+            if(finalDecision[1]==2 and rtSit.chiplist[rtSit.myseat]>=0.5*rtSit.potsize and rtSit.chiplist[rtSit.myseat]<0.66*rtSit.potsize):
                 finalDecision=(3,1)
             #如果比1/2底池小，则只能选全下
-            if(finalDecision[1]==1 and rtSit.chiplist[0]<0.5*rtSit.potsize):
+            if(finalDecision[1]==1 and rtSit.chiplist[rtSit.myseat]<0.5*rtSit.potsize):
                 finalDecision=(3,4)
         #如果翻后底池比3个盲注还小，那就不能选择3，1和3，2，直接3，3
         if(rtSit.potsize<=3*rtSit.bb and pubnum>0):

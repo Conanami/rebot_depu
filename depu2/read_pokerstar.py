@@ -107,31 +107,6 @@ class picbox:
         self.x2=x2
         self.y2=y2 
 
-#在一个长条形状中，取得样本出现的X位置,入参都是numpy
-def getPos(img,sample):
-    rows,cols=img.shape
-    srows,scols=sample.shape
-    minrows=rows if rows<srows else srows
-
-    for x in range(cols-scols):
-        samecnt=0
-        for i in range(minrows):
-            for j in range(scols):
-                if(img[i,x+j]<=127):
-                    img[i,x+j]=0
-                else:
-                    img[i,x+j]=255
-                
-                if(sample[i,j]<=127):
-                    sample[i,j]=0
-                else:
-                    sample[i,j]=255
-                if(img[i,x+j]==sample[i,j]):
-                    samecnt=samecnt+1
-        #print(str(x)+':'+str(samecnt/(srows*scols)))
-        if(samecnt/(srows*scols)>0.86):
-            return x+j
-    return -1
 
 #矩阵匹配算法
 def matchPic(img,sample,thres=127):
@@ -141,39 +116,6 @@ def matchPic(img,sample,thres=127):
     sample[sample>=thres]=1
     if(img==sample).all(): return True
     else: return False
-
-#相同大小的图片匹配
-def matchPic2(img,sample,thres=127):
-    rows,cols=sample.shape
-    irows,icols=img.shape
-    #print( str(rows)+","+str(cols))
-    #print( str(irows)+","+str(icols))
-    samecnt=0
-    for i in range(rows):
-        for j in range(cols):
-            if(img[i,j]<=thres):
-                #black
-                img[i,j]=0
-            else:
-                #white
-                img[i,j]=255
-                
-            if(sample[i,j]<=thres):
-                sample[i,j]=0
-            else:
-                sample[i,j]=255
-            if(img[i,j]==sample[i,j]):
-                samecnt=samecnt+1
-    #print(samecnt/(rows*cols))
-    if(thres==127):
-        meetValue=0.98
-    else:
-        meetValue=0.98
-    
-    if((samecnt/(rows*cols))>=meetValue):
-        return True
-    else:
-        return False
 
 #img是完整图片的img,box是切下区域，sample是标准样本img
 def MatchPicToSample(img,box,sample,thres=127):
@@ -215,10 +157,10 @@ def SinglePicToNum(wholeimg,picbox,start,dc_num_sample_img,num_step,point_step,t
             #数字样本的宽度
             i=i+num_step
         elif (num==10):
-            # 逗号只能在有数字的时候出现
+            # 小数点只能在有数字的时候出现
             if(len(numstr)!=0):
-                numstr=numstr
-                #逗号的宽度
+                numstr=numstr+"."
+                #小数点的宽度
                 i=i+point_step
             else:
                 #没认出来就慢慢认
@@ -423,11 +365,12 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     rtSit.chiplist=PicListToNum(wholeimg,chipboxlist,numstart,chip_num_sample_img,num_step,point_step,thres)
     
     #底池大小范围
-    x1=400
+    x1=380
     x2=x1+100
     y1=198
     y2=y1+14
     numstart=0
+    #thres=240
     dcpicbox=picbox(x1,y1,x2,y2)
     potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,chip_num_sample_img,num_step,point_step,thres)
     rtSit.potsize=potsize
@@ -467,14 +410,15 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     rtSit.statuslist=GetStatusList(rtSit.chiplist)
     
     #pokerstar获得大盲注级别，要读窗体TITLE
-    rtSit.bb=100
+    rtSit.bb=0.01
     #获得要跟注的筹码数量
-    rtSit.callchip=GetCallchip(rtSit.betlist,rtSit.myseat)
+    rtSit.callchip=getCallchip(rtSit.betlist,rtSit.myseat)
     
     return rtSit
 
-def GetCallchip(betlist,myseat):
-    return max(max(betlist)-betlist[myseat],0)
+#得到需要跟注的数量
+def getCallchip(betlist,myseat):
+    return max(max(betlist),0)-max(betlist[myseat],0)
 
 class sampleconfig:
     ''' 样本配置类 '''
@@ -597,9 +541,7 @@ def getSurvivor(rtSit):
             survivorCnt=survivorCnt+1
     return quitCnt,survivorCnt
 
-#得到需要跟注的筹码量,对外
-def getCallchip(rtSit):
-    return max(rtSit.betlist)-rtSit.betlist[rtSit.myseat]       
+    
          
 #得到公共牌，对外
 def getPubList(rtSit):
