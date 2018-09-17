@@ -239,14 +239,10 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
 
 #翻前决策
 def beforeFlopDecision(Sit,callchip):
-    myhand=[]
-    pubcnt=0
+    myhand=getMyHand(Sit)
+    pubcnt=getPubnum(Sit)
     leftman=getSurvivor(Sit)
-    for i in range(len(Sit.cardlist)):
-        if(i<2):
-            myhand.append(Sit.cardlist[i])
-        elif(i>=2):
-            pubcnt=pubcnt+1
+  
     #如果中间有牌，或者两张牌没有读出来，则返回弃牌
     if(pubcnt==0 and len(myhand)==2):
         
@@ -360,4 +356,3 @@ def makeDecision(rtSit):
             if(finalDecision[1]==1): finalDecision=(3,3)
             if(finalDecision[1]==2): finalDecision=(3,3)
     return finalDecision
-    
