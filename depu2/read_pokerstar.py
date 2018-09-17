@@ -546,9 +546,61 @@ class sampleconfig:
                     r'depu2\samples\check_btn.png']
         self.foldsample_img=file2img(foldsample)
 
-        
+#得到目前的公共牌数量，对外
+def getPubnum(rtSit):
+    return len(rtSit.cardlist)
+
+#得到一对一时候牌的胜率,得到目前状态，对外
+def calcuWinrate(rtSit):
+    mycardlist=getMyHand(rtSit)
+    mycardlist.append(rtSit.cardlist)
+   
+    return dealer.winRate(mycardlist)
+
+#得到手牌，对外
+def getMyHand(rtSit):
+    myhand=[]
+    myhand.append(rtSit.handlist[rtSit.myseat][0])
+    myhand.append(rtSit.handlist[rtSit.myseat][1])
+    return myhand
+    
+'''
+#计算两个胜率，测试用
+def calcuTwoRate(rtSit):
+    mycardlist=[]
+    opplist=[]
+    for tmpcard in rtSit.cardlist:
+        mycardlist.append(tmpcard)
+    for i in range(2,len(mycardlist)):
+        opplist.append(mycardlist[i])
+   
+    # dealer.printCard(mycardlist)
+    # dealer.printCard(opplist)
+    winrate=dealer.winRate(mycardlist)
+    nextrate=dealer.nextWinrate(mycardlist,winrate)
+    return winrate,nextrate
+'''
+
+
+#得到还剩几个人，对外
+def getSurvivor(rtSit):
+    quitCnt=0
+    survivorCnt=0
+    for i in range(6):
+        #去掉弃牌和位子是空的人
+        if(rtSit.statuslist[i]==0 or rtSit.chiplist[i]<0):
+            quitCnt=quitCnt+1
+        else:
+            survivorCnt=survivorCnt+1
+    return quitCnt,survivorCnt
+
+#得到需要跟注的筹码量,对外
+def getCallchip(rtSit):
+    return max(rtSit.betlist)-rtSit.betlist[rtSit.myseat]       
          
-        
+#得到公共牌，对外
+def getPubList(rtSit):
+    return rtSit.cardlist
 
 
 # 引用的时候，会默认初始化配置文件
@@ -578,3 +630,4 @@ def analysisImg(wholeimg):
 
     return rtSit
     
+

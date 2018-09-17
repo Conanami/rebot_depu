@@ -5,74 +5,16 @@ import random
 #import readpot
 from dealer import IsDrawFlush
 from dealer import IsDrawStraight
+from read_pokerstar import getPubList
+from read_pokerstar import getPubnum
+from read_pokerstar import getCallchip
+from read_pokerstar import getSurvivor
+from read_pokerstar import getMyHand
+from read_pokerstar import calcuWinrate
 
-#得到目前的公共牌数量
-def getPubnum(rtSit):
-    mycardlist=[]
-    opplist=[]
-    for tmpcard in rtSit.cardlist:
-        mycardlist.append(tmpcard)
-    for i in range(2,len(mycardlist)):
-        opplist.append(mycardlist[i])
-    return len(opplist)
+  
 
-#得到一对一时候牌的胜率,得到目前状态
-def calcuWinrate(rtSit):
-    mycardlist=[]
-    opplist=[]
-    for tmpcard in rtSit.cardlist:
-        mycardlist.append(tmpcard)
-    for i in range(2,len(mycardlist)):
-        opplist.append(mycardlist[i])
-   
-    # dealer.printCard(mycardlist)
-    # dealer.printCard(opplist)
-    return dealer.winRate(mycardlist)
 
-#计算两个胜率，测试用
-def calcuTwoRate(rtSit):
-    mycardlist=[]
-    opplist=[]
-    for tmpcard in rtSit.cardlist:
-        mycardlist.append(tmpcard)
-    for i in range(2,len(mycardlist)):
-        opplist.append(mycardlist[i])
-   
-    # dealer.printCard(mycardlist)
-    # dealer.printCard(opplist)
-    winrate=dealer.winRate(mycardlist)
-    nextrate=dealer.nextWinrate(mycardlist,winrate)
-    return winrate,nextrate
-
-#得到还剩几个人
-def getSurvivor(rtSit):
-    quitCnt=0
-    survivorCnt=0
-    for i in range(6):
-        #去掉弃牌和位子是空的人
-        if(rtSit.statuslist[i]==0 or (rtSit.statuslist[i] is None and rtSit.chiplist[i]<=0 and rtSit.betlist[i]<=0)):
-            quitCnt=quitCnt+1
-        else:
-            survivorCnt=survivorCnt+1
-    return quitCnt,survivorCnt
-
-#得到需要跟注的筹码量
-def getCallchip(rtSit):
-    mybet=0
-    if(rtSit.betlist[0]>0): mybet=rtSit.betlist[0]
-    rtchip= max(rtSit.betlist)-mybet
-    if(rtchip<0): return 0
-    else: return rtchip
-
-#得到公共牌
-def getPubList(rtSit):
-    mycardlist=[]
-    publist=[]
-    for tmpcard in rtSit.cardlist:
-        mycardlist.append(tmpcard)
-    for i in range(2,len(mycardlist)):
-        publist.append(mycardlist[i])
-    return publist
 
 #返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，对应不同按键
 #待整理的函数
@@ -418,66 +360,4 @@ def makeDecision(rtSit):
             if(finalDecision[1]==1): finalDecision=(3,3)
             if(finalDecision[1]==2): finalDecision=(3,3)
     return finalDecision
-
-#做出临时决定,测试用的
-def makeTmpDecision(rtSit):
-    #得到要跟注多少筹码
-    callchip=getCallchip(rtSit)
-    rtSit.callchip=max(callchip,rtSit.callchip)
-    callchip=rtSit.callchip
-    #得到当前公共牌的数量
-    pubnum=getPubnum(rtSit)
-    finalDecision=(0,-1)
-    #如果是翻牌前
-    if(pubnum==0):
-        finalDecision=beforeFlopDecision(rtSit,callchip)
-    elif(pubnum==1 or pubnum==2): finalDecision=(2,0)
-    #如果是翻牌后
-    elif(pubnum>=3):
-        #如果没有读到底池大小
-        if(rtSit.potsize==0): finalDecision=(-1,-1)
-        #计算当前牌的胜率
-        (myWinrate,myNextrate)=calcuTwoRate(rtSit)
-
-        #得到当前还剩几个人在底池中
-        leftman=getSurvivor(rtSit)[1]
-        #胜率与人数的关系，人数越多，胜率越小
-        print('我的胜率%.2f' % myWinrate)
-        print('未来胜率变化%.2f' % myNextrate)
-        print('剩余人数%d ' % leftman)
-        finalWinrate=math.pow(myWinrate,leftman-1)
-        if(IsDrawFlush(rtSit.cardlist) and pubnum==3):
-            print('同花听牌，胜率增加%.2f' % 0.3)
-            finalWinrate=finalWinrate+0.3
-        if(IsDrawStraight(rtSit.cardlist) and pubnum==3): 
-            print('顺子听牌，胜率增加%.2f' % 0.3)
-            finalWinrate=finalWinrate+0.3
-        
-        print('最后胜率%.2f' % finalWinrate)
-        #翻牌后的决策
-        mydecision=afterFlopDecision(pubnum,myWinrate,finalWinrate,leftman,rtSit)
-        finalDecision=mydecision
-    #如果要加注，要根据自己的筹码和底池的实际情况
-    if(finalDecision[0]==3):
-        #如果翻前，底池大小小于4个盲注，则一个底池下注是灰色
-        if(rtSit.potsize<=4*rtSit.bb and pubnum==0):
-            if(finalDecision[1]==3): 
-                finalDecision=(3,2)
-        #如果所有筹码小于要跟注的数量，那么直接allin
-        if(rtSit.chiplist[0]<rtSit.callchip): finalDecision=(2,0)
-        #如果筹码大于需要跟注的数量
-        if(rtSit.chiplist[0]>=rtSit.callchip):
-            #如果比2/3底池多，但是不到一个底池，则3，3变3，2
-            if(finalDecision[1]==3 and rtSit.chiplist[0]>=0.66*rtSit.potsize and rtSit.chiplist[0]<rtSit.potsize):
-                finalDecision=(3,2)
-            #如果比1/2底池多，但是不到2/3个底池，则3，2变3，1
-            if(finalDecision[1]==2 and rtSit.chiplist[0]>=0.5*rtSit.potsize and rtSit.chiplist[0]<0.66*rtSit.potsize):
-                finalDecision=(3,1)
-            #如果比1/2底池小，则只能选全下
-            if(finalDecision[1]==1 and rtSit.chiplist[0]<0.5*rtSit.potsize):
-                finalDecision=(3,4)
-        #如果翻后底池比3个盲注还小，那就不能选择3，1和3，2，直接3，3
-        if(rtSit.potsize<=3*rtSit.bb and pubnum>0):
-            if(finalDecision[1]==1): finalDecision=(3,3)
-            if(finalDecision[1]==2): finalDecision=(3,3)
-    return finalDecision
+    

@@ -1,1 +1,1 @@
-python d:/gitwork/robot_depu/depu2/main.py
+python d:/pycode/robot_depu/depu2/main.py
