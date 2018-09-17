@@ -361,7 +361,7 @@ def makeDecision(rtSit):
     callchip=rtSit.callchip
     #得到当前公共牌的数量
     pubnum=getPubnum(rtSit)
-    finalDecision=(0,-1)
+    #finalDecision=(0,-1)
     #如果是翻牌前
     if(pubnum==0):
         finalDecision=beforeFlopDecision(rtSit,callchip)
