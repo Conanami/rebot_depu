@@ -44,7 +44,7 @@ def copy_part_image(image_,left,top,right,bottom):
 def get_total_area():
     '''   获取整个应用区域  '''
     window_title = findTitle('无限注')
-    print(window_title)
+    #print(window_title)
     if not window_title:
         print('没有找到应用')
         return 0,0,0,0 
@@ -90,20 +90,30 @@ def handle(game_area_left, game_area_top, rtSit):
         target = 640, 550
     elif kind ==3:
         if no==1:
-            target = 770, 550
+            target = 650, 480
         elif no==2:
-            target = 700, 480
+            target = 650, 480
         elif no==3:
             target = 700, 480
         elif no==4:
             target = 750, 480
             #allin(game_area_left,game_area_top)
-            
+        raisebet(game_area_left,game_area_top,target)
+
     if target[0]:
         pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1])
         pyautogui.click()
 
-#全下
+#下注
+def raisebet(game_area_left,game_area_top,target):
+    pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1],0.3)
+    pyautogui.click()
+    betbtn=750,550
+    pyautogui.moveTo(game_area_left+betbtn[0],game_area_top+betbtn[1],0.5)
+    pyautogui.click()
+
+
+#全下,在这里不用了
 def allin(game_area_left,game_area_top):
     pyautogui.moveTo(game_area_left+300,game_area_top+600)
     pyautogui.dragTo(game_area_left+663,game_area_top+600,1.0)
