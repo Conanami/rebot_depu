@@ -41,6 +41,9 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(singleWinrate>=0.92): return (3,3)
                 if(singleWinrate>=0.88): return (3,2)
                 if(singleWinrate>=0.7): return (3,2)
+                if(finalWinrate>=0.5):
+                    if(random.random()>0.5): return (3,2)
+                    else: return (2,0)
                 if(IsDrawFlush(rtSit.cardlist)): return (3,2)
                 if(IsDrawStraight(rtSit.cardlist)): return(3,2)
                 return (0,0)

@@ -385,12 +385,12 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     point_step=num_step
     thres=200
     numstart=0
-    betboxlist=[picbox(330,344,337+betWidth,344+betHeight), \
-                picbox(198,315,200+betWidth,315+betHeight), \
-                picbox(210,191,220+betWidth,191+betHeight), \
-                picbox(375,158,385+betWidth,158+betHeight), \
-                picbox(470,191,483+betWidth,191+betHeight), \
-                picbox(540,316,557+betWidth,316+betHeight)
+    betboxlist=[picbox(310,344,337+betWidth,344+betHeight), \
+                picbox(178,315,200+betWidth,315+betHeight), \
+                picbox(200,191,220+betWidth,191+betHeight), \
+                picbox(355,158,385+betWidth,158+betHeight), \
+                picbox(450,191,483+betWidth,191+betHeight), \
+                picbox(520,316,557+betWidth,316+betHeight)
     ]
     rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,dc_num_sample_img,num_step,point_step,thres)
 
@@ -410,7 +410,7 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     rtSit.statuslist=GetStatusList(rtSit.chiplist)
     
     #pokerstar获得大盲注级别，要读窗体TITLE
-    rtSit.bb=0.01
+    rtSit.bb=0.02
     #获得要跟注的筹码数量
     rtSit.callchip=getCallchip(rtSit.betlist,rtSit.myseat)
     
