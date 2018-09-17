@@ -239,6 +239,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
 
 #翻前决策
 def beforeFlopDecision(Sit,callchip):
+    print("走到这里了")
     myhand=getMyHand(Sit)
     pubcnt=getPubnum(Sit)
     leftman=getSurvivor(Sit)
@@ -304,7 +305,10 @@ def makeDecision(rtSit):
     callchip=rtSit.callchip
     #得到当前公共牌的数量
     pubnum=getPubnum(rtSit)
-    #finalDecision=(0,-1)
+    
+    print("callchip:"+str(callchip))
+    print("pubnum:"+str(pubnum))
+    
     #如果是翻牌前
     if(pubnum==0):
         finalDecision=beforeFlopDecision(rtSit,callchip)

@@ -8,6 +8,7 @@ import random
 import pandas as pd
 import sqlite3
 from dealer import card
+from dealer import printCard
 
 
 '''
@@ -322,7 +323,7 @@ def getCardlist(wholeimg,pub_suit_sample_img,pub_num_sample_img,thres):
         pubnumbox=( num_x+i*num_step, num_y, num_x+num_w+i*num_step, num_y+num_h)
         tmpcard=readCard(wholeimg,pubsuitbox,pub_suit_sample_img,pubnumbox,pub_num_sample_img,numlist,thres)
         if tmpcard:
-            print(tmpcard)
+            #print(tmpcard)
             pubcard.append(tmpcard)
         else:
             break
@@ -356,11 +357,11 @@ def getHandCard(wholeimg,sixboxlist,pub_suit_sample_img,pub_num_sample_img,numli
         leftnumbox=(x,y,x+num_w,y+num_h)
         leftsuitbox=(x+c2s_x,y+c2s_y,x+c2s_x+suit_w,y+c2s_y+suit_h)
         leftcard=readCard(wholeimg,leftsuitbox,pub_suit_sample_img,leftnumbox,pub_num_sample_img,numlist,thres)
-        print(leftcard)
+        #print(leftcard)
         rightnumbox=(x+cardstep,y,x+cardstep+num_w,y+num_h)
         rightsuitbox=(x+cardstep+c2s_x,y+c2s_y,x+cardstep+c2s_x+suit_w,y+c2s_y+suit_h)
         rightcard=readCard(wholeimg,rightsuitbox,pub_suit_sample_img,rightnumbox,pub_num_sample_img,numlist,thres)
-        print(rightcard)
+        #print(rightcard)
         rtHandcard.append((leftcard,rightcard))
     return rtHandcard
 
@@ -548,12 +549,13 @@ class sampleconfig:
 
 #得到目前的公共牌数量，对外
 def getPubnum(rtSit):
+    #print("公共牌张数:"+str(len(rtSit.cardlist)))
     return len(rtSit.cardlist)
 
 #得到一对一时候牌的胜率,得到目前状态，对外
 def calcuWinrate(rtSit):
     mycardlist=getMyHand(rtSit)
-    mycardlist.append(rtSit.cardlist)
+    mycardlist=mycardlist+rtSit.cardlist
    
     return dealer.winRate(mycardlist)
 
@@ -562,6 +564,7 @@ def getMyHand(rtSit):
     myhand=[]
     myhand.append(rtSit.handlist[rtSit.myseat][0])
     myhand.append(rtSit.handlist[rtSit.myseat][1])
+    printCard(myhand)
     return myhand
     
 '''
