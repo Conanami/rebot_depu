@@ -13,8 +13,7 @@ from read_pokerstar import getMyHand
 from read_pokerstar import calcuWinrate
 
   
-
-
+#fisherman，打低级别和鱼专用的
 
 #返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，对应不同按键
 #待整理的函数
@@ -41,9 +40,6 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(singleWinrate>=0.92): return (3,3)
                 if(singleWinrate>=0.88): return (3,2)
                 if(singleWinrate>=0.7): return (3,2)
-                if(finalWinrate>=0.5):
-                    if(random.random()>0.5): return (3,2)
-                    else: return (2,0)
                 if(IsDrawFlush(rtSit.cardlist)): return (3,2)
                 if(IsDrawStraight(rtSit.cardlist)): return(3,2)
                 return (0,0)
@@ -247,9 +243,9 @@ def beforeFlopDecision(Sit,callchip):
     if(pubcnt==0 and len(myhand)==2):
         
         if(InSuperRange(myhand)):
-            if(callchip==0): return (3,4)
-            if(callchip>0 and callchip<Sit.bb*3): return (3,4)
-            if(callchip>=Sit.bb*3): return (3,4)
+            if(callchip==0): return (3,3)
+            if(callchip>0 and callchip<Sit.bb*3): return (3,3)
+            if(callchip>=Sit.bb*3): return (3,3)
         
         if(InOpenRange(myhand) and callchip==0): return (2,random.randint(1,2))
         #如果是开局牌，则可以跟别人
