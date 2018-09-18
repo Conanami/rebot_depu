@@ -22,6 +22,13 @@ import player as p
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
 
+#得到玩的级别
+def getLevel(topic):
+    tmplevel=topic[topic.find('/')+1:len(topic)]
+    tmplevel=tmplevel[:tmplevel.find('虚')]
+    #print( str(tmplevel))
+    return float(tmplevel)
+
 '''
     德州扑克截图工具, 按下 P 录制屏幕
 
@@ -47,15 +54,15 @@ def get_total_area():
     #print(window_title)
     if not window_title:
         print('没有找到应用')
-        return 0,0,0,0 
+        return 0,0,0,0,window_title 
 
     hwnd = win32gui.FindWindow(win32con.NULL,window_title)
     if hwnd == 0 :
         print('%s not found' % window_title)
-        return 0,0,0,0 
+        return 0,0,0,0,window_title
 
     window_left,window_top,window_right,window_bottom = win32gui.GetWindowRect(hwnd)
-    return window_left,window_top,window_right,window_bottom
+    return window_left,window_top,window_right,window_bottom,window_title
 
 
 def get_game_data(game_area_left, game_area_top, game_area_width, game_area_height):
@@ -148,7 +155,7 @@ def run_game(q):
         elif (lastkey == keyboard.KeyCode.from_char('r') or lastkey == keyboard.KeyCode.from_char('R')):
             #检测目标是否存在
             
-            window_left,window_top,window_right,window_bottom  = get_total_area()
+            window_left,window_top,window_right,window_bottom,window_title  = get_total_area()
             if window_left:
                 #pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
@@ -156,7 +163,8 @@ def run_game(q):
                 if ( NeedAnalyse (game_area_image.convert('L'))): 
                     if(needCnt>=2):
                         logging.info('开始解析图像')
-                        rt = analysisImg(game_area_image.convert('L'))
+                        levelbb=getLevel(window_title)
+                        rt = analysisImg(game_area_image.convert('L'),levelbb)
                         logging.info('完成解析图像')
                         if(rt is not None):
                             game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))

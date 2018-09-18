@@ -338,7 +338,7 @@ def getSeat(handlist):
             return i 
 
 #读整个图片，获取所有信息
-def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sample_img,pub_num_sample_img,btnsample_img):
+def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sample_img,pub_num_sample_img,btnsample_img,levelbb=100):
     
     rtSit=situation()
     
@@ -410,7 +410,7 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     rtSit.statuslist=GetStatusList(rtSit.chiplist)
     
     #pokerstar获得大盲注级别，要读窗体TITLE
-    rtSit.bb=0.02
+    rtSit.bb=levelbb
     #获得要跟注的筹码数量
     rtSit.callchip=getCallchip(rtSit.betlist,rtSit.myseat)
     
@@ -552,7 +552,7 @@ def getPubList(rtSit):
 config = sampleconfig()
 
 
-def analysisImg(wholeimg):
+def analysisImg(wholeimg,levelbb=100):
     ''' 解析图片, 需要传入 灰度图像 该方法对外公开 '''
     
     #解析              
@@ -560,8 +560,8 @@ def analysisImg(wholeimg):
                         config.dc_num_sample_img,
                         config.pub_suit_sample_img,
                         config.pub_num_sample_img,
-                        config.btnsample_img
-                        )
+                        config.btnsample_img,
+                        levelbb=100)
 
     #入库
     
