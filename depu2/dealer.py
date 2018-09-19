@@ -359,7 +359,10 @@ def winRate(list1):
     #print(cnt)
     #print(wincnt)
     #print("怎么会超过1")
-    rtrate=wincnt/cnt
+    if cnt>0:
+        rtrate=wincnt/cnt
+    else:
+        rtrate=0
     
     return rtrate
 

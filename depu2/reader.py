@@ -21,7 +21,7 @@ def getMyHand(rtSit):
     myhand=[]
     myhand.append(rtSit.handlist[rtSit.myseat][0])
     myhand.append(rtSit.handlist[rtSit.myseat][1])
-    printCard(myhand)
+    #printCard(myhand)
     return myhand
     
 
@@ -46,8 +46,7 @@ def getWaitingman(rtSit):
             if rtSit.position+2>5: bbpos=rtSit.position-4
             else: bbpos=rtSit.position+2
             for i in range(bbpos,bbpos+6):
-                if(i>5): ri=i-6
-                else: ri=i
+                ri=i%6
                 if rtSit.betlist[ri]==rtSit.bb:
                     bbpos=ri
                     break
@@ -70,8 +69,7 @@ def getWaitingman(rtSit):
         if(max(rtSit.betlist)>rtSit.bb):
             cnt=0
             for i in range(1,5):
-                if(rtSit.myseat+i>5): tmppos=rtSit.myseat+i-6
-                else: tmppos=rtSit.myseat+i
+                tmppos=(rtSit.myseat+i)%6
                 if(rtSit.chiplist[tmppos]>-1 and rtSit.betlist[tmppos]<max(rtSit.betlist)):
                     cnt=cnt+1
             return cnt
@@ -82,8 +80,7 @@ def getWaitingman(rtSit):
         if(max(rtSit.betlist)==rtSit.betlist[rtSit.myseat]):
             cnt=0
             for i in range(rtSit.myseat+1,rtSit.position+1):
-                if(i>5): tmppos=i-6
-                else: tmppos=i
+                tmppos=i%6
                 if rtSit.chiplist[i]>-1:
                     cnt=cnt+1
             return cnt
@@ -91,8 +88,7 @@ def getWaitingman(rtSit):
         if(max(rtSit.betlist)>rtSit.betlist[rtSit.myseat]):
             cnt=0
             for i in range(1,5):
-                if(rtSit.myseat+i>5): tmppos=rtSit.myseat+i-6
-                else: tmppos=rtSit.myseat+i
+                tmppos=(rtSit.myseat+i)%6
                 if(rtSit.chiplist[tmppos]>-1 and rtSit.betlist[tmppos]<max(rtSit.betlist)):
                     cnt=cnt+1
             return cnt
