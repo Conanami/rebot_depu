@@ -116,7 +116,7 @@ def raisebet(game_area_left,game_area_top,target):
     pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1],0.3)
     pyautogui.click()
     betbtn=750,550
-    pyautogui.moveTo(game_area_left+betbtn[0],game_area_top+betbtn[1],0.5)
+    pyautogui.moveTo(game_area_left+betbtn[0],game_area_top+betbtn[1],0.3)
     pyautogui.click()
 
 

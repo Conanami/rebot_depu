@@ -5,12 +5,11 @@ import random
 #import readpot
 from dealer import IsDrawFlush
 from dealer import IsDrawStraight
-from read_pokerstar import getPubList
-from read_pokerstar import getPubnum
-from read_pokerstar import getCallchip
-from read_pokerstar import getSurvivor
-from read_pokerstar import getMyHand
-from read_pokerstar import calcuWinrate
+from reader import getPubList
+from reader import getPubnum
+from reader import getSurvivor
+from reader import getMyHand
+from reader import calcuWinrate
 
   
 #fisherman，打低级别和鱼专用的
@@ -22,6 +21,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
     print("blind:"+str(rtSit.bb))
     print("callchip:"+str(rtSit.callchip))
     publist=getPubList(rtSit)
+    myhand=getMyHand(rtSit)
+    myhand=myhand+rtSit.cardlist
     #翻牌前
     if(pubnum==0):
         return "before Flop"
@@ -33,22 +34,22 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(singleWinrate>0.99): return (2,0)
                 if(singleWinrate>0.9): return(3,3)
                 if(random.random()>0.2): return (3,1)
-                if(IsDrawFlush(rtSit.cardlist)): return (3,2)
-                if(IsDrawStraight(rtSit.cardlist)): return(3,2)
+                if(IsDrawFlush(myhand)): return (3,2)
+                if(IsDrawStraight(myhand)): return(3,2)
                 return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(singleWinrate>=0.95): return (3,4)
                 if(singleWinrate>=0.92): return (3,3)
                 if(singleWinrate>=0.88): return (3,2)
                 if(singleWinrate>=0.7): return (3,2)
-                if(IsDrawFlush(rtSit.cardlist)): return (3,2)
-                if(IsDrawStraight(rtSit.cardlist)): return(3,2)
+                if(IsDrawFlush(myhand)): return (3,2)
+                if(IsDrawStraight(myhand)): return(3,2)
                 return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
                 if(singleWinrate>=0.95): return (3,4)
                 if(singleWinrate>=0.88): return (3,2)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,2)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,2)
+                if(IsDrawFlush(myhand)): return (2,2)
+                if(IsDrawStraight(myhand)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
                 if(singleWinrate>=0.97): return (3,4)
@@ -58,23 +59,23 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.callchip==0):
                 if(finalWinrate>0.95): return (3,1)
                 if(finalWinrate>0.8): return(3,3)
-                if(random.random()>0.7): return (3,1)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,0)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,0)
+                if(random.random()>0.5 and leftman<=3 and rtSit.myseat==rtSit.position): return (3,1)
+                if(IsDrawFlush(myhand)): return (2,0)
+                if(IsDrawStraight(myhand)): return(2,0)
                 return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 elif(finalWinrate>=0.9): return (3,3)
                 elif(finalWinrate>=0.7): return (2,0)
                 elif(finalWinrate>=0.5): return (2,0)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,0)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,0)
+                if(IsDrawFlush(myhand)): return (2,0)
+                if(IsDrawStraight(myhand)): return(2,0)
                 return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 if(finalWinrate>=0.8): return (3,2)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,2)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,2)
+                if(IsDrawFlush(myhand)): return (2,2)
+                if(IsDrawStraight(myhand)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
                 if(finalWinrate>=0.97): return (3,4)
@@ -87,24 +88,24 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.callchip==0):
                 if(singleWinrate>0.99): return (2,0)
                 if(singleWinrate>0.9): return(3,3)
-                if(random.random()>0.7): return (3,1)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,0)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,0)
+                if(random.random()>0.7 and leftman==3): return (3,1)
+                if(IsDrawFlush(myhand)): return (2,0)
+                if(IsDrawStraight(myhand)): return(2,0)
                 return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(singleWinrate>=0.95): return (3,4)
                 if(singleWinrate>=0.92): return (3,3)
                 if(singleWinrate>=0.88): return (2,0)
                 if(singleWinrate>=0.7): return (2,0)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,0)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,0)
+                if(IsDrawFlush(myhand)): return (2,0)
+                if(IsDrawStraight(myhand)): return(2,0)
                 if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
                 return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
                 if(singleWinrate>=0.95): return (3,4)
                 if(singleWinrate>=0.88): return (3,2)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,2)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,2)
+                if(IsDrawFlush(myhand)): return (2,2)
+                if(IsDrawStraight(myhand)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
                 if(singleWinrate>=0.98): return (3,4)
@@ -117,17 +118,18 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 #print("我的单挑胜率:"+str(singleWinrate))
                 if(finalWinrate>0.98): return (2,0)
                 if(finalWinrate>0.8): return(3,3)
-                if(random.random()>0.7): return (3,1)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,0)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,0)
+                #只有在有位置的时候才偷
+                if(random.random()>0.7 and rtSit.myseat==rtSit.position): return (3,1)
+                if(IsDrawFlush(myhand)): return (2,0)
+                if(IsDrawStraight(myhand)): return(2,0)
                 return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 if(finalWinrate>=0.92): return (3,3)
                 if(finalWinrate>=0.85): return (2,0)
                 if(finalWinrate>=0.5): return (2,0)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,0)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,0)
+                if(IsDrawFlush(myhand)): return (2,0)
+                if(IsDrawStraight(myhand)): return(2,0)
                 if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
                 return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
@@ -279,15 +281,18 @@ def InOpenRange(myhand):
     #有张A
     if((myhand[0].num >= 14 and myhand[1].num < 14) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
     #两张高牌
-    if(myhand[0].num+myhand[1].num>=22): return True
+    if(myhand[0].num+myhand[1].num>=23): return True
     #带AK的同花
-    if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14)): return True
+    if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
     #口袋对
     if(myhand[0].num==myhand[1].num): return True
     #大的连牌和中的口袋对
     if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].num>=7 and myhand[1].num>=7): return True
     #同花连牌
     if(abs(myhand[0].num-myhand[1].num)<=3 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=9 or myhand[1].num>=9)): 
+        return True
+    #同花连牌
+    if(abs(myhand[0].num-myhand[1].num)==1 and myhand[0].suit==myhand[1].suit):
         return True
     return False
 
@@ -297,7 +302,7 @@ def InSuperRange(myhand):
     #if(myhand[0].num+myhand[1].num>=26): return True
     else: return False
 
-#做出决定
+#做出决定，该函数对外
 def makeDecision(rtSit):
     #得到要跟注多少筹码
     #callchip=getCallchip(rtSit)
@@ -306,6 +311,10 @@ def makeDecision(rtSit):
     #得到当前公共牌的数量
     pubnum=getPubnum(rtSit)
     
+    #得到自己的手牌，加上公共牌
+    myhand=getMyHand(rtSit)
+    myhand=myhand+rtSit.cardlist
+
     print("callchip:"+str(callchip))
     print("pubnum:"+str(pubnum))
     
@@ -325,17 +334,26 @@ def makeDecision(rtSit):
         print('我的胜率%.2f' % myWinrate)
         print('剩余人数%d ' % leftman)
         finalWinrate=math.pow(myWinrate,leftman-1)
-        if(IsDrawFlush(rtSit.cardlist) and pubnum==3):
-            print('同花听牌，胜率增加%.2f' % 0.3)
-            finalWinrate=finalWinrate+0.3
-        if(IsDrawStraight(rtSit.cardlist) and pubnum==3): 
-            print('顺子听牌，胜率增加%.2f' % 0.3)
-            finalWinrate=finalWinrate+0.3
+        if IsDrawFlush(myhand):
+            if(pubnum==3):
+                print('同花听牌，胜率增加%.2f' % 0.3)
+                finalWinrate=finalWinrate+0.3
+            if(pubnum==4 and len(dealer.SameSuit(rtSit.cardlist))<3):
+                print('同花听牌,胜率增加%.2f' % 0.15)
+                finalWinrate=finalWinrate+0.15
+        if IsDrawStraight(myhand):
+            if pubnum==3: 
+                print('顺子听牌，胜率增加%.2f' % 0.3)
+                finalWinrate=finalWinrate+0.3
+            if pubnum==4 and IsDrawStraight(myhand)==False :
+                print('顺子听牌，胜率增加%.2f' % 0.15)
+                finalWinrate=finalWinrate+0.15
         
         print('最后胜率%.2f' % finalWinrate)
         #翻牌后的决策
         mydecision=afterFlopDecision(pubnum,myWinrate,finalWinrate,leftman,rtSit)
         finalDecision=mydecision
+
     #如果要加注，要根据自己的筹码和底池的实际情况
     if(finalDecision[0]==3):
         #如果翻前，要跟注的量已经大于3个盲注了，则3，1，3，2都变成3，3
