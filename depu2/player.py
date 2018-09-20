@@ -278,7 +278,7 @@ def beforeFlopDecision(Sit,callchip):
         #底池赔率合适，啥牌都可以玩
         if(callchip/Sit.potsize<(1/leftman) and callchip<=5*Sit.bb): return (2,callchip)
         #小盲单挑大盲可以玩
-        if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and leftman[1]<=2): 
+        if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and leftman==2): 
             if(random.random()>0.5): return (3,1)
             else: return (2,callchip)
         #两个人单挑，很少情况接ALLIN玩玩
