@@ -253,13 +253,20 @@ def IsDrawFlush(cardlist):
         return False
 
 #判断是否听顺
-def IsDrawStraight(cardlist):
+def IsDrawStraight2(cardlist):
     myhand=GetDrawStraight(cardlist)
     #四张才是听顺，5张就不对了
     if(len(myhand)==4 and IsStraight(cardlist)==False):
         return True
     else:
         return False
+
+def IsDrawStraight(cardlist):
+    if IsGunshotStraight(cardlist)==2:
+        return True
+    return False
+
+
 
 #判断是否高张
 def IsHigh(cardlist):
@@ -422,6 +429,22 @@ def CompareDetail(list1,list2,bothtype,cardcnt):
         return CompareDetail(s1,s2,2,cardcnt)
     return 0
 
+#判断是否顺子听牌,0为不是卡顺，1为卡顺，2为双头卡顺或者双头顺
+def IsGunshotStraight(cardlist):
+    cnt=0
+    for num in range(2,15):
+        tmplist=copy.copy(cardlist)
+        tmplist.append(card(0,num))
+        if(IsStraight(tmplist)):
+            cnt=cnt+1
+    return cnt
+
+#简单测试用的
+def ddd():
+    mylist=[card(2,13),card(2,2),card(1,2),card(2,3),card(1,4),card(3,5),card(2,8)]
+    print(IsGunshotStraight(mylist))
+
+
 def ccc():
     starttime=time.clock()
     d=dealer()
@@ -452,4 +475,4 @@ def ccc():
     endtime = time.clock()
     print('Running time: %s Seconds'%(endtime-starttime))
     
-#ccc()
+#ddd()

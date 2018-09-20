@@ -282,7 +282,7 @@ def beforeFlopDecision(Sit,callchip):
             if(random.random()>0.5): return (3,1)
             else: return (2,callchip)
         #两个人单挑，很少情况接ALLIN玩玩
-        if(leftman[1]==2 and callchip>=5*Sit.bb):
+        if(leftman==2 and callchip>=5*Sit.bb):
             return (0,0)
         #如果是大盲白看牌
         if(callchip==0): 

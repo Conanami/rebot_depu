@@ -383,7 +383,7 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     betHeight=12
     num_step=8
     point_step=num_step
-    thres=200
+    thres=160
     numstart=0
     betboxlist=[picbox(310,344,337+betWidth,344+betHeight), \
                 picbox(178,315,200+betWidth,315+betHeight), \
