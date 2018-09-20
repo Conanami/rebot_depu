@@ -276,7 +276,7 @@ def beforeFlopDecision(Sit,callchip):
             if(callchip==Sit.bb): return (2,1)
             else: return (2,callchip)
         #底池赔率合适，啥牌都可以玩
-        if(callchip/Sit.potsize<(1/leftman) and callchip<=5*Sit.bb): return (2,callchip)
+        if(callchip/Sit.potsize<(1/(leftman+2)) and callchip<=5*Sit.bb): return (2,callchip)
         #小盲单挑大盲可以玩
         if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and leftman==2): 
             if(random.random()>0.5): return (3,1)
