@@ -40,7 +40,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 return (2,0)
             #对手表现出最强的实力,我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
-                if(finalWinrate>=0.97): return (2,0)
+                if(finalWinrate>=0.94): return (2,0)
                 else: return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
@@ -82,7 +82,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 return (2,0)
             #对手表现出最强的实力,我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
-                if(finalWinrate>=0.97): return (2,0)
+                if(finalWinrate>=0.92): return (2,0)
                 else: return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)

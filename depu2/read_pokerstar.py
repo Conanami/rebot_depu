@@ -339,7 +339,14 @@ def getSeat(handlist):
             return i 
 
 #读整个图片，获取所有信息
-def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sample_img,pub_num_sample_img,btnsample_img,levelbb=100):
+def GetSituation(   wholeimg, 
+                    chip_num_sample_img, 
+                    dc_num_sample_img,
+                    pub_suit_sample_img,
+                    pub_num_sample_img,
+                    call_num_sample_img,
+                    btnsample_img,
+                    levelbb=100):
     
     rtSit=situation()
     
@@ -371,10 +378,25 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     y1=198
     y2=y1+14
     numstart=0
-    #thres=240
+    thres=200
     dcpicbox=picbox(x1,y1,x2,y2)
     potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,chip_num_sample_img,num_step,point_step,thres)
     rtSit.potsize=potsize
+
+
+
+    #需要跟注筹码量
+    x1=525
+    x2=x1+100
+    y1=550
+    y2=y1+16
+    numstart=0
+    num_step=11
+    point_step=11
+    thres=200
+    downcall_picbox=picbox(x1,y1,x2,y2)
+    down_callchip=SinglePicToNum(wholeimg,downcall_picbox,numstart,call_num_sample_img,num_step,point_step,thres)
+    print('down:'+str(down_callchip))
 
     #读所有的下注
     #if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
@@ -386,12 +408,12 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     point_step=num_step
     thres=160
     numstart=0
-    betboxlist=[picbox(310,344,337+betWidth,344+betHeight), \
-                picbox(178,315,200+betWidth,315+betHeight), \
-                picbox(200,191,220+betWidth,191+betHeight), \
-                picbox(355,158,385+betWidth,158+betHeight), \
-                picbox(450,191,483+betWidth,191+betHeight), \
-                picbox(520,316,557+betWidth,316+betHeight)
+    betboxlist=[picbox(290,344,337+betWidth,344+betHeight), \
+                picbox(158,315,200+betWidth,315+betHeight), \
+                picbox(180,191,220+betWidth,191+betHeight), \
+                picbox(335,158,385+betWidth,158+betHeight), \
+                picbox(430,191,483+betWidth,191+betHeight), \
+                picbox(490,316,557+betWidth,316+betHeight)
     ]
     rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,dc_num_sample_img,num_step,point_step,thres)
 
@@ -414,7 +436,7 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     #print(levelbb)
     rtSit.bb=levelbb
     #获得要跟注的筹码数量
-    rtSit.callchip=getCallchip(rtSit.betlist,rtSit.myseat)
+    rtSit.callchip=max(down_callchip,getCallchip(rtSit.betlist,rtSit.myseat))
     
     return rtSit
 
@@ -486,7 +508,21 @@ class sampleconfig:
                     r'depu2\samples\dc_num\dc_9.png', \
                     r'depu2\samples\dc_num\dc_dot.png' ]
         self.dc_num_sample_img=file2img(dc_num_sample)
-        
+
+        #下面跟注按钮上的跟注数量数字样本
+        call_num_sample=[r'depu2\samples\call_num\call_0.png', \
+                    r'depu2\samples\call_num\call_1.png', \
+                    r'depu2\samples\call_num\call_2.png', \
+                    r'depu2\samples\call_num\call_3.png', \
+                    r'depu2\samples\call_num\call_4.png', \
+                    r'depu2\samples\call_num\call_5.png', \
+                    r'depu2\samples\call_num\call_6.png', \
+                    r'depu2\samples\call_num\call_7.png', \
+                    r'depu2\samples\call_num\call_8.png', \
+                    r'depu2\samples\call_num\call_9.png', \
+                    r'depu2\samples\call_num\call_dot.png' ]
+        self.call_num_sample_img=file2img(call_num_sample)
+
          #btn位样本
         btnsample=[r'depu2\samples\btn_sample.png']
         self.btnsample_img=file2img(btnsample)
@@ -512,6 +548,7 @@ def analysisImg(wholeimg,levelbb=100):
                         config.dc_num_sample_img,
                         config.pub_suit_sample_img,
                         config.pub_num_sample_img,
+                        config.call_num_sample_img,
                         config.btnsample_img,
                         levelbb)
 

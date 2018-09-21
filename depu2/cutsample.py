@@ -38,17 +38,17 @@ def cutsample():
     
     #切割半个万字出来
     #box=(594,187,601,202)
-    img=Image.open(r'tmp\dz_0917174517.png')  #打开图像
+    img=Image.open(r'tmp\dz_0922060233.png')  #打开图像
     
 
     
-    x1=63
-    y1=182
-    w=9
-    h=14
+    x1=716
+    y1=550
+    w=11
+    h=16
     box=(x1,y1,x1+w,y1+h)
     roi=img.crop(box)
-    dc_name='chip_dot.png'
+    dc_name='call_9.png'
         #sample_name='fold.png'
     roi.save(dc_name)
     roi.show()
