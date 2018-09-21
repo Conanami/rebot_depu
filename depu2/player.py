@@ -46,11 +46,19 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawFlush(myhand)): return (3,2)
                 if(IsDrawStraight(myhand)): return(3,2)
                 return (0,0)
-            if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
-                if(finalWinrate>=0.95): return (3,4)
-                if(finalWinrate>=0.92): return (3,2)
-                if(IsDrawFlush(myhand)): return (2,2)
-                if(IsDrawStraight(myhand)): return(2,2)
+            if(rtSit.callchip<rtSit.potsize/leftman):
+                #翻后底池不大，可以头铁一点
+                if rtSit.potsize>=15*rtSit.bb and rtSit.potsize<30*rtSit.bb:
+                    if(finalWinrate>=0.95): return (3,4)
+                    if(finalWinrate>=0.8): return (2,0)
+                    if(IsDrawFlush(myhand)): return (2,2)
+                    if(IsDrawStraight(myhand)): return(2,2)
+                #翻后底池比较大，就弱一点吧
+                if rtSit.potsize>=30*rtSit.bb and rtSit.potsize<=60*rtSit.bb:
+                    if(finalWinrate>=0.95): return (3,4)
+                    if(finalWinrate>=0.85): return (2,0)
+                    if(IsDrawFlush(myhand)): return (2,2)
+                    if(IsDrawStraight(myhand)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
                 if(finalWinrate>=0.97): return (3,4)
@@ -284,16 +292,17 @@ def beforeFlopDecision(Sit,callchip):
             if(callchip>0 and callchip<Sit.bb*3): return (3,3)
             if(callchip>=Sit.bb*3): return (3,4)
         
-        if(InOpenRange(myhand) and callchip==0): return (2,random.randint(1,2))
+        #好牌可以加注入局
+        if(InOpenRange(myhand) and callchip==0 and getWaitingman(rtSit)<=3): return (3,random.randint(1,2))
         #如果是开局牌，则可以跟别人
-        if(InOpenRange(myhand) and callchip>0 and callchip<=Sit.bb*6): 
+        if(InOpenRange(myhand) and callchip>0 and callchip<=Sit.bb*6 and ): 
             if(callchip==Sit.bb): return (2,1)
             else: return (2,callchip)
         #底池赔率合适，啥牌都可以玩
-        if(callchip/Sit.potsize<(1/(leftman+2)) and callchip<=5*Sit.bb): return (2,callchip)
+        if callchip/Sit.potsize<1/(leftman+2) and InTryRange(myhand) and callchip<=5*Sit.bb: return (2,callchip)
         #小盲单挑大盲可以玩
         if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and leftman==2): 
-            if(random.random()>0.5): return (3,1)
+            if(random.random()>0.5 and InTryRange(myhand)): return (3,1)
             else: return (2,callchip)
         #两个人单挑，很少情况接ALLIN玩玩
         if(leftman==2 and callchip>=5*Sit.bb):
@@ -314,16 +323,26 @@ def InOpenRange(myhand):
     #if((myhand[0].num >= 14 and myhand[1].num < 14) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
     #两张高牌
     if(myhand[0].num+myhand[1].num>=24): return True
+    
+    #口袋对
+    if(myhand[0].num==myhand[1].num and myhand[0].num>=7): return True
+    
+    
+    return False
+
+#入局投机牌
+def InTryRange(myhand):
+    #不是超强牌
+    if(InSuperRange(myhand)): return False
+    #也不是进池牌
+    if(InOpenRange(myhand)): return False
     #带AK的同花
     if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
-    #口袋对
-    if(myhand[0].num==myhand[1].num): return True
     #大的连牌和中的口袋对
-    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].num>=7 and myhand[1].num>=7): return True
+    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].num>=8 and myhand[1].num>=8): return True
     #同花连牌
     if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=9 or myhand[1].num>=9)): 
         return True
-    
     return False
 
 #只有AA,KK,QQ跟人推
