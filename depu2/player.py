@@ -70,7 +70,9 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 elif(finalWinrate>=0.9): return (3,3)
-                elif(finalWinrate>=0.7): return (2,0)
+                elif(finalWinrate>=0.7): 
+                    if(getWaitingman(rtSit)<=1): return (3,1)
+                    else: return (2,0)
                 elif(finalWinrate>=0.5): return (2,0)
                 if(IsDrawFlush(myhand)): return (2,0)
                 if(IsDrawStraight(myhand)): return(2,0)
@@ -111,7 +113,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 #咨询一下对手到底是不是咋呼
-                if(finalWinrate>=0.88): return (3,2)
+                if(finalWinrate>=0.9): return (3,2)
                 if(IsDrawFlush(myhand)): return (2,2)
                 if(IsDrawStraight(myhand)): return(2,2)
                 #小注头铁
@@ -309,14 +311,12 @@ def InOpenRange(myhand):
     #同花连牌
     if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=9 or myhand[1].num>=9)): 
         return True
-    #同花连牌
-    if(abs(myhand[0].num-myhand[1].num)==1 and myhand[0].suit==myhand[1].suit):
-        return True
+    
     return False
 
 #只有AA,KK,QQ跟人推
 def InSuperRange(myhand):
-    if(myhand[0].num==myhand[1].num and myhand[0].num>=10): return True
+    if(myhand[0].num==myhand[1].num and myhand[0].num>=12): return True
     #if(myhand[0].num+myhand[1].num>=26): return True
     else: return False
 
