@@ -344,6 +344,8 @@ def InTryRange(myhand):
     if((myhand[0].num >= 14 and myhand[1].num < 14) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
     #带AK的同花
     if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
+    #所有口袋对
+    if(myhand[0].num==myhand[1].num): return True
     #大的连牌和中的口袋对
     if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].num>=8 and myhand[1].num>=8): return True
     #同花连牌
@@ -419,7 +421,7 @@ def makeDecision(rtSit):
             if(finalDecision[1]==3): 
                 finalDecision=(3,2)
         #如果所有筹码小于要跟注的数量，那么直接allin
-        if(rtSit.chiplist[rtSit.myseat]<rtSit.callchip): finalDecision=(2,0)
+        if(rtSit.chiplist[rtSit.myseat]<rtSit.callchip): finalDecision=(3,0)
         #如果筹码大于需要跟注的数量
         if(rtSit.chiplist[rtSit.myseat]>=rtSit.callchip):
             #如果比2/3底池多，但是不到一个底池，则3，3变3，2

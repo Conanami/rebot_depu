@@ -39,8 +39,9 @@ class situation:
         ''' 结果转换为 dict对象 '''
         result = {}
         if len(self.handlist)>=0:
-            result['my1'] = '%s|%s' % (self.handlist[self.myseat][0].num, self.handlist[self.myseat][0].suit)
-            result['my2'] = '%s|%s' % (self.handlist[self.myseat][1].num, self.handlist[self.myseat][1].suit)
+            if self.handlist[self.myseat]:
+                result['my1'] = '%s|%s' % (self.handlist[self.myseat][0].num, self.handlist[self.myseat][0].suit)
+                result['my2'] = '%s|%s' % (self.handlist[self.myseat][1].num, self.handlist[self.myseat][1].suit)
         
             result['pub1'] = None
             result['pub2'] = None
