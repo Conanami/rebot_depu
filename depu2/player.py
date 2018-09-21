@@ -66,6 +66,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(finalWinrate>=0.92): 
                     if(rtSit.callchip<=80*rtSit.bb): return (2,0)
                 if(rtSit.potsize<15*rtSit.bb and finalWinrate>0.7): return (2,0)
+                #if (finalWinrate>=0.89 and rtSit.potsize<=60*rtSit.bb): return (2,0)
                 return (0,0)
         if(leftman>=3):
             if(rtSit.callchip==0):
@@ -290,8 +291,11 @@ def beforeFlopDecision(Sit,callchip):
         
         if(InSuperRange(myhand)):
             if(callchip==0): return (3,3)
-            if(callchip>0 and callchip<Sit.bb*3): return (3,3)
+            if(callchip>0 and callchip<Sit.bb*3): 
+                if Sit.betlist[Sit.myseat]>=2*Sit.bb: return (3,4)
+                else: return (3,3)
             if(callchip>=Sit.bb*3): return (3,4)
+            
         
         #好牌可以加注入局
         if(InOpenRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=4): return (3,random.randint(1,2))
