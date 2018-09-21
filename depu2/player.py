@@ -294,16 +294,17 @@ def beforeFlopDecision(Sit,callchip):
             if(callchip>=Sit.bb*3): return (3,4)
         
         #好牌可以加注入局
-        if(InOpenRange(myhand) and callchip==0 and getWaitingman(Sit)<=3): return (3,random.randint(1,2))
+        if(InOpenRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=4): return (3,random.randint(1,2))
         #投机牌如果没有人入局，我有好位置，也可以加注入局
-        if InTryRange(myhand) and callchip==0 and Sit.position==Sit.myseat :
+        if InTryRange(myhand) and callchip<=Sit.bb and Sit.position==Sit.myseat :
             return (3,1)
         #如果是开局牌，则可以跟别人
-        if(InOpenRange(myhand) and callchip>0 and callchip<=Sit.bb*6 ): 
+        if(InOpenRange(myhand) and callchip>Sit.bb and callchip<=Sit.bb*6 ): 
             if(callchip==Sit.bb): return (2,1)
             else: return (2,callchip)
         #底池赔率合适，啥牌都可以玩
-        if callchip/Sit.potsize<1/(leftman+2) and InTryRange(myhand) and callchip<=5*Sit.bb: return (2,callchip)
+        if callchip/Sit.potsize<1/(leftman+2) and (InTryRange(myhand) or InOpenRange(myhand)) and callchip<=5*Sit.bb: 
+            return (2,callchip)
         #小盲单挑大盲可以玩
         if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and leftman==2): 
             if(random.random()>0.5 and InTryRange(myhand)): return (3,1)
