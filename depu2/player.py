@@ -70,7 +70,9 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 elif(finalWinrate>=0.9): return (3,3)
-                elif(finalWinrate>=0.7): return (2,0)
+                elif(finalWinrate>=0.7): 
+                    if(getWaitingman(rtSit)<=1): return (3,1)
+                    else: return (2,0)
                 elif(finalWinrate>=0.5): return (2,0)
                 if(IsDrawFlush(myhand)): return (2,0)
                 if(IsDrawStraight(myhand)): return(2,0)
@@ -111,7 +113,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 #咨询一下对手到底是不是咋呼
-                if(finalWinrate>=0.88): return (3,2)
+                if(finalWinrate>=0.9): return (3,2)
                 if(IsDrawFlush(myhand)): return (2,2)
                 if(IsDrawStraight(myhand)): return(2,2)
                 #小注头铁
