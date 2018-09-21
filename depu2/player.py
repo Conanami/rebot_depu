@@ -77,11 +77,19 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawFlush(myhand)): return (2,0)
                 if(IsDrawStraight(myhand)): return(2,0)
                 return (0,0)
-            if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
-                if(finalWinrate>=0.95): return (3,4)
-                if(finalWinrate>=0.9): return (2,0)
-                if(IsDrawFlush(myhand)): return (2,2)
-                if(IsDrawStraight(myhand)): return(2,2)
+            if(rtSit.callchip<rtSit.potsize/leftman):
+                #翻后底池不大，可以头铁一点
+                if rtSit.potsize>=15*rtSit.bb and rtSit.potsize<30*rtSit.bb:
+                    if(finalWinrate>=0.95): return (3,4)
+                    if(finalWinrate>=0.68): return (2,0)
+                    if(IsDrawFlush(myhand)): return (2,2)
+                    if(IsDrawStraight(myhand)): return(2,2)
+                #翻后底池比较大，就弱一点吧
+                if rtSit.potsize>=30*rtSit.bb and rtSit.potsize<=60*rtSit.bb:
+                    if(finalWinrate>=0.95): return (3,4)
+                    if(finalWinrate>=0.75): return (2,0)
+                    if(IsDrawFlush(myhand)): return (2,2)
+                    if(IsDrawStraight(myhand)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
                 if(finalWinrate>=0.92): return (3,4)
@@ -133,8 +141,12 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(finalWinrate>0.8): return(3,3)
                 #只有在有位置的时候才偷
                 if(random.random()>0.7 and rtSit.myseat==rtSit.position): return (3,1)
-                if(IsDrawFlush(myhand)): return (2,0)
-                if(IsDrawStraight(myhand)): return(2,0)
+                if(IsDrawFlush(myhand)): 
+                    if(getWaitingman(rtSit)<=1): return (3,1)
+                    else: return (2,0)
+                if(IsDrawStraight(myhand)):
+                    if(getWaitingman(rtSit)<=1): return (3,1)
+                    else: return (2,0)
                 return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
