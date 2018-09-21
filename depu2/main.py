@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.INFO,
 #得到玩的级别
 def getLevel(topic):
     tmplevel=topic[topic.find('/')+1:len(topic)]
-    tmplevel=tmplevel[:tmplevel.find('虚')]
+    tmplevel=tmplevel[:tmplevel.find('美')]
     #print( str(tmplevel))
     return float(tmplevel)
 
@@ -48,8 +48,26 @@ def grab_screen(left,top,right,bottom):
 def copy_part_image(image_,left,top,right,bottom):
     return image_.crop((left,top,right,bottom))
 
+def checkTeamView():
+    ''' check teamview exist '''
+    window_title = findTitle('发起会话')
+    if not window_title:
+        return
+    print('find teamview dialog')
+    hwnd = win32gui.FindWindow(win32con.NULL,window_title)
+    if hwnd == 0 :
+        print('%s not found' % window_title)
+        return 
+
+    window_left,window_top,window_right,window_bottom = win32gui.GetWindowRect(hwnd)
+    # print(window_left,window_top,window_right,window_bottom)
+    pyautogui.moveTo(window_left+411,window_top+144)
+    pyautogui.click()
+
 def get_total_area():
     '''   获取整个应用区域  '''
+    checkTeamView()
+
     window_title = findTitle('无限注')
     #print(window_title)
     if not window_title:
