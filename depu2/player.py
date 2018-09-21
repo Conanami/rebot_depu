@@ -225,6 +225,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             #面对一个超POT大下注
             if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)):
                 if(finalWinrate>=0.97): return (3,4)
+                if(finalWinrate>=0.94): return (2,0)
                 if(rtSit.potsize<20*rtSit.bb and finalWinrate>0.7): return (2,0)
                 return (0,0)
         #还剩3个人以上
@@ -339,12 +340,14 @@ def InTryRange(myhand):
     if(InSuperRange(myhand)): return False
     #也不是进池牌
     if(InOpenRange(myhand)): return False
+     #有张A
+    if((myhand[0].num >= 14 and myhand[1].num < 14) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
     #带AK的同花
     if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
     #大的连牌和中的口袋对
     if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].num>=8 and myhand[1].num>=8): return True
     #同花连牌
-    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=9 or myhand[1].num>=9)): 
+    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=6 or myhand[1].num>=6)): 
         return True
     return False
 
