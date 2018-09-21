@@ -309,14 +309,12 @@ def InOpenRange(myhand):
     #同花连牌
     if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=9 or myhand[1].num>=9)): 
         return True
-    #同花连牌
-    if(abs(myhand[0].num-myhand[1].num)==1 and myhand[0].suit==myhand[1].suit):
-        return True
+    
     return False
 
 #只有AA,KK,QQ跟人推
 def InSuperRange(myhand):
-    if(myhand[0].num==myhand[1].num and myhand[0].num>=10): return True
+    if(myhand[0].num==myhand[1].num and myhand[0].num>=12): return True
     #if(myhand[0].num+myhand[1].num>=26): return True
     else: return False
 
