@@ -12,11 +12,11 @@ def bbb():
     start =time.clock()
    
    
-    file_name=r'tmp\dz_0920114839.png' 
+    file_name=r'tmp\dz_0921060149.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     print(NeedAnalyse(wholeimg))
-    rtSit=analysisImg(wholeimg,200)
+    rtSit=analysisImg(wholeimg,0.02)
     
     print(rtSit.todict())
     print(getWaitingman(rtSit))

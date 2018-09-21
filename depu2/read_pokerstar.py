@@ -410,6 +410,7 @@ def GetSituation(wholeimg, chip_num_sample_img, dc_num_sample_img,pub_suit_sampl
     rtSit.statuslist=GetStatusList(rtSit.chiplist)
     
     #pokerstar获得大盲注级别，要读窗体TITLE
+    print(levelbb)
     rtSit.bb=levelbb
     #获得要跟注的筹码数量
     rtSit.callchip=getCallchip(rtSit.betlist,rtSit.myseat)
@@ -511,7 +512,7 @@ def analysisImg(wholeimg,levelbb=100):
                         config.pub_suit_sample_img,
                         config.pub_num_sample_img,
                         config.btnsample_img,
-                        levelbb=100)
+                        levelbb)
 
     #入库
     
