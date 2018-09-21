@@ -293,9 +293,12 @@ def beforeFlopDecision(Sit,callchip):
             if(callchip>=Sit.bb*3): return (3,4)
         
         #好牌可以加注入局
-        if(InOpenRange(myhand) and callchip==0 and getWaitingman(rtSit)<=3): return (3,random.randint(1,2))
+        if(InOpenRange(myhand) and callchip==0 and getWaitingman(Sit)<=3): return (3,random.randint(1,2))
+        #投机牌如果没有人入局，我有好位置，也可以加注入局
+        if InTryRange(myhand) and callchip==0 and Sit.position==Sit.myseat :
+            return (3,1)
         #如果是开局牌，则可以跟别人
-        if(InOpenRange(myhand) and callchip>0 and callchip<=Sit.bb*6 and ): 
+        if(InOpenRange(myhand) and callchip>0 and callchip<=Sit.bb*6 ): 
             if(callchip==Sit.bb): return (2,1)
             else: return (2,callchip)
         #底池赔率合适，啥牌都可以玩
