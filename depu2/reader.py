@@ -92,7 +92,7 @@ def getWaitingman(rtSit):
                 if(rtSit.chiplist[tmppos]>-1 and rtSit.betlist[tmppos]<max(rtSit.betlist)):
                     cnt=cnt+1
             return cnt
-    return 6
+    return 'error'
     
          
 #得到公共牌，对外

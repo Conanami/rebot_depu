@@ -129,6 +129,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             #对手表现出最强的实力,我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
+                #套池了就只能跟到底
+                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
@@ -172,6 +174,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             #对手表现出最强的实力,我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
+                #套池了就只能跟到底
+                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
@@ -215,6 +219,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             #对手表现出最强的实力,我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
+                #套池就跟到底了，没有选择了
+                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
             #对手下了小注
             if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
@@ -269,6 +275,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             #对手表现出最强的实力,我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
+                #套池就跟到底了，没有选择了
+                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
             #对手下了小注
             if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
@@ -324,12 +332,12 @@ def beforeFlopDecision(Sit,callchip):
             
         
         #好牌可以加注入局
-        if(InOpenRange(myhand) and callchip<=Sit.bb ): return (3,random.randint(1,2))
+        if(InOpenRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=5): return (3,random.randint(1,2))
         #投机牌如果没有人入局，我有好位置，也可以入局
         if InTryRange(myhand) and callchip<=Sit.bb and Sit.position==Sit.myseat :
             return (2,1)
-        #如果是开局牌，则可以跟别人
-        if(InOpenRange(myhand) and callchip>Sit.bb and callchip<=Sit.bb*6 ): 
+        #如果是开局牌，则可以跟别人open，但不能跟别人的4bet
+        if InOpenRange(myhand) and callchip>Sit.bb and callchip<=Sit.bb*6 and Sit.betlist[Sit.myseat]<=Sit.bb: 
             if(callchip==Sit.bb): return (2,1)
             else: return (2,callchip)
         #底池赔率合适，啥牌都可以玩
