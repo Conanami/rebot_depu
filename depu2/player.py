@@ -80,7 +80,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawFlush(myhand)): return (2,0)
                 if(IsDrawStraight(myhand)): return(2,0)
                 return (2,0)
-            #对手表现出最强的实力,我强力下注后加注
+            #对手表现出最强的实力,在我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.92): return (2,0)
                 else: return (0,0)
@@ -324,7 +324,7 @@ def beforeFlopDecision(Sit,callchip):
             
         
         #好牌可以加注入局
-        if(InOpenRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=4): return (3,random.randint(1,2))
+        if(InOpenRange(myhand) and callchip<=Sit.bb ): return (3,random.randint(1,2))
         #投机牌如果没有人入局，我有好位置，也可以入局
         if InTryRange(myhand) and callchip<=Sit.bb and Sit.position==Sit.myseat :
             return (2,1)
@@ -359,8 +359,7 @@ def InOpenRange(myhand):
     
     #两张高牌
     if(myhand[0].num+myhand[1].num>=24): return True
-    
-    
+        
     #口袋对
     if(myhand[0].num==myhand[1].num and myhand[0].num>=7): return True
     

@@ -64,7 +64,7 @@ def getWaitingman(rtSit):
                         cnt=cnt+1
                 return cnt
 
-            return 'error'
+            return 6
         #如果翻前有人加注，则假设再没人加注，有几个人等待行动
         if(max(rtSit.betlist)>rtSit.bb):
             cnt=0
@@ -92,7 +92,7 @@ def getWaitingman(rtSit):
                 if(rtSit.chiplist[tmppos]>-1 and rtSit.betlist[tmppos]<max(rtSit.betlist)):
                     cnt=cnt+1
             return cnt
-    return 'error'
+    return 6
     
          
 #得到公共牌，对外
