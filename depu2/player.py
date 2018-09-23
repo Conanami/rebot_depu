@@ -11,7 +11,7 @@ from reader import getSurvivor
 from reader import getMyHand
 from reader import calcuWinrate
 from reader import getWaitingman
-
+from dealer import IsFlush
   
 #fisherman，打低级别和鱼专用的
 
@@ -346,8 +346,9 @@ def beforeFlopDecision(Sit,callchip):
             return (2,callchip)
         #小盲单挑大盲可以玩
         if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and leftman==2): 
-            if(random.random()>0.5 and InTryRange(myhand)): return (3,1)
-            else: return (2,callchip)
+            if(InTryRange(myhand)): return (3,1)
+            elif (random.random()>0.5): return (3,1)
+            else: return (0,0)
         #两个人单挑，很少情况接ALLIN玩玩
         if(leftman==2 and callchip>=5*Sit.bb):
             return (0,0)
@@ -367,9 +368,12 @@ def InOpenRange(myhand):
     #if((myhand[0].num >= 14 and myhand[1].num < 14) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
     
     #两张高牌
-    if(myhand[0].num+myhand[1].num>=24): return True
-        
-    #口袋对
+    if(myhand[0].num+myhand[1].num>=26): return True
+
+    #两张同花高牌
+    if(myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=24 ): return True
+
+    #中口袋对
     if(myhand[0].num==myhand[1].num and myhand[0].num>=7): return True
     
     
@@ -437,6 +441,10 @@ def makeDecision(rtSit):
                 if(myhand[0].suit==myhand[1].suit):
                     print('同花听牌，胜率增加%.4f' % 0.3)
                     finalWinrate=finalWinrate+0.3
+                if(len(dealer.SameSuit(rtSit.cardlist))==3):
+                    if(IsFlush(myhand)==False):
+                        print('公面三同花,胜率减少%.4f' % 0.1)
+                        finalWinrate=finalWinrate-0.1
             if(pubnum==4 and len(dealer.SameSuit(rtSit.cardlist))<3):
                 print('同花听牌,胜率增加%.4f' % 0.15)
                 finalWinrate=finalWinrate+0.15
@@ -445,7 +453,7 @@ def makeDecision(rtSit):
                 if(finalWinrate<0.9):
                     print('顺子听牌，胜率增加%.4f' % 0.3)
                     finalWinrate=finalWinrate+0.3
-            if pubnum==4 and IsDrawStraight(myhand)==False :
+            if pubnum==4 and IsDrawStraight(rtSit.cardlist)==False :
                 print('顺子听牌，胜率增加%.4f' % 0.15)
                 finalWinrate=finalWinrate+0.15
         
