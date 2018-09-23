@@ -130,7 +130,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
                 #套池了就只能跟到底
-                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
+                if rtSit.potsize/rtSit.callchip>leftman+3 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
@@ -175,8 +175,9 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
                 #套池了就只能跟到底
-                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
+                if rtSit.potsize/rtSit.callchip>leftman+3 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
+            #对手下了小注
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.95): return (3,4)
                 if(finalWinrate>=0.92): return (3,3)
@@ -220,7 +221,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
                 #套池就跟到底了，没有选择了
-                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
+                if rtSit.potsize/rtSit.callchip>leftman+3 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
             #对手下了小注
             if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
@@ -263,7 +264,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 if(finalWinrate>=0.93): return (3,4)
                 if(rtSit.potsize<12*rtSit.bb and random.random()>0.3): return (3,2)
                 if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<=20*rtSit.bb): 
-                    if(random.random()>0.5): return (2,0)
+                    if(random.random()>0.5): return (3,0)
                     return (2,0)
                 if(rtSit.potsize>20*rtSit.bb):
                     if(finalWinrate>=0.93): return (3,4)
@@ -276,7 +277,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
                 if(finalWinrate>=0.985): return (2,0)
                 #套池就跟到底了，没有选择了
-                if rtSit.potsize/rtSit.callchip>leftman+1 and finalWinrate>0.91: return (2,0) 
+                if rtSit.potsize/rtSit.callchip>leftman+3 and finalWinrate>0.91: return (2,0) 
                 else: return (0,0)
             #对手下了小注
             if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
@@ -433,15 +434,17 @@ def makeDecision(rtSit):
         finalWinrate=math.pow(myWinrate,leftman-1)
         if IsDrawFlush(myhand):
             if(pubnum==3):
-                print('同花听牌，胜率增加%.4f' % 0.3)
-                finalWinrate=finalWinrate+0.3
+                if(myhand[0].suit==myhand[1].suit):
+                    print('同花听牌，胜率增加%.4f' % 0.3)
+                    finalWinrate=finalWinrate+0.3
             if(pubnum==4 and len(dealer.SameSuit(rtSit.cardlist))<3):
                 print('同花听牌,胜率增加%.4f' % 0.15)
                 finalWinrate=finalWinrate+0.15
         if IsDrawStraight(myhand):
-            if pubnum==3: 
-                print('顺子听牌，胜率增加%.4f' % 0.3)
-                finalWinrate=finalWinrate+0.3
+            if pubnum==3:
+                if(finalWinrate<0.9):
+                    print('顺子听牌，胜率增加%.4f' % 0.3)
+                    finalWinrate=finalWinrate+0.3
             if pubnum==4 and IsDrawStraight(myhand)==False :
                 print('顺子听牌，胜率增加%.4f' % 0.15)
                 finalWinrate=finalWinrate+0.15
