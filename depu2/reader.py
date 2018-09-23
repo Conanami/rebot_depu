@@ -100,7 +100,16 @@ def IsAllIn(rtSit):
         if i!=rtSit.myseat and rtSit.chiplist[i]==0 and rtSit.betlist[i]>0:
             return i
     return None
-         
+
+#是否有位置优势
+def IsAfter(rtSit):
+    cntme=0
+    for i in range(rtSit.position+1,rtSit.position+6):
+         tmpi=i%6
+         if(rtSit.chiplist[tmpi]>=0 and tmpi!=rtSit.myseat and cntme==0): return True
+         if(tmpi==rtSit.myseat): cntme=1
+    return False
+
 #得到公共牌，对外
 def getPubList(rtSit):
     return rtSit.cardlist
