@@ -345,10 +345,16 @@ def beforeFlopDecision(Sit,callchip):
         if callchip/Sit.potsize<1/(leftman+2) and (InTryRange(myhand) or InOpenRange(myhand)) and callchip<=5*Sit.bb: 
             return (2,callchip)
         #小盲单挑大盲可以玩
-        if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and leftman==2): 
+        if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and callchip>0 and leftman==2): 
             if(InTryRange(myhand)): return (3,1)
             elif (random.random()>0.5): return (3,1)
             else: return (0,0)
+        #大盲单挑小盲
+        if(callchip==0 and leftman==2):
+            if(InTryRange(myhand)): return (3,1)
+            elif (random.random()>0.5): return (3,1)
+            else: return (2,0)
+
         #两个人单挑，很少情况接ALLIN玩玩
         if(leftman==2 and callchip>=5*Sit.bb):
             return (0,0)
