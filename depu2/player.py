@@ -12,6 +12,7 @@ from reader import getMyHand
 from reader import calcuWinrate
 from reader import getWaitingman
 from dealer import IsFlush
+from reader import IsAllIn
   
 #fisherman，打低级别和鱼专用的
 
@@ -445,23 +446,26 @@ def makeDecision(rtSit):
         if IsDrawFlush(myhand):
             if(pubnum==3):
                 if(myhand[0].suit==myhand[1].suit):
-                    print('同花听牌，胜率增加%.4f' % 0.3)
-                    finalWinrate=finalWinrate+0.3
+                    if(finalWinrate<0.5):
+                        print('同花听牌，胜率增加%.4f' % 0.3)
+                        finalWinrate=finalWinrate+0.3
                 if(len(dealer.SameSuit(rtSit.cardlist))==3):
                     if(IsFlush(myhand)==False):
                         print('公面三同花,胜率减少%.4f' % 0.1)
                         finalWinrate=finalWinrate-0.1
             if(pubnum==4 and len(dealer.SameSuit(rtSit.cardlist))<3):
-                print('同花听牌,胜率增加%.4f' % 0.15)
-                finalWinrate=finalWinrate+0.15
+                if(finalWinrate<0.6):
+                    print('同花听牌,胜率增加%.4f' % 0.15)
+                    finalWinrate=finalWinrate+0.15
         if IsDrawStraight(myhand):
             if pubnum==3:
-                if(finalWinrate<0.9):
+                if(finalWinrate<0.5):
                     print('顺子听牌，胜率增加%.4f' % 0.3)
                     finalWinrate=finalWinrate+0.3
             if pubnum==4 and IsDrawStraight(rtSit.cardlist)==False :
-                print('顺子听牌，胜率增加%.4f' % 0.15)
-                finalWinrate=finalWinrate+0.15
+                if(finalWinrate<0.6):
+                    print('顺子听牌，胜率增加%.4f' % 0.15)
+                    finalWinrate=finalWinrate+0.15
         
         print('最后胜率%.4f' % finalWinrate)
         #翻牌后的决策
@@ -494,4 +498,6 @@ def makeDecision(rtSit):
         if(rtSit.potsize<=3*rtSit.bb and pubnum>0):
             if(finalDecision[1]==1): finalDecision=(3,3)
             if(finalDecision[1]==2): finalDecision=(3,3)
+    #如果对方是全下，那2,0要变3,0
+    if IsAllIn(rtSit) and finalDecision[0]==2: finalDecision=(3,0)
     return finalDecision
