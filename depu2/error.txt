@@ -1,0 +1,30 @@
+翻前决策
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\ProgramData\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "d:/dahu/robot_depu/depu2/main.py", line 189, in run_game
+    handle(window_left, window_top, rt)
+  File "d:/dahu/robot_depu/depu2/main.py", line 107, in handle
+    kind, no = p.makeDecision(rtSit)
+  File "d:\dahu\robot_depu\depu2\player.py", line 432, in makeDecision
+    finalDecision=beforeFlopDecision(rtSit,callchip)
+  File "d:\dahu\robot_depu\depu2\player.py", line 337, in beforeFlopDecision
+    if(InOpenRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=5): return (3,random.randint(1,2))
+TypeError: '<=' not supported between instances of 'str' and 'int'
+
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\ProgramData\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\ProgramData\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "d:/dahu/robot_depu/depu2/main.py", line 185, in run_game
+    rt = analysisImg(game_area_image.convert('L'),levelbb)
+  File "d:\dahu\robot_depu\depu2\read_pokerstar.py", line 558, in analysisImg
+    result = rtSit.todict()
+  File "d:\dahu\robot_depu\depu2\read_pokerstar.py", line 42, in todict
+    if self.handlist[self.myseat]:
+TypeError: list indices must be integers or slices, not NoneType

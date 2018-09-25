@@ -449,4 +449,5 @@ def makeDecision(rtSit):
             if(finalDecision[1]==2): finalDecision=(3,3)
     #如果对方是全下，那2,0要变3,0
     if IsAllIn(rtSit) and finalDecision[0]==2: finalDecision=(3,0)
+    if rtSit.callchip>rtSit.chiplist[rtSit.myseat] and finalDecision[0]==2: finalDecision=(3,0)
     return finalDecision
