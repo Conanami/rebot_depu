@@ -53,8 +53,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 print("胜率:"+str(finalWinrate))
                 if(finalWinrate>=0.96): return (3,4)
                 if(finalWinrate>=0.92): return (3,2)
-                if(IsDrawFlush(rtSit.cardlist)): return (2,2)
-                if(IsDrawStraight(rtSit.cardlist)): return(2,2)
+                if(IsDrawFlush(wholehandlist)): return (2,2)
+                if(IsDrawStraight(wholehandlist)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
                 if(finalWinrate>=0.97): return (3,4)
@@ -65,8 +65,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.callchip==0):
                 if(finalWinrate>=0.98): return (2,0)
                 if(finalWinrate>=0.91): return (3,3)
-                if(IsDrawFlush(rtSit.cardlist)): return (3,2)
-                if(IsDrawStraight(rtSit.cardlist)): return(3,2)
+                if(IsDrawFlush(wholehandlist)): return (3,2)
+                if(IsDrawStraight(wholehandlist)): return(3,2)
                 if(random.random()>=0.7): 
                     print('翻牌咋呼')
                     return (3,1)
