@@ -34,7 +34,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
     if(pubnum>=1 and pubnum<=3):
         if(leftman==2):
             if(rtSit.callchip==0):
-                if(finalWinrate>0.99): return (2,0)
+                if(finalWinrate>0.95): return (3,4)
                 if(finalWinrate>0.9): return(3,3)
                 if(random.random()>0.2): return (3,1)
                 if(IsDrawFlush(myhand)): return (3,2)
@@ -105,20 +105,20 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 #翻后底池不大，可以头铁一点
                 if rtSit.potsize>=15*rtSit.bb and rtSit.potsize<30*rtSit.bb:
                     if(finalWinrate>=0.95): return (3,4)
-                    if(finalWinrate>=0.68): return (2,0)
+                    if(finalWinrate>=0.86): return (2,0)
                     if(IsDrawFlush(myhand)): return (2,2)
                     if(IsDrawStraight(myhand)): return(2,2)
                 #翻后底池比较大，就弱一点吧
                 if rtSit.potsize>=30*rtSit.bb and rtSit.potsize<=60*rtSit.bb:
                     if(finalWinrate>=0.95): return (3,4)
-                    if(finalWinrate>=0.75): return (2,0)
+                    if(finalWinrate>=0.9): return (2,0)
                     if(IsDrawFlush(myhand)): return (2,2)
                     if(IsDrawStraight(myhand)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
-                if(finalWinrate>=0.92): return (3,4)
+                if(finalWinrate>=0.95): return (3,4)
                 #如果碰到全下什么的，要小心
-                if(finalWinrate>=0.8): 
+                if(finalWinrate>=0.9): 
                     if rtSit.callchip<=80*rtSit.bb: return (2,0)
                 if(rtSit.potsize<15*rtSit.bb and finalWinrate>0.7): return (2,0)
                 return (0,0)
