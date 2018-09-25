@@ -6,7 +6,7 @@ from PIL import Image
 import player as p
 #import random
 from Harrington import IsSameHand
-
+from Harrington import DontLikeCard
 
 def bbb():
     ''' 测试 '''
@@ -20,9 +20,10 @@ def bbb():
     rtSit=analysisImg(wholeimg,0.02)
     
     print(rtSit.todict())
-    #print(getWaitingman(rtSit))
+    print(DontLikeCard(rtSit))
     
-    file_name=r'tmp\dz_0924103522.png' 
+    '''
+    file_name=r'tmp\dz_0924103508.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))
@@ -37,7 +38,7 @@ def bbb():
     #for i in range(15):
     #    print(random.random())
     #计算运行时间
-    
+    '''
     end = time.clock()
     print('Running time: %s Seconds'%(end-start)) 
 

@@ -9,7 +9,8 @@ from read_pokerstar import getCallchip
 from reader import getSurvivor
 from reader import getMyHand
 from reader import calcuWinrate
-
+from reader import calcuNumRate
+from dealer import SameSuit
 
 
 def makeDecision(rtSit):
@@ -29,7 +30,6 @@ def IsSameHand(Sit1,Sit2):
         return False
     return False
 
-
 #手里的牌要一模一样
 def IsSameMyhand(Sit1,Sit2):
     if Sit1.handlist[Sit1.myseat][0].equals(Sit2.handlist[Sit2.myseat][0]) \
@@ -45,3 +45,19 @@ def IsSameCardlist(cardlist1,cardlist2,cnt):
             if(cardlist1[i].equals(cardlist2[i])==False):
                 return False
         return True
+
+#我不想看见的牌
+def DontLikeCard(Sit):
+    wholehand=getMyHand(Sit)
+    wholehand=wholehand+Sit.cardlist
+    #转牌我不想看见的牌
+    if getPubnum(Sit)==3 :
+        #我没有同花听牌，外面也没有同花听牌
+        if IsDrawFlush(wholehand)==False and len(SameSuit(Sit.cardlist))<2: 
+            nowrate=dealer.winRate(wholehand)
+            nextrate=calcuNumRate(wholehand)
+            print('Now Rate:'+str(nowrate))
+            print('Next Rate:'+str(nextrate))
+            print(nextrate-nowrate)
+
+

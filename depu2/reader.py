@@ -2,7 +2,11 @@
 
 import read_pokerstar
 import dealer
+import copy
 from dealer import printCard
+from dealer import card
+from dealer import getLeftNumCardCnt
+
 
 #得到目前的公共牌数量，对外
 def getPubnum(rtSit):
@@ -15,6 +19,23 @@ def calcuWinrate(rtSit):
     mycardlist=mycardlist+rtSit.cardlist
    
     return dealer.winRate(mycardlist)
+
+#得到后面一张牌的胜率
+def calcuNumRate(wholecardlist):
+    cnt=0
+    winRate=0
+    for i in range(2,15):
+        tmpCardList=copy.copy(wholecardlist)
+        tmpCardList.append(card(0,i))
+        tmpWinRate=dealer.winRate(tmpCardList)
+        leftCardCnt=getLeftNumCardCnt(i,wholecardlist)
+        winRate=winRate+tmpWinRate*leftCardCnt
+        cnt=cnt+leftCardCnt
+    return winRate/cnt
+
+
+        
+
 
 #得到手牌，对外
 def getMyHand(rtSit):
@@ -31,7 +52,7 @@ def getSurvivor(rtSit):
     survivorCnt=0
     for i in range(6):
         #去掉弃牌和位子是空的人
-        if(rtSit.statuslist[i]==0 or rtSit.chiplist[i]<0):
+        if(rtSit.betlist[i]<0 and rtSit.chiplist[i]<0):
             quitCnt=quitCnt+1
         else:
             survivorCnt=survivorCnt+1
@@ -113,3 +134,5 @@ def IsAfter(rtSit):
 #得到公共牌，对外
 def getPubList(rtSit):
     return rtSit.cardlist
+
+

@@ -439,6 +439,14 @@ def IsGunshotStraight(cardlist):
             cnt=cnt+1
     return cnt
 
+#判断某个数字的牌，外面还有几张
+def getLeftNumCardCnt(num,cardlist):
+    cnt=0
+    for card in cardlist:
+        if(card.num==num): cnt=cnt+1
+    return 4-cnt
+
+
 #简单测试用的
 def ddd():
     mylist=[card(2,13),card(2,2),card(1,2),card(2,3),card(1,4),card(3,5),card(2,8)]
