@@ -47,17 +47,42 @@ def IsSameCardlist(cardlist1,cardlist2,cnt):
         return True
 
 #我不想看见的牌
-def DontLikeCard(Sit):
+def DontLikeRate(Sit):
     wholehand=getMyHand(Sit)
     wholehand=wholehand+Sit.cardlist
+    rtRate=0
     #转牌我不想看见的牌
     if getPubnum(Sit)==3 :
         #我没有同花听牌，外面也没有同花听牌
-        if IsDrawFlush(wholehand)==False and len(SameSuit(Sit.cardlist))<2: 
-            nowrate=dealer.winRate(wholehand)
-            nextrate=calcuNumRate(wholehand)
-            print('Now Rate:'+str(nowrate))
-            print('Next Rate:'+str(nextrate))
-            print(nextrate-nowrate)
+        if IsDrawFlush(wholehand)==False :
+            if len(SameSuit(Sit.cardlist))<2: 
+                nowrate=dealer.winRate(wholehand)
+                nextrate=calcuNumRate(wholehand)
+                print('Now Rate:'+str(nowrate))
+                print('Next Rate:'+str(nextrate))
+                print(nextrate-nowrate)
+            #翻牌有同花可能
+            if len(SameSuit(Sit.cardlist))==2:
+                nowrate=dealer.winRate(wholehand)
+                nextrate=calcuNumRate(wholehand)-0.15
+                print('Now Rate:'+str(nowrate))
+                print('Next Rate:'+str(nextrate))
+                print(nextrate-nowrate)
+        if IsDrawStraight(wholehand)==True:
+            #公共牌为3张
+            if len(SameSuit(Sit.cardlist))==3:
+                nowrate=dealer.winRate(wholehand)
+                nextrate=calcuNumRate(wholehand)
+                print('Now Rate:'+str(nowrate))
+                print('Next Rate:'+str(nextrate))
+                print(nextrate-nowrate)
+            if len(SameSuit(Sit.cardlist))==2:
+                nowrate=dealer.winRate(wholehand)
+                nextrate=calcuNumRate(wholehand)+0.15
+                print('Now Rate:'+str(nowrate))
+                print('Next Rate:'+str(nextrate))
+                print(nextrate-nowrate)
+                
+
 
 

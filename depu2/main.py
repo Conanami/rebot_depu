@@ -74,7 +74,7 @@ def get_total_area():
         print('没有找到应用')
         return 0,0,0,0,window_title 
 
-    hwnd = win32gui.FindWindow(win32con.NULL,window_title)
+    hwnd = win32gui.FindWindow(None,window_title)
     if hwnd == 0 :
         print('%s not found' % window_title)
         return 0,0,0,0,window_title
@@ -122,6 +122,7 @@ def handle(game_area_left, game_area_top, rtSit):
             target = 700, 480
         elif no==4:
             target = 750, 480
+        
             #allin(game_area_left,game_area_top)
         raisebet(game_area_left,game_area_top,target)
 
@@ -179,7 +180,7 @@ def run_game(q):
                 game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
                 logging.info('是否需要解析:'+str(needCnt))
                 if ( NeedAnalyse (game_area_image.convert('L'))): 
-                    if(needCnt>=2):
+                    if(needCnt>=1):
                         logging.info('开始解析图像')
                         levelbb=getLevel(window_title)
                         rt = analysisImg(game_area_image.convert('L'),levelbb)
