@@ -42,12 +42,13 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 return (2,0)
             #对手表现出最强的实力,我强力下注后加注
             if rtSit.betlist[rtSit.myseat]>=(rtSit.potsize-max(rtSit.betlist))/(leftman+1) and rtSit.callchip>0:
-                if finalWinrate>=0.985: return (2,0)
+                if finalWinrate>=0.985: return (3,4)
                 if finalWinrate>=0.94: return (3,4)
+                #如果对手针对我的CBET，那么我就不用弃牌
                 if rtSit.potsize/rtSit.callchip>=3.9 and finalWinrate>=0.85 : return (2,0)
                 else: return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
-                if(finalWinrate>=0.99): return (2,0)
+                #if(finalWinrate>=0.99): return (3,4)
                 if(finalWinrate>=0.95): return (3,4)
                 if(finalWinrate>=0.92): return (3,3)
                 if(finalWinrate>=0.88): return (3,2)
@@ -233,6 +234,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 else: return (0,0)
             #对手下了小注
             if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
+                print('000')
                 if(finalWinrate>=0.95): return (3,4)
                 if(rtSit.potsize<12*rtSit.bb and finalWinrate>0.75): return (2,0)
                 if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<=20*rtSit.bb): 
@@ -249,6 +251,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                 return (0,0)
             #对手表现出很强的实力
             if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)/3 and rtSit.callchip<=(rtSit.potsize-rtSit.callchip)):
+                print('111')
                 if(finalWinrate>=0.95): return (3,4)
                 if(rtSit.potsize<12*rtSit.bb and finalWinrate>0.8): return (2,0)
                 if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<=20*rtSit.bb): 
@@ -258,7 +261,8 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.94): return (2,0)
                     if(finalWinrate>=0.92 and finalWinrate<0.95): return (2,0)
                     #小注小池头铁
-                    if rtSit.potsize/rtSit.callchip>=2.9 and rtSit.potsize<=25*rtSit.bb and finalWinrate>0.7: return (2,0) 
+                    if rtSit.potsize/rtSit.callchip>=2.9 and rtSit.potsize<=30*rtSit.bb and finalWinrate>0.7: return (2,0) 
+                    if rtSit.potsize/rtSit.callchip>=2.9 and finalWinrate>0.89: return (2,0) 
                     return (0,0)
                 return (0,0)
            
@@ -316,7 +320,7 @@ def afterFlopDecision(pubnum,singleWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.94): return (2,0)
                     if(finalWinrate>=0.90 and finalWinrate<0.94): return (2,0)
                     #小注小池头铁
-                    if rtSit.potsize/rtSit.callchip>=3 and rtSit.potsize<=25*rtSit.bb and finalWinrate>0.7: return (2,0) 
+                    #if rtSit.potsize/rtSit.callchip>=3 and rtSit.potsize<=25*rtSit.bb and finalWinrate>0.7: return (2,0) 
                     return (0,0)
                 return (0,0)
             #面对一个超POT大下注
@@ -356,10 +360,10 @@ def beforeFlopDecision(Sit,callchip):
             if(callchip==Sit.bb): return (2,1)
             else: return (2,callchip)
         #底池赔率合适，啥牌都可以玩
-        if callchip/Sit.potsize<1/(leftman+2) and (InTryRange(myhand) or InOpenRange(myhand)) and callchip<=5*Sit.bb: 
+        if callchip/Sit.potsize<1/(leftman+1) and (InTryRange(myhand) or InOpenRange(myhand)) and callchip<=5*Sit.bb: 
             return (2,callchip)
         #小盲单挑大盲可以玩
-        if(callchip/Sit.potsize<0.5 and callchip<=Sit.bb and callchip>0 and leftman==2): 
+        if(callchip/Sit.potsize<0.5 and callchip<Sit.bb and callchip>0 and leftman==2): 
             if(InTryRange(myhand)): return (3,1)
             elif (random.random()>0.5): return (3,1)
             else: return (0,0)
@@ -388,7 +392,7 @@ def InOpenRange(myhand):
     #if((myhand[0].num >= 14 and myhand[1].num < 14) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
     
     #两张高牌
-    if(myhand[0].num+myhand[1].num>=26): return True
+    if(myhand[0].num+myhand[1].num>=25): return True
 
     #两张同花高牌
     if(myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=24 ): return True
@@ -405,6 +409,8 @@ def InTryRange(myhand):
     if(InSuperRange(myhand)): return False
     #也不是进池牌
     if(InOpenRange(myhand)): return False
+    #两张高牌
+    if(myhand[0].num+myhand[1].num>=21 and myhand[0].num>=10 and myhand[1].num>=10):  return True
     #有张A
     if((myhand[0].num >= 14 ) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
     #带AK的同花
