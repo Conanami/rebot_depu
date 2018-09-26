@@ -14,7 +14,7 @@ from reader import getWaitingman
 from dealer import IsFlush
 from reader import IsAllIn
 from reader import IsAfter
-from Harrington import calcuNumRate
+from Harrington import DontLikeRate
 #fisherman，打低级别和鱼专用的
 
 #返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，对应不同按键
@@ -149,7 +149,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if rtSit.callchip<=80*rtSit.bb:
                     if(finalWinrate>=0.91): return (2,0)
                 return (0,0)
-            print('0000')
+            #print('0000')
         if(leftman>=3):
             if(rtSit.callchip==0):
                 if(finalWinrate>=0.98):  
@@ -421,7 +421,7 @@ def makeDecision(rtSit):
         if(rtSit.potsize==0): finalDecision=(-1,-1)
         #计算当前牌的胜率
         myWinrate=calcuWinrate(rtSit)
-        nextWinrate=calcuNumRate(rtSit,myWinrate)
+        nextWinrate=DontLikeRate(rtSit,myWinrate)
         #得到当前还剩几个人在底池中
         leftman=getSurvivor(rtSit)[1]
         #胜率与人数的关系，人数越多，胜率越小

@@ -75,7 +75,7 @@ def DontLikeRate(Sit,nowRate):
                 rtRate=nextRate-nowRate
             #公共牌出现3张同花
             if len(SameSuit(Sit.cardlist))==3:
-                print('0000')
+                #print('0000')
                 if SameSuit(Sit.cardlist)[0].suit<3: mysuit=3
                 else: mysuit=0
                 nextRate=calcuNumRate(wholehand,mysuit)
