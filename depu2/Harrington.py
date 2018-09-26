@@ -54,6 +54,7 @@ def DontLikeRate(Sit,nowRate):
     nextRate=0
     #转牌我不想看见的牌
     if getPubnum(Sit)==3 or getPubnum(Sit)==4 :
+
         #我没有同花听牌，外面也没有同花听牌
         if IsDrawFlush(wholehand)==False :
             if len(SameSuit(Sit.cardlist))<2: 
@@ -87,6 +88,7 @@ def DontLikeRate(Sit,nowRate):
                 nextRate=calcuNumRate(wholehand,mysuit)+0.15
                 rtRate=nextRate-nowRate
     #返回下张牌的胜率
+    print('变化率：'+str(nextRate)+","+str(rtRate))
     return nextRate,rtRate
 
 

@@ -146,8 +146,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(finalWinrate>=0.97):  
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
-                if rtSit.callchip<=80*rtSit.bb:
-                    if(finalWinrate>=0.91): return (2,0)
+                if(finalWinrate>=0.91): 
+                    return (2,0)
                 return (0,0)
             #print('0000')
         if(leftman>=3):
@@ -328,13 +328,14 @@ def beforeFlopDecision(Sit,callchip):
             return (2,callchip)
         #小盲单挑大盲可以玩
         if(callchip/Sit.potsize<0.5 and callchip<Sit.bb and callchip>0 and leftman==2): 
-            if(InTryRange(myhand)): return (3,1)
+            if(InTryRange(myhand)): 
+                if(random.random()>0.8): return (3,1)
             elif (random.random()>0.8): return (3,1)
             else: return (2,0)
         #大盲单挑一个没加注的人，通常是小盲
         if(callchip==0 and leftman==2):
             if(InTryRange(myhand)): return (3,1)
-            elif (random.random()>0.7): return (3,1)
+            elif (random.random()>0.9): return (3,1)
             else: return (2,0)
 
         #两个人单挑，很少情况接ALLIN玩玩
@@ -342,8 +343,7 @@ def beforeFlopDecision(Sit,callchip):
             #if InOpenRange(myhand): return (3,4)
             return (0,0)
         #如果是所有人弃牌到大盲
-        if(callchip==0 and leftman==2): 
-            if(random.random()>0.5): return (3,1)
+        if(callchip==0): 
             return (2,0)
         return (0,0)
     else:
