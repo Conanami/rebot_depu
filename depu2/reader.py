@@ -21,12 +21,12 @@ def calcuWinrate(rtSit):
     return dealer.winRate(mycardlist)
 
 #得到后面一张牌的胜率
-def calcuNumRate(wholecardlist):
+def calcuNumRate(wholecardlist,suit=0):
     cnt=0
     winRate=0
     for i in range(2,15):
         tmpCardList=copy.copy(wholecardlist)
-        tmpCardList.append(card(0,i))
+        tmpCardList.append(card(suit,i))
         tmpWinRate=dealer.winRate(tmpCardList)
         leftCardCnt=getLeftNumCardCnt(i,wholecardlist)
         winRate=winRate+tmpWinRate*leftCardCnt

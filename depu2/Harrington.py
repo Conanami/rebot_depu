@@ -47,42 +47,47 @@ def IsSameCardlist(cardlist1,cardlist2,cnt):
         return True
 
 #我不想看见的牌
-def DontLikeRate(Sit):
+def DontLikeRate(Sit,nowRate):
     wholehand=getMyHand(Sit)
     wholehand=wholehand+Sit.cardlist
     rtRate=0
+    nextRate=0
     #转牌我不想看见的牌
-    if getPubnum(Sit)==3 :
+    if getPubnum(Sit)==3 or getPubnum(Sit)==4 :
         #我没有同花听牌，外面也没有同花听牌
         if IsDrawFlush(wholehand)==False :
             if len(SameSuit(Sit.cardlist))<2: 
-                nowrate=dealer.winRate(wholehand)
-                nextrate=calcuNumRate(wholehand)
-                print('Now Rate:'+str(nowrate))
-                print('Next Rate:'+str(nextrate))
-                print(nextrate-nowrate)
+                nextRate=calcuNumRate(wholehand,0)
+                rtRate=nextRate-nowRate
             #翻牌有同花可能
             if len(SameSuit(Sit.cardlist))==2:
-                nowrate=dealer.winRate(wholehand)
-                nextrate=calcuNumRate(wholehand)-0.15
-                print('Now Rate:'+str(nowrate))
-                print('Next Rate:'+str(nextrate))
-                print(nextrate-nowrate)
-        if IsDrawStraight(wholehand)==True:
-            #公共牌为3张
+                #反正第四张只考虑不同花的，同花自己处理
+                if SameSuit(Sit.cardlist)[0].suit<3: mysuit=3
+                else: mysuit=0
+                nextRate=calcuNumRate(wholehand,mysuit)-0.15
+                rtRate=nextRate-nowRate
+        if IsDrawFlush(wholehand)==True:
+            #公共牌出现4张同花
+            if len(SameSuit(Sit.cardlist))==4:
+                if SameSuit(Sit.cardlist)[0].suit<3: mysuit=3
+                else: mysuit=0
+                nextRate=calcuNumRate(wholehand,mysuit)
+                rtRate=nextRate-nowRate
+            #公共牌出现3张同花
             if len(SameSuit(Sit.cardlist))==3:
-                nowrate=dealer.winRate(wholehand)
-                nextrate=calcuNumRate(wholehand)
-                print('Now Rate:'+str(nowrate))
-                print('Next Rate:'+str(nextrate))
-                print(nextrate-nowrate)
+                print('0000')
+                if SameSuit(Sit.cardlist)[0].suit<3: mysuit=3
+                else: mysuit=0
+                nextRate=calcuNumRate(wholehand,mysuit)
+                rtRate=nextRate-nowRate
+            #公共牌出现2张同花
             if len(SameSuit(Sit.cardlist))==2:
-                nowrate=dealer.winRate(wholehand)
-                nextrate=calcuNumRate(wholehand)+0.15
-                print('Now Rate:'+str(nowrate))
-                print('Next Rate:'+str(nextrate))
-                print(nextrate-nowrate)
-                
+                if SameSuit(Sit.cardlist)[0].suit<3: mysuit=3
+                else: mysuit=0
+                nextRate=calcuNumRate(wholehand,mysuit)+0.15
+                rtRate=nextRate-nowRate
+    #返回下张牌的胜率
+    return nextRate,rtRate
 
 
 
