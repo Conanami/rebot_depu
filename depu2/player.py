@@ -288,8 +288,14 @@ def beforeFlopDecision(Sit,callchip):
             if(callchip>=Sit.bb*3): return (3,4)
             
         
-        #好牌可以加注入局
-        if(InOpenRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=5): return (3,random.randint(1,2))
+        #投机牌可以加注入局
+        if(InTryRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=5): return (3,random.randint(1,2))
+        
+        #好牌可以平跟
+        if InOpenRange(myhand): 
+            if callchip<=Sit.bb and getWaitingman(Sit)<=5:
+                if random.random()>0.5: return (2,0)
+                else: return (3,1)
         #投机牌如果没有人入局，我有好位置，也可以入局
         if InTryRange(myhand) and callchip<=Sit.bb and Sit.position==Sit.myseat :
             return (2,1)
