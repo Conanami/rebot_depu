@@ -292,10 +292,12 @@ def beforeFlopDecision(Sit,callchip):
             if(InTryRange(myhand)): return (3,1)
             elif (random.random()>0.9): return (3,1)
             else: return (2,0)
-
+        #如果底池赔率合适
+        if Sit.potsize/callchip>4:
+            if InTryRange(myhand): return (2,0)
         #两个人单挑，很少情况接ALLIN玩玩
         if(leftman==2 and callchip>=5*Sit.bb):
-            #if InOpenRange(myhand): return (3,4)
+            if InTryRange(myhand): return (2,0)
             return (0,0)
         #如果是所有人弃牌到大盲
         if(callchip==0): 
