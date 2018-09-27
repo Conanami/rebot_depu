@@ -286,7 +286,7 @@ def beforeFlopDecision(Sit,callchip):
             if(InTryRange(myhand)): 
                 if(random.random()>0.8): return (3,1)
             elif (random.random()>0.8): return (3,1)
-            else: return (2,0)
+            else: return (0,0)
         #大盲单挑一个没加注的人，通常是小盲
         if(callchip==0 and leftman==2):
             if(InTryRange(myhand)): return (3,1)
