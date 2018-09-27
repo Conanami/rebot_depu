@@ -34,6 +34,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         if(leftman==2):
             if(rtSit.callchip==0):
                 if(random.random()>0.5): return (3,1)
+                elif(nextWinrate[1]<-0.03 and finalWinrate>0.9): return (3,3) 
                 else: return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.98): 
@@ -63,10 +64,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 return (0,0)
         if(leftman>=3):
             if(rtSit.callchip==0):
-                if(random.random()>0.5): return (3,1)
+                if(random.random()>0.6): return (3,1)
+                elif(nextWinrate[1]<-0.03 and finalWinrate>0.9): return (3,3) 
                 else: return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
-                if(finalWinrate>=0.94): 
+                
+                if(finalWinrate>=0.92): 
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
                 if(finalWinrate>=0.91): return (3,3)
@@ -76,7 +79,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawStraight(wholehandlist)): return(2,0)
                 return (0,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
-                if(finalWinrate>=0.96): 
+                print('111')
+                if(finalWinrate>=0.93): 
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
                 if(finalWinrate>=0.92): return (3,2)
@@ -84,7 +88,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawStraight(wholehandlist)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
-                if(finalWinrate>=0.97): 
+                if(finalWinrate>=0.93): 
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
                 if rtSit.callchip<=80*rtSit.bb:
@@ -94,9 +98,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
     if(pubnum==4):
         if(leftman==2):
             if(rtSit.callchip==0):
-                if(random.random()>=0.5): 
+                if(random.random()>=0.6): 
                     print('转牌咋呼')
-                    return (3,1)                
+                    return (3,1) 
+                elif(nextWinrate[1]<-0.03 and finalWinrate>0.9): return (3,1)               
                 return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.96):  
@@ -127,9 +132,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #print('0000')
         if(leftman>=3):
             if(rtSit.callchip==0):
-                if(random.random()>=0.5): 
+                if(random.random()>=0.7): 
                     print('转牌咋呼')
-                    return (3,1)                
+                    return (3,1)
+                elif(nextWinrate[1]<-0.03 and finalWinrate>0.9): return (3,1)                       
                 return (2,0)
             if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                 if(finalWinrate>=0.94):  
@@ -163,9 +169,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         if(leftman==2):
             #没人下注，底池小积极偷，底池大如果牌大就努力争取
             if(rtSit.callchip==0):
-                if(random.random()>=0.5): 
+                if(finalWinrate>=0.98): return (3,4)
+                if(random.random()>=0.9): 
                     print('河牌咋呼')
-                    return (3,1)                
+                    return (3,1)
+                                     
                 return (2,0)
             #对手下了小注
             if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
@@ -207,8 +215,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         #还剩3个人以上
         if(leftman>=3):
             #没人下注，底池小积极偷，底池大如果牌大就努力争取
+            if(finalWinrate>=0.94): return (3,4)
             if(rtSit.callchip==0):
-                if(random.random()>=0.5): 
+                if(random.random()>=0.9): 
                     print('河牌咋呼')
                     return (3,1)                
                 return (2,0)
