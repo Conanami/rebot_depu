@@ -56,6 +56,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawStraight(wholehandlist)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
+                if(nextWinrate[1]>0.3): return (3,4)
+                if(nextWinrate[1]>0.15): return (2,0)
                 if(finalWinrate>=0.96): 
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
@@ -88,6 +90,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawStraight(wholehandlist)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
+                if(nextWinrate[1]>0.3): return (3,4)
+                if(nextWinrate[1]>0.15): return (2,0)
                 if(finalWinrate>=0.93): 
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
@@ -123,6 +127,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawStraight(wholehandlist)): return(2,2)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
+                if(nextWinrate[1]>0.3): return (3,4)
+                if(nextWinrate[1]>0.15): return (2,0)
                 if(finalWinrate>=0.97):  
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
@@ -157,6 +163,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawStraight(publist)): return (2,0)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
+                if(nextWinrate[1]>0.3): return (3,4)
+                if(nextWinrate[1]>0.15): return (2,0)
                 if(finalWinrate>=0.97):  
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
