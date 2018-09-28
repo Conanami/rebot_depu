@@ -32,6 +32,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
     #超级大牌要设置陷阱
     if(pubnum>=1 and pubnum<=3):
         if(leftman==2):
+            #我的位置对他的位置
+
             if(rtSit.callchip==0):
                 if(random.random()>0.5): return (3,1)
                 elif(nextWinrate[1]<-0.03 and finalWinrate>0.9): return (3,3) 
@@ -59,7 +61,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(IsDrawStraight(wholehandlist)): return(2,2)
                 if(finalWinrate>=0.66): 
                     if random.random()>0.7: return (2,0)
-                    else: return (3,3)
+                    else: return (0,0)
                 return (0,0)
             if(rtSit.callchip>=rtSit.potsize/leftman):
                 if(nextWinrate[1]>0.3): return (3,4)
