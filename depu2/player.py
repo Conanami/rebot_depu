@@ -86,6 +86,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
                 if(finalWinrate>=0.92): return (3,2)
+                if(finalWinrate>=0.70): return (3,3)
                 if(IsDrawFlush(wholehandlist)): return (2,2)
                 if(IsDrawStraight(wholehandlist)): return(2,2)
                 return (0,0)
