@@ -352,6 +352,9 @@ def beforeFlopDecision(Sit,callchip):
                 if InOpenRange(myhand) or InTryRange(myhand): 
                     if random.random()>0.3: return (3,1)
                     else: return (2,0)
+                if InCallRange(myhand):
+                    if random.random()>0.4: return (3,1)
+                    else: return (2,0)
                 if random.random()>0.8: return (3,0)
                 else: return (2,0)
                 
@@ -436,9 +439,10 @@ def beforeFlopDecision(Sit,callchip):
                 if InOpenRange(myhand): return (2,0)
                 if InTryRange(myhand):
                     if random.random()>0.5 : return (2,0)
-                    else: return (0,0)
-                if Sit.potsize/Sit.callchip>=3.5: 
+                    else: return (2,0)
+                if leftman==2 : 
                     if InCallRange(myhand): return (2,0)
+                    
         if callchip>=6*Sit.bb :
             if InSuperRange(myhand): return (3,4)
             return (0,0)
