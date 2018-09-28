@@ -351,6 +351,7 @@ def beforeFlopDecision(Sit,callchip):
                     else: return (2,0)
                 if random.random()>0.8: return (3,0)
                 else: return (2,0)
+                
         if callchip<=3*Sit.bb and callchip>0 and Sit.potsize/callchip>=4:
             if InTryRange(myhand): return (2,0)
             if InOpenRange(myhand): return (2,0)
@@ -438,6 +439,7 @@ def beforeFlopDecision(Sit,callchip):
         if callchip>=6*Sit.bb :
             if InSuperRange(myhand): return (3,4)
             return (0,0)
+        if callchip==0 : return (2,0)
         
     return (0,-1)
 
@@ -450,69 +452,6 @@ def InCallRange(myhand):
     if abs(myhand[0].num-myhand[1].num)<=2: return True
     return False
 
-
-
-#翻前决策
-def beforeFlopDecision2(Sit,callchip):
-    print("翻前决策")
-    myhand=getMyHand(Sit)
-    pubcnt=getPubnum(Sit)
-    leftman=getSurvivor(Sit)[1]
-  
-    #如果中间有牌，或者两张牌没有读出来，则返回弃牌
-    if(pubcnt==0 and len(myhand)==2):
-        
-        if(InSuperRange(myhand)):
-            if(callchip==0): return (3,3)
-            if(callchip>0 and callchip<Sit.bb*3): 
-                if Sit.betlist[Sit.myseat]>=2*Sit.bb: return (3,4)
-                else: return (3,3)
-            if(callchip>=Sit.bb*3): return (3,4)
-            
-        
-        #投机牌可以加注入局
-        if(InTryRange(myhand) and callchip<=Sit.bb and getWaitingman(Sit)<=5): return (3,random.randint(1,2))
-        
-        #好牌可以平跟
-        if InOpenRange(myhand): 
-            if callchip<=Sit.bb and getWaitingman(Sit)<=5:
-                if random.random()>0.5: return (2,0)
-                else: return (3,1)
-
-        #投机牌如果没有人入局，我有好位置，也可以入局
-        if InTryRange(myhand) and callchip<=Sit.bb and Sit.position==Sit.myseat :
-            return (2,1)
-        #如果是开局牌，则可以跟别人open，但不能跟别人的4bet
-        if InOpenRange(myhand) and callchip>Sit.bb and callchip<=Sit.bb*6 and Sit.betlist[Sit.myseat]<=Sit.bb: 
-            if(callchip==Sit.bb): return (2,1)
-            else: return (2,callchip)
-        #底池赔率合适，啥牌都可以玩
-        if callchip/Sit.potsize<1/(leftman+1) and (InTryRange(myhand) or InOpenRange(myhand)) and callchip<=5*Sit.bb: 
-            return (2,callchip)
-        #小盲单挑大盲可以玩
-        if(callchip/Sit.potsize<0.5 and callchip<Sit.bb and callchip>0 and leftman==2): 
-            if(InTryRange(myhand)): 
-                if(random.random()>0.8): return (3,1)
-            elif (random.random()>0.8): return (3,1)
-            else: return (0,0)
-        #大盲单挑一个没加注的人，通常是小盲
-        if(callchip==0 and leftman==2):
-            if(InTryRange(myhand)): return (3,1)
-            elif (random.random()>0.9): return (3,1)
-            else: return (2,0)
-        #如果底池赔率合适
-        if callchip>0 and Sit.potsize/callchip>4:
-            if InTryRange(myhand): return (2,0)
-        #两个人单挑，很少情况接ALLIN玩玩
-        if(leftman==2 and callchip>=5*Sit.bb):
-            if InTryRange(myhand): return (2,0)
-            return (0,0)
-        #如果是所有人弃牌到大盲
-        if(callchip==0): 
-            return (2,0)
-        return (0,0)
-    else:
-        return (0,-1)
 
 #入局玩的牌，紧是硬道理
 def InOpenRange(myhand):
