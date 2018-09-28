@@ -338,6 +338,9 @@ def beforeFlopDecision(Sit,callchip):
                 if InOpenRange(myhand) or InTryRange(myhand): 
                     if random.random()>0.3: return (3,1)
                     else: return (2,0)
+                if InCallRange(myhand):
+                    if random.random()>0.4: return (3,1)
+                    else: return (2,0)
                 if random.random()>0.8: return (3,0)
                 else: return (0,0)
             #如果是大盲
