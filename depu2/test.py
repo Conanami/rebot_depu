@@ -14,7 +14,7 @@ def bbb():
     start =time.clock()
    
    
-    file_name=r'tmp\dz_0925203501.png' 
+    file_name=r'tmp\dz_0929171359.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))
@@ -22,6 +22,7 @@ def bbb():
     
     print(rtSit.todict())
     winrate=calcuWinrate(rtSit)
+
     #print('不喜欢率%s , %s' % DontLikeRate(rtSit,winrate))
     print('决策结果%s %s' % (p.makeDecision(rtSit)))
     '''
