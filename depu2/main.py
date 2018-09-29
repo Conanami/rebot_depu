@@ -113,6 +113,8 @@ def handle(game_area_left, game_area_top, rtSit):
     elif kind == 1 or kind==2:
         # 追加
         target = 640, 550
+        raisebet(game_area_left,game_area_top,target)
+    
     elif kind ==3:
         if no==1:
             target = 650, 480
@@ -126,7 +128,7 @@ def handle(game_area_left, game_area_top, rtSit):
             #allin(game_area_left,game_area_top)
         raisebet(game_area_left,game_area_top,target)
 
-    if target[0]:
+    if target[0] and kind==0:
         pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1])
         pyautogui.click()
 

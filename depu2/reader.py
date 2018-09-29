@@ -118,7 +118,7 @@ def getWaitingman(rtSit):
 #返回全下的对手位置
 def IsAllIn(rtSit):
     for i in range(6):
-        if i!=rtSit.myseat and rtSit.chiplist[i]==0 and rtSit.betlist[i]>0:
+        if i!=rtSit.myseat and rtSit.chiplist[i]<=0 and rtSit.betlist[i]>0:
             return i
     return None
 
