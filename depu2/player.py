@@ -94,7 +94,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(nextWinrate[1]>=-0.01): return (2,0)
                     if(nextWinrate[1]<-0.03): return (3,4)
                 if(finalWinrate>=0.92): return (3,2)
-                if(finalWinrate>=0.70): return (3,3)
+                if(finalWinrate>=0.70): 
+                    if random.random(): return (3,3)
+                    else: return (2,0)
                 if(IsDrawFlush(wholehandlist)): return (2,2)
                 if(IsDrawStraight(wholehandlist)): return(2,2)
                 return (0,0)
@@ -205,7 +207,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(rtSit.potsize>=20*rtSit.bb):
                     if(finalWinrate>=0.94): return (3,4)
                     if(finalWinrate>=0.91): return (3,1)
-                    #if(finalWinrate>=0.87): return (2,0)
+                    if(finalWinrate>=0.87): return (2,0)
                     return (0,0)
                 return (0,0)
             #对手表现出很强的实力
@@ -216,10 +218,13 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>0.7): return (2,0)
                     return (0,0)
                 if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<20*rtSit.bb): 
-                    if(finalWinrate>=0.91): return (2,0)
+                    if(finalWinrate>=0.7): return (2,0)
                     return (0,0)
-                if(rtSit.potsize>=20*rtSit.bb):
-                    if(finalWinrate>=0.93): return (2,0)
+                if(rtSit.potsize>=20*rtSit.bb and rtSit.potsize<30*rtSit.bb):
+                    if(finalWinrate>=0.8): return (2,0)
+                    return (0,0)
+                if(rtSit.potsize>=30*rtSit.bb):
+                    if(finalWinrate>=0.9): return (2,0)
                     return (0,0)
                 return (0,0)
             #面对一个超POT大下注
@@ -239,21 +244,25 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if rtSit.potsize<=20*rtSit.bb: 
                         print('河牌咋呼')
                         return (3,3)
-                                  
                 return (2,0)
             #对手下了小注
             if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
                 if(finalWinrate>=0.94): return (3,4)
                 if(rtSit.potsize<12*rtSit.bb ):
-                    if(finalWinrate>0.70): return (2,0)
+                    if(finalWinrate>0.6): return (2,0)
                     return (0,0)
                 if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<=20*rtSit.bb): 
-                    if(finalWinrate>=0.91): return (2,0)
+                    if(finalWinrate>=0.7): return (2,0)
                     return (0,0)
-                if(rtSit.potsize>20*rtSit.bb):
+                if(rtSit.potsize>20*rtSit.bb and rtSit.potsize<=40*rtSit.bb):
                     if(finalWinrate>=0.94): return (3,4)
                     if(finalWinrate>=0.91): return (3,1)
-                    if(finalWinrate>=0.87): return (2,0)
+                    if(finalWinrate>=0.76): return (2,0)
+                    return (0,0)
+                if(rtSit.potsize>40*rtSit.bb):
+                    if(finalWinrate>=0.94): return (3,4)
+                    if(finalWinrate>=0.91): return (2,0)
+                    if(finalWinrate>=0.76): return (0,0)
                     return (0,0)
                 return (0,0)
             #对手表现出很强的实力
