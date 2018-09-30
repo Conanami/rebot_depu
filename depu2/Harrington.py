@@ -18,6 +18,7 @@ from dealer import GetTopSame
 from dealer import LikeStraight
 from dealer import IsFlush
 from reader import getWaitingman
+from dealer import IsGunshotStraight
 #做出决策
 def makeDecision(rtSit):
     #得到公共牌的张数
@@ -199,17 +200,23 @@ def flopDecision(Sit):
                     #如果我中了葫芦以上牌力，肯定掩饰牌力
                     if cardtype>9:
                         return (2,0)
-                    #如果是听顺，则对小加注跟注
-                    if IsDrawStraight(mycardlist): return (2,0)
-                    #如果是听花，我手里两张花，则跟注
-                    if IsDrawFlush(mycardlist) and myhand[1].suit==myhand[0].suit: return (2,0)
-                    #如果是听花，外面3张花，则我手里那张大于10跟注，小于10就看后面随机搞了
-                    if IsDrawFlush(mycardlist) and len(SameSuit(publist))==3 and MyFlushTop(myhand,publist)>=10: return (2,0)
+                    
+                    if IsGunshotStraight(mycardlist)>=1:
+                        print('单挑小注，顺子听牌要跟')
+                        return (2,0)
+                    if IsDrawFlush(mycardlist) and myhand[1].suit==myhand[0].suit: 
+                        print('单挑小注，同花跟')
+                        return (2,0)
+                    if IsDrawFlush(mycardlist) and len(SameSuit(publist))==3 and MyFlushTop(myhand,publist)>=10:
+                        print('单挑小注，三张同花我有大于10跟')
+                        return (2,0)
                     #如果是小牌，就根据底池赔率决定是否要跟注
                     if Sit.potsize/Sit.callchip>0.5/(winRate-0.5) and winRate>0.5: return (2,0)
                     return (0,0)
-                #前位对手下了一个中等注
+                
+                '''单挑我有利位置，对手下了一个超过半池的注'''
                 if Sit.callchip>Sit.potsize/3 and Sit.callchip<(Sit.potsize-Sit.callchip)*0.75:
+                    print('单挑前面的对手下一个超过半池的注')
                     #我有对，外面没有公对
                     if cardtype==3 and cardtypeOf(publist)==2:
                         mypair=GetTopSame(mycardlist)
@@ -429,7 +436,7 @@ def flopDecision(Sit):
                     return (2,0)
                 #其它牌前位都可以随机打
                 if random.random()>0.5: return (3,1)
-                else:return (2,0)
+                return (2,0)
             #后面的对手check_raise了
             if Sit.callchip>Sit.betlist[Sit.myseat]:
                 #对手只是不相信我的连续下注
@@ -505,14 +512,17 @@ def flopDecision(Sit):
                     if cardtype==10 and cardtypeOf(publist)==7:
                         if myhand[0].num>=7: return (3,4)
                         else: return (2,0)
-                    #所有小牌就算了
-                    return (0,0)
+                                     
                 #对手是真有大牌，钓到我这条鱼了
                 if Sit.betlist[Sit.myseat]>Sit.oldpot/2:
                     if winRate>0.98: return (3,4)
                     if Sit.potsize/Sit.callchip>0.1/(winRate-0.9) and winRate>0.9:
                         return (2,0)
-                    return (0,0)
+                    if IsDrawFlush(mycardlist) and IsDrawStraight(mycardlist): 
+                        print('同时听花听顺，肯定要一战到底')
+                        return (3,4)
+                
+                
         return (0,0)
     #多人底池的打法，多人底池不慢打
     if(leftman>=3):
@@ -531,25 +541,41 @@ def flopDecision(Sit):
             return (2,0)
         #如果有人下注，但是小于等于半个底池
         if Sit.callchip>0 and Sit.callchip<=Sit.oldpot/2:
+            print('对手下个小注')
             if winRate>0.96: return (3,4)
             if winRate>0.88: return (2,0)
         #如果有人下注，但是大于等于半个底池
         if Sit.callchip>Sit.oldpot/2 and Sit.callchip<=Sit.oldpot:
+            print('对手下个半个底池以上的注')
             if winRate>0.96: return (3,4)
             if winRate>0.92: return (2,0)
         #如果有人下个超级大注
         if Sit.callchip>Sit.oldpot:
+            print('对手下个大于底池的注')
             if winRate>0.96: return (3,4)
         #如果赔率合适，我有听牌机会
         if IsDrawFlush(mycardlist) and myhand[0].suit==myhand[1].suit:
+            print('外面两张的同花听牌')
+            if Sit.potsize/Sit.callchip>3: return (2,0)
+        if IsDrawFlush(mycardlist) and MyFlushTop(myhand,publist)>=10:
+            print('外面三张的同花听牌，我有张大于10的')
             if Sit.potsize/Sit.callchip>3: return (2,0)
         #如果又听花又听顺
-        if IsDrawStraight(mycardlist) and IsDrawFlush(mycardlist): return (2,0)
+        if IsGunshotStraight(mycardlist)>=1 and IsDrawFlush(mycardlist): 
+            print('花顺双抽')
+            return (2,0)
         #听顺也要跟跟的呀
         if IsDrawStraight(mycardlist): 
+            print('听两头顺')
             if Sit.potsize/Sit.callchip>3: return (2,0)
+        #卡顺有赔率也玩
+        if IsGunshotStraight(mycardlist)==1:
+            print('听卡顺')
+            if Sit.potsize/Sit.callchip>6: return (2,0)
         #其它牌全部按底池赔率来跟
-        if Sit.potsize/Sit.callchip>0.33/(winRate-0.66) and winRate>0.66: return (2,0)
+        if Sit.potsize/Sit.callchip>0.33/(winRate-0.66) and winRate>0.66: 
+            print('底池赔率合适，剩下的情况')
+            return (2,0)
         #否则弃牌
         
         return (0,0)
@@ -592,11 +618,15 @@ def turnDecision(Sit):
     #剩下几个人
     leftman=getSurvivor(Sit)[1]
     if(leftman==2):
+        if(Sit.callchip==0):
+            #我在后位，对方没有下注
+            if(MyTurn(Sit)==2):
+                return (2,0)
+            return (2,0)
         return (0,0)
-    if(leftman==3):
+    if(leftman>=3):
         return (0,0)
-    if(leftman>=4):
-        return (0,0)
+    
     return (0,-1)
 
 #河牌决策
