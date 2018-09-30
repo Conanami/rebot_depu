@@ -17,6 +17,7 @@ from reader import IsAfter
 from Harrington import DontLikeRate
 #fisherman，打低级别和鱼专用的
 from Harrington import flopDecision
+from Harrington import MyTurn
 
 
 
@@ -445,7 +446,7 @@ def beforeFlopDecision(Sit,callchip):
                 print('底池赔率好，啥都跟')
                 return (2,0)
         #如果有人加注了，但还不是很大
-        if callchip>=2*Sit.bb and callchip<=6*Sit.bb:
+        if callchip>=Sit.bb and callchip<=6*Sit.bb:
             if (Sit.position-Sit.myseat)%6==3 :
                 print('UTG跟加注')
                 if InSuperRange(myhand): return (3,4)
@@ -521,7 +522,9 @@ def beforeFlopDecision(Sit,callchip):
                     else: return (2,0)
                 if leftman==2 : 
                     if InCallRange(myhand): return (2,0)
-                    
+                    if MyTurn(Sit)==2 and Sit.potsize/Sit.callchip>=3: 
+                        print('对抗小盲有位置优势')
+                        return (2,0)
         if callchip>=6*Sit.bb :
             if InSuperRange(myhand): return (3,4)
             return (0,0)
