@@ -48,6 +48,7 @@ def flopDecision(Sit):
     mycardlist=myhand+publist
     #得到我的牌型
     cardtype=cardtypeOf(mycardlist)
+    print('我的胜率%s' % winRate)
 
     if(leftman==2):
         print('翻后还剩2人')
@@ -59,7 +60,7 @@ def flopDecision(Sit):
                 #我有对，外面没有公对
                 if cardtype==3 and cardtypeOf(publist)==2:
                     mypair=GetTopSame(mycardlist)
-                    toppub=GetTopSame(publist)
+                    toppub=GetTopSame(publist)[0].num
                     #我是超对
                     if mypair[0].num>toppub and myhand[0].num==myhand[1].num:
                         return (3,3)
@@ -137,7 +138,7 @@ def flopDecision(Sit):
                     #我有对，外面没有公对
                     if cardtype==3 and cardtypeOf(publist)==2:
                         mypair=GetTopSame(mycardlist)
-                        toppub=GetTopSame(publist)
+                        toppub=GetTopSame(publist)[0].num
                         #我是超对
                         if mypair[0].num>toppub and myhand[0].num==myhand[1].num:
                             return (3,3)
@@ -220,7 +221,7 @@ def flopDecision(Sit):
                     #我有对，外面没有公对
                     if cardtype==3 and cardtypeOf(publist)==2:
                         mypair=GetTopSame(mycardlist)
-                        toppub=GetTopSame(publist)
+                        toppub=GetTopSame(publist)[0].num
                         #我是超对
                         if mypair[0].num>toppub and myhand[0].num==myhand[1].num:
                             return (3,3)
@@ -296,7 +297,7 @@ def flopDecision(Sit):
                     #我有对，外面没有公对
                     if cardtype==3 and cardtypeOf(publist)==2:
                         mypair=GetTopSame(mycardlist)
-                        toppub=GetTopSame(publist)
+                        toppub=GetTopSame(publist)[0].num
                         #我是超对
                         if mypair[0].num>toppub and myhand[0].num==myhand[1].num:
                             return (2,0)
@@ -375,7 +376,7 @@ def flopDecision(Sit):
                 #我有对，外面没有公对
                 if cardtype==3 and cardtypeOf(publist)==2:
                     mypair=GetTopSame(mycardlist)
-                    toppub=GetTopSame(publist)
+                    toppub=GetTopSame(publist)[0].num
                     #我是超对，就当翻前全下了
                     if mypair[0].num>toppub and myhand[0].num==myhand[1].num:
                         if mypair[0].num>=12:
@@ -444,7 +445,7 @@ def flopDecision(Sit):
                     #我有对，外面没有公对
                     if cardtype==3 and cardtypeOf(publist)==2:
                         mypair=GetTopSame(mycardlist)
-                        toppub=GetTopSame(publist)
+                        toppub=GetTopSame(publist)[0].num
                         #我是超对
                         if mypair[0].num>toppub and myhand[0].num==myhand[1].num:
                             if mypair[0].num>=13:
