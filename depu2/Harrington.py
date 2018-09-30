@@ -204,9 +204,11 @@ def flopDecision(Sit):
                     
                     if IsGunshotStraight(mycardlist)>=1:
                         print('单挑小注，顺子听牌要跟')
+                        if random.random()>0.7: return (3,3)
                         return (2,0)
                     if IsDrawFlush(mycardlist) and myhand[1].suit==myhand[0].suit: 
                         print('单挑小注，同花跟')
+                        if random.random()>0.5: return (3,3)
                         return (2,0)
                     if IsDrawFlush(mycardlist) and len(SameSuit(publist))==3 and MyFlushTop(myhand,publist)>=10:
                         print('单挑小注，三张同花我有大于10跟')
