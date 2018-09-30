@@ -524,7 +524,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InCallRange(myhand): return (2,0)
                     if MyTurn(Sit)==2 and Sit.potsize/Sit.callchip>=3: 
                         print('对抗小盲有位置优势')
-                        return (2,0)
+                        if random.random()>0.3: return (2,0)
         if callchip>=6*Sit.bb :
             if InSuperRange(myhand): return (3,4)
             return (0,0)
