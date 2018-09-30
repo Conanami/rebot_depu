@@ -233,23 +233,27 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         return (3,3)
                              
                 return (2,0)
-             #如果我还没有下注
-            if(rtSit.betlist[rtSit.myseat]==0):
+            #如果我还没有下注
+            if(rtSit.betlist[rtSit.myseat]<=0):
                 #对手下了小注
                 if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
+                    print('对手河牌下小注')
                     if(finalWinrate>=0.94): return (3,4)
                     #根据最后胜率来决定
-                    if(rtSit.potsize/rtSit.callchip>0.2/(finalWinrate-0.8) and finalWinrate>=0.8): return (2,0)
+                    if rtSit.potsize<=20*rtSit.bb:
+                        if(rtSit.potsize/rtSit.callchip>0.6/(finalWinrate-0.4) and finalWinrate>=0.4): 
+                            print('20bb小池子，我头就是硬')
+                            return (2,0)
                     if(rtSit.potsize<12*rtSit.bb):
-                        if(finalWinrate>0.70): return (2,0)
+                        if(finalWinrate>0.60): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<20*rtSit.bb): 
-                        if(finalWinrate>=0.92): return (2,0)
+                        if(finalWinrate>=0.66): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>=20*rtSit.bb):
                         if(finalWinrate>=0.94): return (3,4)
                         if(finalWinrate>=0.91): return (3,1)
-                        if(finalWinrate>=0.87): return (2,0)
+                        if(finalWinrate>=0.8): return (2,0)
                         return (0,0)
                     return (0,0)
                 #对手表现出很强的实力
@@ -294,7 +298,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         return (3,3)
                 return (2,0)
             #如果我还没有下注
-            if(rtSit.betlist[rtSit.myseat]==0):
+            if(rtSit.betlist[rtSit.myseat]<=0):
                 #对手下了小注
                 if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
                     if(finalWinrate>=0.94): return (3,4)
