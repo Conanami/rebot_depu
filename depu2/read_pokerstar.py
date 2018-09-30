@@ -32,6 +32,7 @@ class situation:
         self.statuslist=[]
         self.position=0
         self.potsize=0
+        self.oldpot=0
         self.bb=0
         self.callchip=0
 
@@ -70,7 +71,7 @@ class situation:
         
         result['myseat']=self.myseat
         result['potsize'] = self.potsize
-
+        result['oldpot'] = self.oldpot
         
         
         result['dc1'] = self.betlist[0] 
@@ -383,6 +384,7 @@ def GetSituation(   wholeimg,
     potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,chip_num_sample_img,num_step,point_step,thres)
     rtSit.potsize=potsize
 
+    
 
 
     #需要跟注筹码量
@@ -416,6 +418,19 @@ def GetSituation(   wholeimg,
                 picbox(490,316,557+betWidth,316+betHeight)
     ]
     rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,dc_num_sample_img,num_step,point_step,thres)
+
+    #上一轮底池大小范围
+    x1=300
+    x2=x1+120
+    y1=310
+    y2=310+12
+    numstart=0
+    thres=160
+    num_step=8
+    point_step=8
+    dcpicbox=picbox(x1,y1,x2,y2)
+    oldpot=SinglePicToNum(wholeimg,dcpicbox,numstart,dc_num_sample_img,num_step,point_step,thres)
+    rtSit.oldpot=oldpot
 
     #找到谁是BTN位
     btnWidth=28

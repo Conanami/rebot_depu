@@ -17,7 +17,6 @@ def getPubnum(rtSit):
 def calcuWinrate(rtSit):
     mycardlist=getMyHand(rtSit)
     mycardlist=mycardlist+rtSit.cardlist
-   
     return dealer.winRate(mycardlist)
 
 #得到后面一张牌的胜率

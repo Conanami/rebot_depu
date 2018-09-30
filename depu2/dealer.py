@@ -129,6 +129,16 @@ def SameSuit(cardlist):
     
     return rtHand
 
+#牌面是不是像有顺面
+def LikeStraight(cardlist):
+    cnt=0
+    for num in range(2,15):
+        tmplist=copy.copy(cardlist)
+        tmplist.append(card(0,num))
+        if IsGunshotStraight(tmplist)>=1:
+            cnt=cnt+1
+    if cnt>=1: return True
+    return False
 
 #判断牌的类型
 def cardtypeOf(cardlist):

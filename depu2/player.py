@@ -16,6 +16,10 @@ from reader import IsAllIn
 from reader import IsAfter
 from Harrington import DontLikeRate
 #fisherman，打低级别和鱼专用的
+from Harrington import flopDecision
+
+
+
 
 #返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，对应不同按键
 #待整理的函数
@@ -31,6 +35,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
     #翻牌前
     #超级大牌要设置陷阱
     if(pubnum>=1 and pubnum<=3):
+        print("翻牌不会走这里！！")
         if(leftman==2):
             #我的位置对他的位置
             if(rtSit.callchip==0):
@@ -597,7 +602,10 @@ def makeDecision(rtSit):
         finalDecision=beforeFlopDecision(rtSit,callchip)
     elif(pubnum==1 or pubnum==2): finalDecision=(2,0)
     #如果是翻牌后
-    elif(pubnum>=3):
+    elif(pubnum==3): 
+        finalDecision=flopDecision(rtSit)
+    #如果是转牌和河牌
+    elif(pubnum>=4):
         #如果没有读到底池大小
         if(rtSit.potsize==0): finalDecision=(-1,-1)
         #计算当前牌的胜率
