@@ -624,6 +624,12 @@ def turnDecision(Sit):
         if(Sit.callchip==0):
             #我在后位，对方没有下注
             if(MyTurn(Sit)==2):
+                #如果底池前面没有加过注
+                if(Sit.potsize<10*Sit.bb): 
+                    if random.random()>0.5: return (3,1)
+                #如果出现一张AK高牌
+                if Sit.cardlist[3].num>=13 and CardUnderNum(Sit.cardlist,3,12):
+                    if random.random()>0.5: return (3,1)
                 return (2,0)
             return (2,0)
         return (0,0)
@@ -631,6 +637,14 @@ def turnDecision(Sit):
         return (0,0)
     
     return (0,-1)
+
+#如果一批牌里没有大过某张牌的
+def CardUnderNum(cardlist,rangecnt,num):
+    if(len(cardlist)<rangecnt): return False
+    for i in range(rangecnt):
+        if cardlist[i].num>num: return False
+    return True
+
 
 #河牌决策
 def riverDecision(Sit):
