@@ -9,12 +9,13 @@ import player as p
 from Harrington import IsSameHand
 from Harrington import DontLikeRate
 from Harrington import MyTurn
+
 def bbb():
     ''' 测试 '''
     start =time.clock()
    
    
-    file_name=r'tmp\dz_0930163349.png' 
+    file_name=r'tmp\dz_1017040700.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))

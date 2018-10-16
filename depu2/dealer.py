@@ -459,9 +459,10 @@ def getLeftNumCardCnt(num,cardlist):
 
 #简单测试用的
 def ddd():
-    mylist=[card(2,13),card(2,2),card(1,2),card(2,3),card(1,4),card(3,5),card(2,8)]
-    print(IsGunshotStraight(mylist))
-
+    mylist=[card(0,9),card(0,6),card(2,5),card(0,4),card(3,2),card(0,13),card(3,3)]
+    #print(IsGunshotStraight(mylist))
+    printCard(mylist)
+    print(winRate(mylist))
 
 def ccc():
     starttime=time.clock()
@@ -492,5 +493,6 @@ def ccc():
     #计算运行时间
     endtime = time.clock()
     print('Running time: %s Seconds'%(endtime-starttime))
-    
+
+
 #ddd()
