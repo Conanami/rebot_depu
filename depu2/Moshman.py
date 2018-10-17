@@ -15,6 +15,7 @@ from dealer import LikeStraight
 from dealer import IsFlush
 from reader import getWaitingman
 from dealer import IsGunshotStraight
+from dealer import cardtypeOf
 
 #得到我是第几个行动的人
 def MyTurn(Sit):
@@ -26,8 +27,6 @@ def MyTurn(Sit):
             if Sit.chiplist[tmpi]>=0 or Sit.betlist[tmpi]>=0:
                 cnt=cnt+1
     return cnt
-
-
 
 def afterFlopDecision(Sit):
     pubnum=getPubnum(Sit)
@@ -75,6 +74,7 @@ def flopDecision(Sit):
             if Sit.callchip==0:
                 if winrate>0.7: return (3,3)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
+                if cardtypeOf(Sit.cardlist)==3: return (3,3)
                 return (2,0)
             elif Sit.callchip<Sit.oldpot/1.8:
                 if winrate>0.9: return (3,3)
