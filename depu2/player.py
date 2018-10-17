@@ -504,13 +504,14 @@ def beforeFlopDecision(Sit,callchip):
                         print('对抗一个玩家，保卫盲注')
                         return (2,0)
                 #这个也是测试用的，不一定好
-                if InTryRange(myhand) and leftman>2: 
+                if InTryRange(myhand) and leftman>=2: 
                     print('底池赔率还行，进去试试')
-                    return (0,0)
+                    return (2,0)
         if callchip>=6*Sit.bb:
             if InSuperRange(myhand): return (3,4)
             #还是认怂，这么凶的人少见
-            #if InOpenRange(myhand) and MyTurn(Sit)==1: return (3,4)
+            if InOpenRange(myhand) and MyTurn(Sit)==1: return (3,4)
+            if InTryRange(myhand): return (2,0)
             return (0,0)
         if callchip==0 : return (2,0)
         
