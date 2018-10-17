@@ -416,13 +416,21 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 #print('小盲默认要偷')
                 #return (3,0)
-            #如果是大盲，只剩2个人，发起攻击，不能客气
+            #如果是大盲，只剩2个人，不发起攻击，碰运气
             if callchip==0 and leftman==2 and (Sit.myseat-Sit.position)%6==2:
                 print('大盲')
                 if InSuperRange(myhand):
                     return (3,3)
-                if InOpenRange(myhand) or InTryRange(myhand) or QuiteGood(myhand): 
-                    return (3,3)
+                if MyTurn(Sit)==2:
+                    if InOpenRange(myhand):  
+                        return (2,0)
+                    if InTryRange(myhand): 
+                        return (2,0)
+                if MyTurn(Sit)==1:
+                    if InOpenRange(myhand):  
+                        return (2,0)
+                    if InTryRange(myhand): 
+                        return (0,0)
                 
         
         #如果有人加注了，但还不是很大
@@ -501,6 +509,8 @@ def beforeFlopDecision(Sit,callchip):
                     return (2,0)
         if callchip>=6*Sit.bb:
             if InSuperRange(myhand): return (3,4)
+            #还是认怂，这么凶的人少见
+            #if InOpenRange(myhand) and MyTurn(Sit)==1: return (3,4)
             return (0,0)
         if callchip==0 : return (2,0)
         
@@ -531,13 +541,10 @@ def InOpenRange(myhand):
     
     #两张高牌
     if(myhand[0].num+myhand[1].num>=25): return True
-
     #两张同花高牌
     if(myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=24 ): return True
-
     #中口袋对
     if(myhand[0].num==myhand[1].num and myhand[0].num>=7): return True
-    
     
     return False
 
@@ -636,26 +643,9 @@ def makeDecision(rtSit):
 
     #如果要加注，要根据自己的筹码和底池的实际情况
     if(finalDecision[0]==3):
-        #如果翻前，要跟注的量已经大于3个盲注了，则3，1，3，2都变成3，3
-        if(rtSit.callchip>3*rtSit.bb and (finalDecision[1]==1 or finalDecision[1]==2)):
-            finalDecision=finalDecision
-        #如果翻前，底池大小小于4个盲注，则一个底池下注是灰色
-        if(rtSit.potsize<=4*rtSit.bb and pubnum==0):
-            if(finalDecision[1]==3): 
-                finalDecision=(3,3)
-        #如果所有筹码小于要跟注的数量，那么直接allin
-        if(rtSit.chiplist[rtSit.myseat]<rtSit.callchip): finalDecision=(3,0)
-        #如果筹码大于需要跟注的数量
-        if(rtSit.chiplist[rtSit.myseat]>=rtSit.callchip):
-            #如果比2/3底池多，但是不到一个底池，则3，3变3，2
-            if(finalDecision[1]==3 and rtSit.chiplist[rtSit.myseat]>=0.66*rtSit.potsize and rtSit.chiplist[rtSit.myseat]<rtSit.potsize):
-                finalDecision=(3,3)
-            #如果比1/2底池多，但是不到2/3个底池，则3，2变3，1
-            if(finalDecision[1]==2 and rtSit.chiplist[rtSit.myseat]>=0.5*rtSit.potsize and rtSit.chiplist[rtSit.myseat]<0.66*rtSit.potsize):
-                finalDecision=(3,2)
-            #如果比1/2底池小，则只能选全下
-            if(finalDecision[1]==1 and rtSit.chiplist[rtSit.myseat]<0.5*rtSit.potsize):
-                finalDecision=(3,4)
+        #如果筹码太少,只能点全下
+        if(rtSit.chiplist[rtSit.myseat]<0.5*rtSit.potsize):
+            finalDecision=(3,4)
         #如果翻后底池比3个盲注还小，那就不能选择3，1和3，2，直接3，3
         if(rtSit.potsize<=3*rtSit.bb and pubnum>0):
             if(finalDecision[1]==1): finalDecision=(3,3)
