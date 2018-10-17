@@ -15,7 +15,7 @@ def bbb():
     start =time.clock()
    
    
-    file_name=r'tmp\dz_1017091241.png' 
+    file_name=r'tmp\dz_1017121740.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))

@@ -473,7 +473,7 @@ def beforeFlopDecision(Sit,callchip):
                 print('btn跟加注')
                 if leftman<=6 and leftman>=2:
                     if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
                     if InTryRange(myhand): return (2,0)
                     return (0,0)
             #小盲位跟加注
