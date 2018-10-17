@@ -369,7 +369,7 @@ def beforeFlopDecision(Sit,callchip):
     print('还剩%s个人' % leftman)
     if(pubcnt==0 and len(myhand)==2):
         #如果前面没有人加注
-        if(callchip==Sit.bb):
+        if(callchip==Sit.bb and Sit.betlist[Sit.myseat]<=0):
             #如果是UTG
             if (Sit.position-Sit.myseat)%6==3:
                 print('UTG')
@@ -434,7 +434,7 @@ def beforeFlopDecision(Sit,callchip):
                 
         
         #如果有人加注了，但还不是很大
-        if callchip>Sit.bb and callchip<=6*Sit.bb:
+        if callchip>=Sit.bb and callchip<=6*Sit.bb:
             if (Sit.position-Sit.myseat)%6==3 :
                 print('UTG跟加注')
                 if InSuperRange(myhand): return (3,3)
@@ -488,7 +488,7 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.myseat-Sit.position)%6==1:
                 print('小盲跟加注')
                 if InSuperRange(myhand): return (3,3)
-                if InOpenRange(myhand): return (3,3)
+                if InOpenRange(myhand): return (2,0)
                 
             #大盲位跟加注
             if (Sit.myseat-Sit.position)%6==2:
