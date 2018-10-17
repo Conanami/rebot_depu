@@ -62,12 +62,12 @@ def flopDecision(Sit):
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
-                if winrate>0.95: return (3,4)
+                if winrate>0.98: return (2,0)
                 if winrate>0.9: return (2,0)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>Sit.oldpot:
-                if winrate>0.95: return (3,4)
+                if winrate>0.98: return (3,4)
                 return (0,0)
         #我在前位
         elif MyTurn(Sit)==1:
@@ -83,12 +83,12 @@ def flopDecision(Sit):
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
-                if winrate>0.95: return (3,4)
+                if winrate>0.98: return (3,4)
                 if winrate>0.9: return (2,0)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>Sit.oldpot:
-                if winrate>0.97: return (3,4)
+                if winrate>0.98: return (3,4)
                 return (0,0)
         
     elif leftman>2:
@@ -98,7 +98,7 @@ def flopDecision(Sit):
             if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
             return (2,0)
         elif Sit.callchip<Sit.oldpot/1.8:
-            if winrate>0.95: return (3,4)
+            if winrate>0.98: return (3,4)
             if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
             if winrate>0.8: return (2,0)
             return (0,0)
@@ -107,7 +107,7 @@ def flopDecision(Sit):
             if winrate>0.9: return (2,0)
             if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
         elif Sit.callchip>Sit.oldpot:
-            if winrate>0.97: return (3,4)
+            if winrate>0.98: return (3,4)
             return (0,0)
     return (0,0)
         
