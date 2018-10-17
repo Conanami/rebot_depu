@@ -509,9 +509,9 @@ def beforeFlopDecision(Sit,callchip):
                     return (2,0)
         if callchip>=6*Sit.bb and callchip<10*Sit.bb:
             if InSuperRange(myhand): return (3,4)
-            #就不认怂，这么凶的人少见
-            if InOpenRange(myhand) and MyTurn(Sit)==1: return (3,4)
-            if InTryRange(myhand): return (2,0)
+            #还是要认怂，这么凶的人少见
+            #if InOpenRange(myhand) and MyTurn(Sit)==1: return (3,4)
+            #if InTryRange(myhand): return (2,0)
             return (0,0)
         if callchip>=10*Sit.bb: 
             if InSuperRange(myhand): return (3,4)
