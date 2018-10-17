@@ -72,9 +72,10 @@ def flopDecision(Sit):
         #我在前位
         elif MyTurn(Sit)==1:
             if Sit.callchip==0:
-                if winrate>0.7: return (3,3)
+                if winrate>0.75: return (3,3)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
                 if cardtypeOf(Sit.cardlist)==3: return (3,3)
+                if Sit.potsize>10*Sit.bb: return (3,3)
                 return (2,0)
             elif Sit.callchip<Sit.oldpot/1.8:
                 if winrate>0.9: return (3,3)
