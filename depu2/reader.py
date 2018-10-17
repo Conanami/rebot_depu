@@ -51,7 +51,7 @@ def getSurvivor(rtSit):
     survivorCnt=0
     for i in range(6):
         #去掉既没有下注，又没有筹码的人
-        if(rtSit.betlist[i]<0 and rtSit.chiplist[i]<0):
+        if(rtSit.betlist[i]<rtSit.bb and rtSit.chiplist[i]<0):
             quitCnt=quitCnt+1
         else:
             survivorCnt=survivorCnt+1
@@ -117,7 +117,7 @@ def getWaitingman(rtSit):
 #返回全下的对手位置
 def IsAllIn(rtSit):
     for i in range(6):
-        if i!=rtSit.myseat and rtSit.chiplist[i]<=0 and rtSit.betlist[i]>0:
+        if i!=rtSit.myseat and rtSit.chiplist[i]<=0 and rtSit.betlist[i]>rtSit.bb:
             return i
     return None
 

@@ -423,14 +423,14 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,3)
                 if MyTurn(Sit)==2:
                     if InOpenRange(myhand):  
-                        return (2,0)
+                        return (3,2)
                     if InTryRange(myhand): 
-                        return (2,0)
+                        return (3,2)
                 if MyTurn(Sit)==1:
                     if InOpenRange(myhand):  
                         return (2,0)
                     if InTryRange(myhand): 
-                        return (0,0)
+                        return (2,0)
                 
         
         #如果有人加注了，但还不是很大
@@ -469,7 +469,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (0,0)
                 if leftman==3:
                     if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
                     #if InTryRange(myhand): return (2,0)
                     return (0,0)
                 if leftman==2:
@@ -482,7 +482,7 @@ def beforeFlopDecision(Sit,callchip):
                 if leftman<=6 and leftman>=2:
                     if InSuperRange(myhand): return (3,3)
                     if InOpenRange(myhand): return (2,0)
-                    if InTryRange(myhand): return (2,0)
+                    if InTryRange(myhand): return (0,0)
                     return (0,0)
             #小盲位跟加注
             if (Sit.myseat-Sit.position)%6==1:
@@ -499,14 +499,14 @@ def beforeFlopDecision(Sit,callchip):
                     if QuiteGood(myhand): 
                         if MyTurn(Sit)==2 and Sit.potsize/Sit.callchip>=3: 
                             print('对抗小盲有位置优势')
-                            return (2,0)
+                            return (0,0)
                     elif InTryRange(myhand):
                         print('对抗一个玩家，保卫盲注')
-                        return (2,0)
+                        return (0,0)
                 #这个也是测试用的，不一定好
                 if InTryRange(myhand) and leftman>=2: 
                     print('底池赔率还行，进去试试')
-                    return (2,0)
+                    return (0,0)
         if callchip>=6*Sit.bb and callchip<10*Sit.bb:
             if InSuperRange(myhand): return (3,4)
             #还是要认怂，这么凶的人少见
