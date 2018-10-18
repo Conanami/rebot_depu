@@ -43,7 +43,10 @@ def async(f):
     return wrapper
 
 def grab_screen(left,top,right,bottom):
+    try:
         return PIL.ImageGrab.grab((left,top,right,bottom))
+    except Exception as e:
+        return None
 
 def copy_part_image(image_,left,top,right,bottom):
     return image_.crop((left,top,right,bottom))
@@ -91,7 +94,7 @@ def get_game_data(game_area_left, game_area_top, game_area_width, game_area_heig
     return game_area_image
 
 def on_release(key):
-    print('{0} released'.format(key))
+    # print('{0} released'.format(key))
     q.put(key)
 
 @async
@@ -152,11 +155,18 @@ def allin(game_area_left,game_area_top):
 def run_game(q):
     lastkey = keyboard.Key.esc
     needCnt=0
+
+    skeys = [keyboard.Key.esc, keyboard.KeyCode.from_char('r'), keyboard.KeyCode.from_char('R')]
+
     while True:
         if not q.empty():
             key =  q.get(True)
-            print('msg %s' % key)
-            lastkey = key
+            if key in skeys:
+                lastkey = key
+                print('msg %s' % key)
+            else:
+                print('ignore %s' % key)
+                continue
             
         if lastkey == keyboard.Key.esc:
             print('wait')
@@ -170,7 +180,7 @@ def run_game(q):
                 #pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
                 logging.info('是否需要解析:'+str(needCnt))
-                if ( NeedAnalyse (game_area_image.convert('L'))): 
+                if ( game_area_image and NeedAnalyse (game_area_image.convert('L'))): 
                     if(needCnt>=1):
                         logging.info('开始解析图像')
                         levelbb=getLevel(window_title)
