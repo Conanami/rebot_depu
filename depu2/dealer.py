@@ -387,7 +387,13 @@ def winRate2(list1):
 #计算对手牌的可能性权重
 def Weight(card1,card2):
     if card1.num>=10 and card2.num>=10: return 10
-    if card1.num<9 and card2.num<9 and abs(card1.num-card2.num)>=4: return 1
+    if (card1.num>=13 or card2.num>=13) and card1.suit==card2.suit: return 10
+    if card1.num==card2.num : return 10
+    if abs(card1.num-card2.num)==1 and card1.suit==card2.suit: return 10
+    if abs(card1.num-card2.num)==2 and card1.suit==card2.suit: return 7
+    if abs(card1.num-card2.num)==1 and card1.num>=8: return 7
+    if card1.num<9 and card2.num<9 and abs(card1.num-card2.num)>=3 and card1.suit!=card2.num: return 1
+    if card1.num<=12 and card2.num<=12 and abs(card1.num-card2.num)>=4 and card1.suit!=card2.num: return 1
     return 4
 
 #计算胜率，前2张是自己的牌，后面都是公共牌
