@@ -17,7 +17,8 @@ def getPubnum(rtSit):
 def calcuWinrate(rtSit):
     mycardlist=getMyHand(rtSit)
     mycardlist=mycardlist+rtSit.cardlist
-    return dealer.winRate(mycardlist)
+    print('不带权重的：%s', dealer.winRate(mycardlist))
+    return dealer.winRate2(mycardlist)
 
 #得到后面一张牌的胜率
 def calcuNumRate(wholecardlist,suit=0):

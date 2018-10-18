@@ -351,6 +351,44 @@ def nextWinrate(list1,winrate):
     return totalrate/totalcnt-winrate
     
     
+#新的计算胜率方法，对手范围有点判断
+def winRate2(list1):
+    d=dealer()
+    publist=[]
+    cnt=0
+    wincnt=0
+    
+    for i in range(2,len(list1)):
+        publist.append(list1[i])
+    #d.printCard(publist)
+    for i in range(len(d.cardset)):
+        for j in range(i+1,len(d.cardset)):
+            list2=copy.copy(publist)
+            if( InList(d.cardset[i],list1)==False and InList(d.cardset[j],list1)==False  ):
+                list2.append(d.cardset[i])
+                list2.append(d.cardset[j])
+                weight=Weight(d.cardset[i],d.cardset[j])
+                #d.printCard(list2)
+                if(Judge(list1,list2,min(len(list1),5))==1):
+                    wincnt=wincnt+weight
+                    cnt=cnt+weight
+                elif(Judge(list1,list2,min(len(list1),5))==2):
+                    cnt=cnt+weight
+    #print(cnt)
+    #print(wincnt)
+    #print("怎么会超过1")
+    if cnt>0:
+        rtrate=wincnt/cnt
+    else:
+        rtrate=0
+    
+    return rtrate
+
+#计算对手牌的可能性权重
+def Weight(card1,card2):
+    if card1.num>=10 and card2.num>=10: return 10
+    if card1.num<9 and card2.num<9 and abs(card1.num-card2.num)>=4: return 1
+    return 4
 
 #计算胜率，前2张是自己的牌，后面都是公共牌
 def winRate(list1):
