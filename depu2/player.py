@@ -87,7 +87,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
                 if(finalWinrate>=0.98): return (3,4)
-                if(rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92)):
+                if rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92) and finalWinrate>0.92:
                     return (2,0)
                 return (0,0)
             #print('0000')
@@ -131,7 +131,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
                 if(finalWinrate>=0.98): return (3,4)
-                if(rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92)):
+                if rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92) and finalWinrate>0.92:
                     return (2,0)
                 return (0,0)
         return (0,0)
@@ -260,7 +260,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
                 if(finalWinrate>=0.98): return (3,4)
-                if(rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92)):
+                if rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92) and finalWinrate>0.92:
                     return (2,0)
                 return (0,0)
         return (0,0)
