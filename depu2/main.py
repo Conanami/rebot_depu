@@ -184,7 +184,7 @@ def run_game(q):
                     needCnt=0
             time.sleep(0.8)
         else:
-            # lastkey = keyboard.KeyCode.from_char('r') 
+            lastkey = keyboard.KeyCode.from_char('r') 
             pass
         
 
