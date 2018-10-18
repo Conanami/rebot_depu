@@ -729,7 +729,7 @@ def DontLikeRate(Sit,nowRate):
                 nextRate=calcuNumRate(wholehand,mysuit)+0.15
                 rtRate=nextRate-nowRate
     #返回下张牌的胜率
-    print('变化率：'+str(nextRate)+","+str(rtRate))
+    #print('变化率：'+str(nextRate)+","+str(rtRate))
     return nextRate,rtRate
 
 
