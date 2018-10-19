@@ -51,8 +51,10 @@ def flopDecision(Sit):
     winrate=calcuWinrate(Sit)
     print('胜率判断：%s',winrate)
     print("potsize:"+str(Sit.potsize))
-    print('oldpot:'+str(Sit.oldpot))
-    print('我的位置'+str(MyTurn(Sit)))
+    print('原来底池:'+str(Sit.oldpot))
+    print('还剩几人:'+str(leftman))
+    print('我的位置:'+str(MyTurn(Sit)))
+
     if leftman==2:
         #我在后位
         if MyTurn(Sit)==leftman:
@@ -71,6 +73,7 @@ def flopDecision(Sit):
                 return (0,0)
             elif Sit.callchip>Sit.oldpot:
                 if winrate>0.92: return (3,4)
+                if Sit.potsize/Sit.callchip>3 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
                 return (0,0)
         #我在前位
         elif MyTurn(Sit)==1:
@@ -93,6 +96,7 @@ def flopDecision(Sit):
             elif Sit.callchip>Sit.oldpot:
                 #顶对顶踢脚，我谁都不怕
                 if winrate>0.92: return (3,4)
+                if Sit.potsize/Sit.callchip>3 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
                 return (0,0)
         
     elif leftman>2:
@@ -113,6 +117,7 @@ def flopDecision(Sit):
             if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
         elif Sit.callchip>Sit.oldpot:
             if winrate>0.97: return (3,4)
+            if Sit.potsize/Sit.callchip>3 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
             return (0,0)
     return (0,0)
         
