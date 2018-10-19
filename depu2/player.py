@@ -322,6 +322,7 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,2)
                     if InTryRange(myhand):
                         return (3,2)
+                    return (3,0)
                 if leftman>2 and (Sit.myseat-Sit.position)%6==1:
                     print('小盲可以溜入')
                     if InSuperRange(myhand): 
@@ -416,10 +417,10 @@ def beforeFlopDecision(Sit,callchip):
                     if QuiteGood(myhand): 
                         if MyTurn(Sit)==2 and Sit.potsize/Sit.callchip>=3: 
                             print('对抗小盲有位置优势')
-                            return (0,0)
+                            return (2,0)
                     elif InTryRange(myhand):
                         print('对抗一个玩家，保卫盲注')
-                        return (0,0)
+                        return (2,0)
                 #这个也是测试用的，不一定好
                 if InTryRange(myhand) and leftman>=2: 
                     print('底池赔率还行，进去试试')
