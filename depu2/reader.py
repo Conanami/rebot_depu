@@ -20,6 +20,12 @@ def calcuWinrate(rtSit):
     #print('不带权重的：%s', dealer.winRate(mycardlist))
     return dealer.winRate2(mycardlist)
 
+#原来的胜率
+def calcuWinrateNoWeight(rtSit):
+    mycardlist=getMyHand(rtSit)
+    mycardlist=mycardlist+rtSit.cardlist
+    return dealer.winRate(mycardlist)
+
 #得到后面一张牌的胜率
 def calcuNumRate(wholecardlist,suit=0):
     cnt=0
@@ -33,8 +39,7 @@ def calcuNumRate(wholecardlist,suit=0):
         cnt=cnt+leftCardCnt
     return winRate/cnt
 
-
-        
+      
 
 
 #得到手牌，对外

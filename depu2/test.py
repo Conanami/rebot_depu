@@ -2,6 +2,7 @@ from read_pokerstar import analysisImg
 from read_pokerstar import NeedAnalyse
 from reader import getWaitingman
 from reader import calcuWinrate
+from reader import calcuWinrateNoWeight
 import time
 from PIL import Image
 import player as p
@@ -15,7 +16,7 @@ def bbb():
     start =time.clock()
    
    
-    file_name=r'tmp\dz_1019093041.png' 
+    file_name=r'tmp\dz_1019093332.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))
@@ -23,8 +24,8 @@ def bbb():
     
     print(rtSit.todict())
     #print(MyTurn(rtSit))
-    #winrate=calcuWinrate(rtSit)
-
+    winrate=calcuWinrateNoWeight(rtSit)
+    print('原来的胜率%s' % winrate)
     #print('不喜欢率%s , %s' % DontLikeRate(rtSit,winrate))
     print('决策结果%s %s' % (p.makeDecision(rtSit)))
     '''
