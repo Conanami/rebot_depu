@@ -10,6 +10,7 @@ import numpy
 import time
 import hashlib,random
 import logging
+import random
 from threading import Thread
 from pynput import keyboard
 from pynput.keyboard import Listener
@@ -43,10 +44,7 @@ def async(f):
     return wrapper
 
 def grab_screen(left,top,right,bottom):
-    try:
         return PIL.ImageGrab.grab((left,top,right,bottom))
-    except Exception as e:
-        return None
 
 def copy_part_image(image_,left,top,right,bottom):
     return image_.crop((left,top,right,bottom))
@@ -94,7 +92,7 @@ def get_game_data(game_area_left, game_area_top, game_area_width, game_area_heig
     return game_area_image
 
 def on_release(key):
-    # print('{0} released'.format(key))
+    print('{0} released'.format(key))
     q.put(key)
 
 @async
@@ -137,50 +135,38 @@ def handle(game_area_left, game_area_top, rtSit):
 
 #下注
 def raisebet(game_area_left,game_area_top,target):
-    pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1],0.3)
+    pyautogui.moveTo(game_area_left+target[0]+random.randint(10),game_area_top+target[1]+random.randint(10),0.3)
     pyautogui.click()
     betbtn=750,550
-    pyautogui.moveTo(game_area_left+betbtn[0],game_area_top+betbtn[1],0.3)
+    pyautogui.moveTo(game_area_left+betbtn[0]+random.randint(10),game_area_top+betbtn[1]+random.randint(10),0.3)
     pyautogui.click()
 
 
-#全下,在这里不用了
-def allin(game_area_left,game_area_top):
-    pyautogui.moveTo(game_area_left+300,game_area_top+600)
-    pyautogui.dragTo(game_area_left+663,game_area_top+600,1.0)
-    pyautogui.moveTo(game_area_left+750,game_area_top+600)           
-    pyautogui.click()
 
 @async
 def run_game(q):
     lastkey = keyboard.Key.esc
     needCnt=0
-
-    skeys = [keyboard.Key.esc, keyboard.KeyCode.from_char('r'), keyboard.KeyCode.from_char('R')]
-
     while True:
+        
         if not q.empty():
             key =  q.get(True)
-            if key in skeys:
-                lastkey = key
-                print('msg %s' % key)
-            else:
-                print('ignore %s' % key)
-                continue
-            
+            print('msg %s' % key)
+            lastkey = key
+                
         if lastkey == keyboard.Key.esc:
             print('wait')
             time.sleep(1.0)
             continue
         elif (lastkey == keyboard.KeyCode.from_char('r') or lastkey == keyboard.KeyCode.from_char('R')):
             #检测目标是否存在
-            
+            AnswerFlag=True
             window_left,window_top,window_right,window_bottom,window_title  = get_total_area()
             if window_left:
                 #pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
                 logging.info('是否需要解析:'+str(needCnt))
-                if ( game_area_image and NeedAnalyse (game_area_image.convert('L'))): 
+                if ( NeedAnalyse (game_area_image.convert('L'))): 
                     if(needCnt>=1):
                         logging.info('开始解析图像')
                         levelbb=getLevel(window_title)
