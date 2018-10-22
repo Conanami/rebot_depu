@@ -130,7 +130,7 @@ def handle(game_area_left, game_area_top, rtSit):
         raisebet(game_area_left,game_area_top,target)
 
     if target[0] and kind==0:
-        pyautogui.moveTo(game_area_left+target[0],game_area_top+target[1])
+        pyautogui.moveTo(game_area_left+target[0]+random.randint(0,10),game_area_top+target[1]+random.randint(0,10))
         pyautogui.click()
 
 #下注
