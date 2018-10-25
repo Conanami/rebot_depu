@@ -40,6 +40,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         print("翻牌不会走这里！！")
         return (0,0)
     if(pubnum==4):
+        #转牌也要重新写
         if(leftman==2):
             if rtSit.callchip==0:
                 if finalWinrate>=0.98: return (3,4)
@@ -135,6 +136,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (2,0)
                 return (0,0)
         return (0,0)
+        #这段要重新写
     if(pubnum==5):
         #还剩2个人
         if(leftman==2):
