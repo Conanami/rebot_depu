@@ -158,12 +158,13 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand): return (2,0)
                     if InStealRange(myhand): return (2,0)
                     if InTryRange(myhand): return (2,0)
-                    return (3,3)
+                    return (2,0)
             #小盲位跟加注
             if (Sit.myseat-Sit.position)%6==1:
                 print('小盲跟加注')
                 if InSuperRange(myhand): return (3,4)
                 if InOpenRange(myhand): return (3,4)
+                
                 
             #大盲位跟加注
             if (Sit.myseat-Sit.position)%6==2:
