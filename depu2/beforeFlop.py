@@ -19,7 +19,7 @@ from Harrington import MyTurn
 
 
 
-#新写一个翻前决策
+#新写一个翻前决策，把疯狂的全下都去掉先
 #2018-10-22 翻前决策重新写，无比重视紧和位置
 def beforeFlopDecision(Sit,callchip):
     myhand=getMyHand(Sit)
