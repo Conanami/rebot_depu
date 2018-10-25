@@ -80,6 +80,8 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,2)
                     if InTryRange(myhand):
                         return (3,2)
+                    if QuiteGood(myhand):
+                        return (3,2)
                     return (0,0)
                 if leftman>2 and (Sit.myseat-Sit.position)%6==1:
                     print('小盲可以溜入')
@@ -103,6 +105,8 @@ def beforeFlopDecision(Sit,callchip):
                     if InStealRange(myhand): 
                         return (3,2)
                     if InTryRange(myhand):
+                        return (3,2)
+                    if QuiteGood(myhand):
                         return (3,2)
                 if MyTurn(Sit)==1:
                     if InOpenRange(myhand):  

@@ -57,8 +57,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]>=-0.01): return (2,0)
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.93): return (3,3)
-                    if(finalWinrate>=0.90): return (3,2)
-                    if(finalWinrate>=0.80): return (2,0)
+                    if(finalWinrate>=0.80): return (3,2)
+                    if(finalWinrate>=0.75): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (2,0)
                     if(IsDrawStraight(wholehandlist)): return(2,0)
                     if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
@@ -69,8 +69,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
                         if(nextWinrate[1]<-0.03): return (3,4)
-                    if(finalWinrate>=0.92): return (3,2)
-                    if(finalWinrate>=0.84): return (2,0)
+                    if(finalWinrate>=0.86): return (3,2)
+                    if(finalWinrate>=0.75): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (2,2)
                     if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
@@ -81,7 +81,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
                         if(nextWinrate[1]<-0.03): return (3,4)
-                    if(finalWinrate>=0.9): 
+                    if(finalWinrate>=0.8): 
                         return (2,0)
                     return (0,0)
             #如果我下注后遭到对方反击
