@@ -402,6 +402,7 @@ def winRate(list1):
     publist=[]
     cnt=0
     wincnt=0
+    if len(list1)<5: return 0 
     for i in range(2,len(list1)):
         publist.append(list1[i])
     #d.printCard(publist)

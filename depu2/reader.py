@@ -30,6 +30,7 @@ def calcuWinrateNoWeight(rtSit):
 def calcuNumRate(wholecardlist,suit=0):
     cnt=0
     winRate=0
+    if len(wholecardlist)>=5: return 0
     for i in range(2,15):
         tmpCardList=copy.copy(wholecardlist)
         tmpCardList.append(card(suit,i))
