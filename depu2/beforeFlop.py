@@ -37,7 +37,7 @@ def beforeFlopDecision(Sit,callchip):
                 if(InOpenRange(myhand)):
                     return (3,2)
                 if(InStealRange(myhand)):
-                    return (0,0)
+                    return (2,0)
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP')
@@ -46,7 +46,7 @@ def beforeFlopDecision(Sit,callchip):
                 if(InOpenRange(myhand)):
                     return (3,2)
                 if(InStealRange(myhand)):
-                    return (0,0)
+                    return (2,0)
             #如果是CO
             if (Sit.position-Sit.myseat)%6==1:
                 print('CO')
