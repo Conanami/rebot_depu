@@ -159,7 +159,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand): return (3,4)
                     return (0,0)
             #按钮位，跟加注
-            if (Sit.position-Sit.myseat)%6==0
+            if (Sit.position-Sit.myseat)%6==0:
                 if Sit.betlist[Sit.myseat]>0:
                     print('btn跟别人再加注')
                     if leftman<=6 and leftman>=2:
