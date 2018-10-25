@@ -37,16 +37,16 @@ def beforeFlopDecision(Sit,callchip):
                 if(InOpenRange(myhand)):
                     return (3,2)
                 if(InStealRange(myhand)):
-                    return (3,2)
+                    return (0,0)
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
-                print('UTG')
+                print('MP')
                 if(InSuperRange(myhand)): 
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
                 if(InStealRange(myhand)):
-                    return (3,2)
+                    return (0,0)
             #如果是CO
             if (Sit.position-Sit.myseat)%6==1:
                 print('CO')
@@ -54,7 +54,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
-                if(InStealRange(myhand)):
+                if(InTryRange(myhand)):
                     return (3,2)
             #如果是BTN
             if (Sit.position-Sit.myseat)%6==0:
@@ -78,7 +78,7 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,2)
                     if InTryRange(myhand):
                         return (3,2)
-                    return (2,0)
+                    return (0,0)
                 if leftman>2 and (Sit.myseat-Sit.position)%6==1:
                     print('小盲可以溜入')
                     if InSuperRange(myhand): 
@@ -87,7 +87,7 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,3)
                     if InTryRange(myhand):
                         return (2,0)
-            
+                
                 #print('小盲默认要偷')
                 #return (3,0)
             #如果是大盲，只剩2个人，不发起攻击，碰运气
@@ -154,11 +154,11 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.position-Sit.myseat)%6==0:
                 print('btn跟加注')
                 if leftman<=6 and leftman>=2:
-                    if InSuperRange(myhand): return (3,4)
-                    if InOpenRange(myhand): return (3,4)
-                    if InStealRange(myhand): return (3,4)
-                    if InTryRange(myhand): return (3,4)
-                    return (0,0)
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    if InStealRange(myhand): return (2,0)
+                    if InTryRange(myhand): return (2,0)
+                    return (3,3)
             #小盲位跟加注
             if (Sit.myseat-Sit.position)%6==1:
                 print('小盲跟加注')
