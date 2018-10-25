@@ -178,7 +178,9 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.myseat-Sit.position)%6==2:
                 print('大盲位跟加注')
                 if InSuperRange(myhand): return (3,4)
-                if InOpenRange(myhand): return (3,4)
+                if InOpenRange(myhand): 
+                    if leftman<=2: return (3,3)
+                    else: return (2,0)
                 if leftman==2:
                     if QuiteGood(myhand): 
                         if MyTurn(Sit)==2 and Sit.potsize/Sit.callchip>=3: 
