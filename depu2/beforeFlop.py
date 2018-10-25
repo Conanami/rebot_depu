@@ -67,6 +67,8 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if QuiteGood(myhand) and leftman==3:
                     return (3,2)
+                if leftman==3: return (3,0)
+                else: return (0,0)
         if callchip<Sit.bb :
             #如果是小盲
             if callchip==Sit.bb/2:
@@ -151,7 +153,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand): return (3,4)
                     return (0,0)
             #按钮位，跟加注
-            if (Sit.position-Sit.myseat)%6==0:
+            if (Sit.position-Sit.myseat)%6==0 and Sit.betlist[Sit.myseat]>0:
                 print('btn跟加注')
                 if leftman<=6 and leftman>=2:
                     if InSuperRange(myhand): return (3,3)
