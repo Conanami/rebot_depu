@@ -61,14 +61,14 @@ def flopDecision(Sit):
             if Sit.callchip==0:
                 return (3,3)
             elif Sit.callchip<Sit.oldpot/1.8:
-                if winrate>0.92: return (2,0)
+                if winrate>0.92: return (3,3)
                 if winrate>0.8: return (3,3)
-                if winrate>0.7: return (2,0)
+                if winrate>0.7: return (3,3)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
                 if winrate>0.92: return (3,4)
-                if winrate>0.9: return (2,0)
+                if winrate>0.9: return (3,3)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>Sit.oldpot:
@@ -84,13 +84,13 @@ def flopDecision(Sit):
                 return (3,1)
             elif Sit.callchip<Sit.oldpot/1.8:
                 if winrate>0.9: return (3,3)
-                if winrate>0.8: return (2,0)
+                if winrate>0.8: return (3,3)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
                 print('我在前位，最后一个CBET了，我中对以上招架一下')
                 if winrate>0.92: return (3,4)
-                if winrate>0.83: return (2,0)
+                if winrate>0.83: return (3,3)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                 return (0,0)
             elif Sit.callchip>Sit.oldpot:
