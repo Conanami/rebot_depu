@@ -195,7 +195,8 @@ def beforeFlopDecision(Sit,callchip):
                     return (0,0)
         if callchip>=6*Sit.bb and callchip<10*Sit.bb:
             if InSuperRange(myhand): return (3,4)
-            if leftman==2 and MyTurn(Sit)==2 and InOpenRange(myhand): return (2,0)
+            if leftman==2 and MyTurn(Sit)==2 and Sit.myseat==Sit.position: return (3,3)
+            if leftman==2 and MyTurn(Sit)==2 and InTryRange(myhand): return (2,0)
             if InOpenRange(myhand) and Sit.potsize/callchip>3: return (2,0) 
             if QuiteGood(myhand) and Sit.potsize/callchip>5: return (2,0)
             #还是要认怂，这么凶的人少见
