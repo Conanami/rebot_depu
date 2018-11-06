@@ -43,7 +43,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         #转牌也要重新写
         if(leftman==2):
             if rtSit.callchip==0:
-                if finalWinrate>=0.98: return (3,4)
+                #骗人，河牌赢个大的
+                if finalWinrate>=0.98: return (2,0)
                 if rtSit.potsize<=(leftman*3+2)*rtSit.bb:
                     print('翻牌大家都示弱，转牌咋呼')
                     return (3,1) 
@@ -56,9 +57,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,4)
+                        if(nextWinrate[1]<-0.03): return (3,3)
                     if(finalWinrate>=0.93): return (3,3)
-                    if(finalWinrate>=0.80): return (3,2)
+                    if(finalWinrate>=0.80): return (2,0)
                     if(finalWinrate>=0.75): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (2,0)
                     if(IsDrawStraight(wholehandlist)): return(2,0)
@@ -69,7 +70,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     print('转牌下小注，我不走')
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,4)
+                        if(nextWinrate[1]<-0.03): return (3,3)
                     if(finalWinrate>=0.86): return (3,2)
                     if(finalWinrate>=0.75): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (2,2)
@@ -77,7 +78,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (0,0)
                 if(rtSit.callchip>=rtSit.potsize/leftman):
                     print('转牌，下注好大，啥意思？')
-                    if(nextWinrate[1]>0.3): return (3,4)
+                    if(nextWinrate[1]>0.3): return (2,0)
                     if(nextWinrate[1]>0.15): return (2,0)
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
@@ -102,9 +103,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
-                    if(finalWinrate>=0.94):  
+                    if(finalWinrate>=0.95):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,4)
+                        if(nextWinrate[1]<-0.03): return (3,2)
                     if(finalWinrate>=0.91): return (3,3)
                     if(finalWinrate>=0.87): return (3,2)
                     if(finalWinrate>=0.70): return (2,0)
@@ -113,15 +114,15 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
                     return (0,0)
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
-                    if(finalWinrate>=0.96):  
+                    if(finalWinrate>=0.95):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,4)
-                    if(finalWinrate>=0.92): return (3,2)
+                        if(nextWinrate[1]<-0.03): return (3,2)
+                    if(finalWinrate>=0.92): return (3,1)
                     if(IsDrawFlush(publist) or len(dealer.SameSuit(publist))>=3): return (2,0)
                     if(IsDrawStraight(publist)): return (2,0)
                     return (0,0)
                 if(rtSit.callchip>=rtSit.potsize/leftman):
-                    if(nextWinrate[1]>0.3): return (3,4)
+                    if(nextWinrate[1]>0.3): return (3,2)
                     if(nextWinrate[1]>0.15): return (2,0)
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
