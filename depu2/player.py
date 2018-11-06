@@ -19,7 +19,7 @@ from Harrington import DontLikeRate
 #from Harrington import flopDecision
 from Moshman import flopDecision
 from Harrington import MyTurn
-from beforeFlop import beforeFlopDecision
+
 
 
 
@@ -40,11 +40,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         print("翻牌不会走这里！！")
         return (0,0)
     if(pubnum==4):
-        #转牌也要重新写
         if(leftman==2):
             if rtSit.callchip==0:
-                #骗人，河牌赢个大的
-                if finalWinrate>=0.98: return (2,0)
+                if finalWinrate>=0.98: return (3,4)
                 if rtSit.potsize<=(leftman*3+2)*rtSit.bb:
                     print('翻牌大家都示弱，转牌咋呼')
                     return (3,1) 
@@ -57,10 +55,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,3)
+                        if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.93): return (3,3)
+                    if(finalWinrate>=0.90): return (3,2)
                     if(finalWinrate>=0.80): return (2,0)
-                    if(finalWinrate>=0.75): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (2,0)
                     if(IsDrawStraight(wholehandlist)): return(2,0)
                     if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
@@ -70,20 +68,20 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     print('转牌下小注，我不走')
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,3)
-                    if(finalWinrate>=0.86): return (3,2)
-                    if(finalWinrate>=0.75): return (2,0)
+                        if(nextWinrate[1]<-0.03): return (3,4)
+                    if(finalWinrate>=0.92): return (3,2)
+                    if(finalWinrate>=0.84): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (2,2)
                     if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
                 if(rtSit.callchip>=rtSit.potsize/leftman):
                     print('转牌，下注好大，啥意思？')
-                    if(nextWinrate[1]>0.3): return (2,0)
+                    if(nextWinrate[1]>0.3): return (3,4)
                     if(nextWinrate[1]>0.15): return (2,0)
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
                         if(nextWinrate[1]<-0.03): return (3,4)
-                    if(finalWinrate>=0.8): 
+                    if(finalWinrate>=0.9): 
                         return (2,0)
                     return (0,0)
             #如果我下注后遭到对方反击
@@ -103,9 +101,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
-                    if(finalWinrate>=0.95):  
+                    if(finalWinrate>=0.94):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,2)
+                        if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.91): return (3,3)
                     if(finalWinrate>=0.87): return (3,2)
                     if(finalWinrate>=0.70): return (2,0)
@@ -114,15 +112,15 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
                     return (0,0)
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
-                    if(finalWinrate>=0.95):  
+                    if(finalWinrate>=0.96):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,2)
-                    if(finalWinrate>=0.92): return (3,1)
+                        if(nextWinrate[1]<-0.03): return (3,4)
+                    if(finalWinrate>=0.92): return (3,2)
                     if(IsDrawFlush(publist) or len(dealer.SameSuit(publist))>=3): return (2,0)
                     if(IsDrawStraight(publist)): return (2,0)
                     return (0,0)
                 if(rtSit.callchip>=rtSit.potsize/leftman):
-                    if(nextWinrate[1]>0.3): return (3,2)
+                    if(nextWinrate[1]>0.3): return (3,4)
                     if(nextWinrate[1]>0.15): return (2,0)
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
@@ -137,7 +135,6 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (2,0)
                 return (0,0)
         return (0,0)
-        #这段要重新写
     if(pubnum==5):
         #还剩2个人
         if(leftman==2):
@@ -159,8 +156,6 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     print('对手河牌下小注')
                     if(finalWinrate>=0.94): return (3,4)
                     #根据最后胜率来决定
-                    if rtSit.callchip/rtSit.potsize<(finalWinrate-0.7)/(1-0.7) and finalWinrate>0.7: return (2,0)
-                    #根据底池大小来判断
                     if rtSit.potsize<=20*rtSit.bb:
                         if(rtSit.potsize/rtSit.callchip>0.6/(finalWinrate-0.4) and finalWinrate>=0.4): 
                             print('20bb小池子，我头就是硬')
@@ -187,8 +182,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<20*rtSit.bb): 
                         if(finalWinrate>=0.7): return (2,0)
                         return (0,0)
-                    if(rtSit.potsize>=20*rtSit.bb and rtSit.potsize<=30*rtSit.bb):
-                        if(finalWinrate>=0.75): return (2,0)
+                    if(rtSit.potsize>=20*rtSit.bb and rtSit.potsize<30*rtSit.bb):
+                        if(finalWinrate>=0.8): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>=30*rtSit.bb):
                         if(finalWinrate>=0.9): return (0,0)
@@ -271,7 +266,248 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         return (0,0)
     return (0,-1)
 
+#新写一个翻前决策
+#2018-10-16 翻前决策又重新写
+def beforeFlopDecision(Sit,callchip):
+    #print('新翻前')
+    myhand=getMyHand(Sit)
+    leftman=getSurvivor(Sit)[1]
+    pubcnt=getPubnum(Sit)
+    print('还剩%s个人' % leftman)
+    if(pubcnt==0 and len(myhand)==2):
+        #如果前面没有人加注
+        if(callchip==Sit.bb and Sit.betlist[Sit.myseat]<=0):
+            #如果是UTG
+            if (Sit.position-Sit.myseat)%6==3:
+                print('UTG')
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (3,2)
+                if(InTryRange(myhand)):
+                    return (3,2)
+            #如果是MP
+            if (Sit.position-Sit.myseat)%6==2:
+                print('UTG')
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (3,2)
+                if(InTryRange(myhand)):
+                    return (3,2)
+            #如果是CO
+            if (Sit.position-Sit.myseat)%6==1:
+                print('CO')
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (3,2)
+                if(InTryRange(myhand)):
+                    return (3,2)
+                if QuiteGood(myhand) and leftman==4:
+                    return (3,2)
+            #如果是BTN
+            if (Sit.position-Sit.myseat)%6==0:
+                print('BTN')
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (3,2)
+                if(InTryRange(myhand)):
+                    return (3,2)
+                if QuiteGood(myhand) and leftman==3:
+                    return (3,2)
+                return (3,2)
+        if callchip<Sit.bb :
+            #如果是小盲
+            if callchip==Sit.bb/2:
+                if leftman==2 and (Sit.myseat-Sit.position)%6==1:
+                    print('小盲单挑大盲')
+                    if InSuperRange(myhand): 
+                        return (3,2)
+                    if InOpenRange(myhand):
+                        return (3,2)
+                    if InTryRange(myhand):
+                        return (3,2)
+                    if QuiteGood(myhand):
+                        return (3,2)
+                if leftman>2 and (Sit.myseat-Sit.position)%6==1:
+                    print('小盲可以溜入')
+                    if InSuperRange(myhand): 
+                        return (3,3)
+                    if InOpenRange(myhand):
+                        return (3,3)
+                    if InTryRange(myhand):
+                        return (2,0)
+            
+                #print('小盲默认要偷')
+                #return (3,0)
+            #如果是大盲，只剩2个人，不发起攻击，碰运气
+            if callchip==0 and leftman==2 and (Sit.myseat-Sit.position)%6==2:
+                print('大盲')
+                if InSuperRange(myhand):
+                    return (3,3)
+                if MyTurn(Sit)==2:
+                    if InOpenRange(myhand):  
+                        return (3,2)
+                    if InTryRange(myhand): 
+                        return (3,2)
+                if MyTurn(Sit)==1:
+                    if InOpenRange(myhand):  
+                        return (2,0)
+                    if InTryRange(myhand): 
+                        return (2,0)
+                
+        
+        #如果有人加注了，但还不是很大
+        if ((callchip>=Sit.bb and Sit.betlist[Sit.myseat]>0) or callchip>Sit.bb)  and callchip<=6*Sit.bb :
+            if (Sit.position-Sit.myseat)%6==3 :
+                print('UTG跟加注')
+                if InSuperRange(myhand): return (3,3)
+                if InOpenRange(myhand): return (2,0)
+                #if leftman>=3 and InTryRange(myhand): return (2,0)
+                return (0,0)
+            if (Sit.position-Sit.myseat)%6==2 :
+                print('MP跟加注')
+                if leftman>=5:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    return (0,0)
+                if leftman<5 and leftman>2:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    return (0,0)
+                if leftman==2:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    return (0,0)
+            if (Sit.position-Sit.myseat)%6==1:
+                print('CO跟加注')
+                if leftman>=5:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    #if InTryRange(myhand): return (2,0)
+                    return (0,0)
+                if leftman==4:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    #if InTryRange(myhand): return (2,0)
+                    return (0,0)
+                if leftman==3:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    #if InTryRange(myhand): return (2,0)
+                    return (0,0)
+                if leftman==2:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    return (0,0)
+            #按钮位，跟加注
+            if (Sit.position-Sit.myseat)%6==0:
+                print('btn跟加注')
+                if leftman<=6 and leftman>=2:
+                    if InSuperRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
+                    if InTryRange(myhand): return (0,0)
+                    return (0,0)
+            #小盲位跟加注
+            if (Sit.myseat-Sit.position)%6==1:
+                print('小盲跟加注')
+                if InSuperRange(myhand): return (3,3)
+                if InOpenRange(myhand): return (2,0)
+                
+            #大盲位跟加注
+            if (Sit.myseat-Sit.position)%6==2:
+                print('大盲位跟加注')
+                if InSuperRange(myhand): return (3,3)
+                if InOpenRange(myhand): return (2,0)
+                if leftman==2:
+                    if QuiteGood(myhand): 
+                        if MyTurn(Sit)==2 and Sit.potsize/Sit.callchip>=3: 
+                            print('对抗小盲有位置优势')
+                            return (2,0)
+                    elif InTryRange(myhand):
+                        print('对抗一个玩家，保卫盲注')
+                        return (2,0)
+                #这个也是测试用的，不一定好
+                if InTryRange(myhand) and leftman>=2: 
+                    print('底池赔率还行，进去试试')
+                    return (0,0)
+        if callchip>=6*Sit.bb and callchip<10*Sit.bb:
+            if InSuperRange(myhand): return (3,4)
+            #还是要认怂，这么凶的人少见
+            #if InOpenRange(myhand) and MyTurn(Sit)==1: return (3,4)
+            #if InTryRange(myhand): return (2,0)
+            return (0,0)
+        if callchip>=10*Sit.bb: 
+            if InSuperRange(myhand): return (3,4)
+            return (0,0)
 
+
+        if callchip==0 : return (2,0)
+        
+    return (0,-1)
+
+#蛮好的牌
+def QuiteGood(myhand):
+    if myhand[0].suit==myhand[1].suit: return True
+    if abs(myhand[0].num-myhand[1].num)<=2 and (myhand[0].num>=8 or myhand[1].num>=8): return True
+    if myhand[0].num+myhand[1].num>=18: return True
+    
+#跟注的牌
+def InCallRange(myhand):
+    if InSuperRange(myhand): return False
+    if InOpenRange(myhand): return False
+    if InTryRange(myhand): return False
+    if myhand[0].suit==myhand[1].suit: return True
+    if abs(myhand[0].num-myhand[1].num)<=2: return True
+    return False
+
+
+#入局玩的牌，紧是硬道理
+def InOpenRange(myhand):
+    #print(str(myhand[0].suit)+","+str(myhand[0].num)+"|"+str(myhand[1].suit)+","+str(myhand[1].num))
+    if(InSuperRange(myhand)): return False
+    #有张A
+    #if((myhand[0].num >= 14 and myhand[1].num < 14) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
+    
+    #两张高牌
+    if(myhand[0].num+myhand[1].num>=25): return True
+    #两张同花高牌
+    if(myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=24 ): return True
+    #口袋对
+    if(myhand[0].num==myhand[1].num): return True
+    #同花连牌
+    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=6 or myhand[1].num>=6)): 
+        return True
+    return False
+
+#入局投机牌
+def InTryRange(myhand):
+    #不是超强牌
+    if(InSuperRange(myhand)): return False
+    #也不是进池牌
+    if(InOpenRange(myhand)): return False
+    #两张高牌
+    if(myhand[0].num+myhand[1].num>=21 and myhand[0].num>=10 and myhand[1].num>=10):  return True
+    #有张A
+    if((myhand[0].num >= 14 ) or (myhand[0].num < 14 and myhand[1].num >= 14)): return True
+    #带AK的同花
+    if(myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13)): return True
+    #所有口袋对
+    if(myhand[0].num==myhand[1].num): return True
+    #大的连牌和中的口袋对
+    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].num>=8 and myhand[1].num>=8): return True
+    #同花连牌
+    if(abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit and (myhand[0].num>=6 or myhand[1].num>=6)): 
+        return True
+    return False
+
+#只有AA,KK,QQ跟人推
+def InSuperRange(myhand):
+    if(myhand[0].num==myhand[1].num and myhand[0].num>=12): return True
+    #if(myhand[0].num+myhand[1].num>=26): return True
+    else: return False
 
 #做出决定，该函数对外
 def makeDecision(rtSit):
