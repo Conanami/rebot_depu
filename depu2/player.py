@@ -360,7 +360,7 @@ def beforeFlopDecision(Sit,callchip):
                 
         
         #如果有人加注了，但还不是很大
-        if ((callchip>=Sit.bb and Sit.betlist[Sit.myseat]>0) or callchip>Sit.bb)  and callchip<=6*Sit.bb :
+        if ((callchip>=Sit.bb and Sit.betlist[Sit.myseat]>0) or callchip>Sit.bb)  and callchip<=6*Sit.bb and Sit.betlist[Sit.myseat]<2*Sit.bb:
             if (Sit.position-Sit.myseat)%6==3 :
                 print('UTG跟加注')
                 if InSuperRange(myhand): return (3,3)
