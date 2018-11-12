@@ -168,24 +168,23 @@ def beforeFlopDecision(Sit,callchip):
                         if InSuperRange(myhand): return (3,3)
                         if InOpenRange(myhand): return (2,0)
                         if InStealRange(myhand): return (0,0)
-                        if InTryRange(myhand): return (2,0)
-                        return (2,0)
+                        if InTryRange(myhand): return (0,0)
+                        return (0,0)
                 else:
                     print('btn跟别人的起始加注')
                     if leftman<=6 and leftman>=2:
                         if InSuperRange(myhand): return (3,3)
                         if InOpenRange(myhand): return (2,0)
                         if InStealRange(myhand): return (0,0)
-                        if InTryRange(myhand): return (2,0)
-                        return (2,0)
+                        if InTryRange(myhand): return (0,0)
+                        return (0,0)
             #小盲位跟加注
             if (Sit.myseat-Sit.position)%6==1:
                 print('小盲跟加注')
                 if InSuperRange(myhand): return (3,3)
                 if leftman==3 and LastManAfterFlop(Sit)==Sit.position: 
                     if InOpenRange(myhand): return (3,3)
-                
-                
+                      
             #大盲位跟加注
             if (Sit.myseat-Sit.position)%6==2:
                 print('大盲位跟加注')
