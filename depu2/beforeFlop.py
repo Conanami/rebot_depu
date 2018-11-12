@@ -16,7 +16,7 @@ from reader import IsAfter
 from Harrington import DontLikeRate
 from Moshman import flopDecision
 from Harrington import MyTurn
-
+from reader import LastManAfterFlop
 
 
 #新写一个翻前决策，把疯狂的全下都去掉先
