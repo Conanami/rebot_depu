@@ -205,7 +205,7 @@ def beforeFlopDecision(Sit,callchip):
                     print('底池赔率还行，进去试试')
                     return (0,0)
         if callchip>=6*Sit.bb and callchip<10*Sit.bb:
-            if InSuperRange(myhand): return (3,3)
+            if CallRange(myhand): return (3,3)
             if leftman==2 and MyTurn(Sit)==2 and Sit.myseat==Sit.position: return (0,0)
             if leftman==2 and MyTurn(Sit)==2 and InTryRange(myhand): return (0,0)
             if InOpenRange(myhand) and Sit.potsize/callchip>3: return (0,0) 
@@ -228,7 +228,7 @@ def beforeFlopDecision(Sit,callchip):
 
 #最厉害的
 def InSuperRange(myhand):
-    if myhand[0].num==myhand[1].num and myhand[0].num>=13: return True
+    if myhand[0].num==myhand[1].num and myhand[0].num>=12: return True
     else : return False
 
 #前位可以开局的
@@ -236,6 +236,7 @@ def InOpenRange(myhand):
     if myhand[0].num==myhand[1].num and myhand[0].num>=7: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14): return True
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=24 : return True
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return True
     if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return True
     return False
 
@@ -263,3 +264,8 @@ def QuiteGood(myhand):
 def InStealRange(myhand):
     if myhand[0].suit!=myhand[1].suit and abs(myhand[0].num-myhand[1].num)>=3 and myhand[0].num+myhand[1].num<=23: return False
     return True
+
+#可以跟注的范围
+def CallRange(myhand):
+    if myhand[0].num==myhand[1].num and myhand[0].num>=12: return True
+    return False
