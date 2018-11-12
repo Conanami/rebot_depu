@@ -11,13 +11,14 @@ import player as p
 from Harrington import IsSameHand
 from Harrington import DontLikeRate
 from Harrington import MyTurn
+from reader import LastManAfterFlop
 
 def bbb():
     ''' 测试 '''
     start =time.clock()
    
    
-    file_name=r'tmp\dz_1107121747.png' 
+    file_name=r'tmp\dz_1107124736.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))
@@ -25,10 +26,12 @@ def bbb():
     
     print(rtSit.todict())
     #print(MyTurn(rtSit))
-    winrate=calcuWinrateNoWeight(rtSit)
     
-    print('胜率'+str(winrate[0])+','+str(winrate[1]))
+    #winrate=calcuWinrateNoWeight(rtSit)
+    
+    #print('胜率'+str(winrate[0])+','+str(winrate[1]))
     #print('不喜欢率%s , %s' % DontLikeRate(rtSit,winrate))
+    #print('翻后最后一个行动的人的位置:'+str(LastManAfterFlop(rtSit)))
     print('决策结果%s %s' % (p.makeDecision(rtSit)))
     '''
     file_name=r'tmp\dz_0924103508.png' 

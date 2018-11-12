@@ -40,7 +40,12 @@ def calcuNumRate(wholecardlist,suit=0):
         cnt=cnt+leftCardCnt
     return winRate/cnt
 
-      
+#得到翻牌后最后一个人
+def LastManAfterFlop(Sit):
+    rtPos=0
+    for i in range(Sit.position+1,Sit.position+7):
+        if Sit.chiplist[i%6]>0: rtPos=i
+    return rtPos%6
 
 
 #得到手牌，对外
