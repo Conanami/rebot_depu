@@ -69,8 +69,8 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if QuiteGood(myhand) and leftman==3:
                     return (3,2)
-                if leftman==3: return (3,2)
-                else: return (0,0)
+                if leftman==3: return (0,0)
+                return (0,0)
         if callchip<Sit.bb :
             #如果是小盲
             if callchip==Sit.bb/2:
