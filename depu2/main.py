@@ -112,6 +112,7 @@ def handle(game_area_left, game_area_top, rtSit):
     if kind==3 and no==5:
         #测试点击
         target=p.getDragTarget(0.3)
+        dragbet(game_area_left,game_area_top,target)
 
     logging.info('完成决策， 结果 %s %s' %(kind, no))
     if kind==0:
@@ -147,6 +148,13 @@ def raisebet(game_area_left,game_area_top,target):
     pyautogui.moveTo(game_area_left+betbtn[0]+random.randint(0,10),game_area_top+betbtn[1]+random.randint(0,10),0.3)
     pyautogui.click()
 
+#拖动下注
+def dragbet(game_area_left,game_area_top,target):
+    pyautogui.moveTo(game_area_left+645,game_area_top+503)
+    pyautogui.dragTo(game_area_left+target[0],game_area_top+target[1],0.6)
+    betbtn=750,550
+    pyautogui.moveTo(game_area_left+betbtn[0]+random.randint(0,10),game_area_top+betbtn[1]+random.randint(0,10),0.3)
+    pyautogui.click()
 
 
 @async
