@@ -25,9 +25,10 @@ logging.basicConfig(level=logging.INFO,
 
 #得到玩的级别
 def getLevel(topic):
-    tmplevel=topic[topic.find('/')+1:len(topic)]
-    tmplevel=tmplevel[:tmplevel.find('美')]
+    #tmplevel=topic[topic.find('/')+1:len(topic)]
+    #tmplevel=tmplevel[:tmplevel.find('美')]
     #print( str(tmplevel))
+    tmplevel=100
     return float(tmplevel)
 
 '''
