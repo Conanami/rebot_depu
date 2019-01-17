@@ -509,6 +509,7 @@ def ddd():
     printCard(mylist)
     print(winRate(mylist))
 
+
 def ccc():
     starttime=time.clock()
     d=dealer()

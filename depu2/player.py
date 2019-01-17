@@ -346,3 +346,10 @@ def makeDecision(rtSit):
     if IsAllIn(rtSit) and finalDecision[0]==2: finalDecision=(3,0)
     if rtSit.callchip>rtSit.chiplist[rtSit.myseat] and finalDecision[0]==2: finalDecision=(3,0)
     return finalDecision
+
+#根据自己手里的筹码多少，下注一个比例
+def getDragTarget(percent):
+    y=502+random.randint(0,4)
+    x=645+130*percent
+    return x,y
+

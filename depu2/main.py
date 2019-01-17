@@ -105,8 +105,14 @@ def handle(game_area_left, game_area_top, rtSit):
     '''  处理结果 '''
     target = 0, 0
     logging.info('开始决策')
-    kind, no = p.makeDecision(rtSit)
-    #kind, no = 3,4
+    #kind, no = p.makeDecision(rtSit)
+
+
+    kind, no = 3,5
+    if kind==3 and no==5:
+        #测试点击
+        target=p.getDragTarget(0.3)
+
     logging.info('完成决策， 结果 %s %s' %(kind, no))
     if kind==0:
         #弃牌
