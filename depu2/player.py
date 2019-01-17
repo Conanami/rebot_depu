@@ -331,25 +331,55 @@ def makeDecision(rtSit):
         #翻牌后的决策
         mydecision=afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit)
         finalDecision=mydecision
+    
+    #实际情况还要结合自己的筹码，才能决定到底点击哪里
+    newDecision=getClickDecision(finalDecision,rtSit)
+    return newDecision
 
 
+#根据自己手里的筹码多少，下注一个比例
+def getClickDecision(finalDecision,rtSit):
+    #返回的决定
+    rtDecision=0,0
+    percent=0
+    pubnum=getPubnum(rtSit)
     #如果要加注，要根据自己的筹码和底池的实际情况
     if(finalDecision[0]==3):
         #如果筹码太少,只能点全下
         if(rtSit.chiplist[rtSit.myseat]<0.5*rtSit.potsize):
-            finalDecision=(3,4)
+            rtDecision=(3,4)
         #如果翻后底池比3个盲注还小，那就不能选择3，1和3，2，直接3，3
         if(rtSit.potsize<=3*rtSit.bb and pubnum>0):
-            if(finalDecision[1]==1): finalDecision=(3,3)
-            if(finalDecision[1]==2): finalDecision=(3,3)
-    #如果对方是全下，那2,0要变3,0
-    if IsAllIn(rtSit) and finalDecision[0]==2: finalDecision=(3,0)
-    if rtSit.callchip>rtSit.chiplist[rtSit.myseat] and finalDecision[0]==2: finalDecision=(3,0)
-    return finalDecision
+            if(finalDecision[1]==1): rtDecision=(3,3)
+            if(finalDecision[1]==2): rtDecision=(3,3)
+        #如果是选择了3，5,1/3底池薄价值下注,3,6 , 3/4底池的下注，3,7 1.5倍底池的超pot,都需要重新计算
+        if(finalDecision[1]==5):
+            #如果1/3底池下注，筹码是够的
+            if(rtSit.chiplist[rtSit.myseat]>0.33*rtSit.potsize):
+                percent=0.33*rtSit.potsize/rtSit.chiplist[rtSit.myseat]
+                rtDecision=(4,percent)
+            else:   #如果筹码不够
+                rtDecision=(3,4)
 
-#根据自己手里的筹码多少，下注一个比例
-def getDragTarget(percent):
-    y=502+random.randint(0,4)
-    x=645+130*percent
-    return x,y
+        #如果选择了3/4底池的下注            
+        if(finalDecision[1]==6):
+            #如果3/4底池下注，并且筹码是够的
+            if(rtSit.chiplist[rtSit.myseat]>0.75*rtSit.potsize):
+                percent=0.75*rtSit.potsize/rtSit.chiplist[rtSit.myseat]
+                rtDecision=(4,percent)
+            else:   #如果筹码不够
+                rtDecision=(3,4)
+        #如果选择了1.5倍底池的下注
+        if(finalDecision[1]==7):
+            #如果1.5倍底池的下注，筹码是够的
+            if(rtSit.chiplist[rtSit.myseat]>1.5*rtSit.potsize):
+                percent=1.5*rtSit.potsize/rtSit.chiplist[rtSit.myseat]
+                rtDecision=(4,percent)
+            else:   #如果筹码不够
+                rtDecision=(3,4)
+    #如果对方是全下，那2,0要变3,0
+    if IsAllIn(rtSit) and finalDecision[0]==2: rtDecision=(3,0)
+    if rtSit.callchip>rtSit.chiplist[rtSit.myseat] and finalDecision[0]==2: rtDecision=(3,0)
+    return rtDecision
+    
 
