@@ -288,6 +288,7 @@ def makeDecision(rtSit):
     
     #如果是翻牌前
     if(pubnum==0):
+        print('翻前决策')
         finalDecision=beforeFlopDecision(rtSit,callchip)
     elif(pubnum==1 or pubnum==2): finalDecision=(2,0)
     #如果是翻牌后
@@ -342,7 +343,7 @@ def makeDecision(rtSit):
 #根据自己手里的筹码多少，下注一个比例
 def getClickDecision(finalDecision,rtSit):
     #返回的决定
-    rtDecision=0,0
+    rtDecision=finalDecision
     percent=0
     pubnum=getPubnum(rtSit)
     #如果要加注，要根据自己的筹码和底池的实际情况
