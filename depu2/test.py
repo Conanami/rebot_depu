@@ -12,19 +12,23 @@ from Harrington import IsSameHand
 from Harrington import DontLikeRate
 from Harrington import MyTurn
 from reader import LastManAfterFlop
+from beforeFlop import IsFirst
+from beforeFlop import IsOpenRange
 
 def bbb():
     ''' 测试 '''
     start =time.clock()
    
    
-    file_name=r'tmp\dz_1107124736.png' 
+    file_name=r'tmp\dz_0117114024.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))
     rtSit=analysisImg(wholeimg,0.02)
     
     print(rtSit.todict())
+    print(IsFirst(rtSit))
+    print(IsOpenRange(rtSit))
     #print(MyTurn(rtSit))
     
     #winrate=calcuWinrateNoWeight(rtSit)

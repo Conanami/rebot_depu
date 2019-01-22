@@ -52,6 +52,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 else: return (2,0)
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
+                
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (3,3)
@@ -70,7 +71,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]>=-0.01): return (3,3)
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.92): return (3,2)
-                    if(finalWinrate>=0.84): return (2,0)
+                    if(finalWinrate>=0.80): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (2,2)
                     if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
@@ -81,7 +82,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
                         if(nextWinrate[1]<-0.03): return (3,4)
-                    if(finalWinrate>=0.9): 
+                    if(finalWinrate>=0.8): 
                         return (2,0)
                     return (0,0)
             #如果我下注后遭到对方反击
@@ -100,6 +101,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 return (2,0)
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
+                
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
                     if(finalWinrate>=0.94):  
                         if(nextWinrate[1]>=-0.01): return (3,3)
@@ -125,8 +127,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
                         if(nextWinrate[1]<-0.03): return (3,4)
-                    if rtSit.callchip<=80*rtSit.bb:                
-                        if(finalWinrate>=0.91): return (2,0)
+                    if rtSit.callchip<=80*rtSit.bb:   
+                        print('是到这里了吗？')             
+                        if(finalWinrate>=0.8): return (2,0)
                     return (0,0)
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
@@ -308,15 +311,14 @@ def makeDecision(rtSit):
                 if(myhand[0].suit==myhand[1].suit):
                     if(finalWinrate<0.5):
                         print('同花听牌，胜率增加%.4f' % 0.3)
-                        finalWinrate=finalWinrate+0.3
+                        finalWinrate=finalWinrate+0.3 
                 if(len(dealer.SameSuit(rtSit.cardlist))==3):
                     if(IsFlush(myhand)==False):
                         print('公面三同花,胜率减少%.4f' % 0.1)
                         finalWinrate=finalWinrate-0.1
-            if(pubnum==4 and len(dealer.SameSuit(rtSit.cardlist))<3):
-                if(finalWinrate<0.6):
-                    print('同花听牌,胜率增加%.4f' % 0.15)
-                    finalWinrate=finalWinrate+0.15
+            if pubnum==4:  #and len(dealer.SameSuit(rtSit.cardlist))<3):
+                print('同花听牌,胜率增加%.4f' % 0.15)
+                finalWinrate=finalWinrate+0.15
         if IsDrawStraight(myhand):
             if pubnum==3:
                 if(finalWinrate<0.5):

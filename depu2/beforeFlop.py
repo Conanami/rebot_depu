@@ -18,9 +18,60 @@ from Moshman import flopDecision
 from Harrington import MyTurn
 from reader import LastManAfterFlop
 
+#新的翻前决策函数
+# def beforeFlopDecision2(Sit,callchip):
+#     myhand=getMyHand(Sit)
+#     #如果是所有人弃牌到我，我使用openrange
+#     if IsFirst(Sit) and IsOpenRange(Sit):
+#         return (3,2)
+    
+#     #如果前面有1个人加注，我使用callrange来call,使用3betRange来3bet
+#     if getRaiseman(Sit)>=1:
+#         if isCallRange(myhand,Sit.myseat): return (3,2)
+#         if is3betRange(myhand,Sit.myseat): return (3,3)
+#         return (0,0)
+
+#     #如果前面有人3bet，我使用4betRange来4bet
+#     if get3Betman(Sit)>=1:
+#         if is4betRange(myhand,Sit.myseat): return (3,4)
+#         return (0,0)
+#     return (0,0)
+
+#判断手牌是否在openRange中，就是第一个人应该开始的范围
+def IsOpenRange(Sit):
+    if (Sit.position-Sit.myseat)%6==3:
+        print('UTG')
+    elif (Sit.position-Sit.myseat)%6==2:
+        print('MP')
+    elif (Sit.position-Sit.myseat)%6==1:
+        print('CO')
+    elif (Sit.position-Sit.myseat)%6==0:
+        print('BTN')
+    elif (Sit.position-Sit.myseat)%6==5:
+        print('SB')
+    elif (Sit.position-Sit.myseat)%6==4:
+        print('BB')
+
+
+
+
+#判断是否第一个人
+def IsFirst(Sit):
+    pubcnt=getPubnum(Sit)
+    if pubcnt==0 :
+        cnt=0
+        for i in range(Sit.position+3,Sit.position+8):
+            if i%6==Sit.myseat and cnt==0:
+                return True
+            elif Sit.betlist[i%6]>0: 
+                cnt = cnt+1
+        return False
+    else:
+        return '不是翻前好不好'
 
 #新写一个翻前决策，把疯狂的全下都去掉先
 #2018-10-22 翻前决策重新写，无比重视紧和位置
+
 def beforeFlopDecision(Sit,callchip):
     myhand=getMyHand(Sit)
     leftman=getSurvivor(Sit)[1]
