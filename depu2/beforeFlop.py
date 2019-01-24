@@ -284,6 +284,8 @@ def beforeFlopDecision(Sit,callchip):
 def InSuperRange(myhand):
     print ('判断是否超级大牌')
     if myhand[0].num==myhand[1].num and myhand[0].num>=12: return True
+    #AK也当超级大牌打
+    if myhand[0].num+myhand[1].num>=27: return True
     else : return False
 
 #前位可以开局的
