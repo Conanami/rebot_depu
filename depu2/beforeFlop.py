@@ -236,8 +236,7 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.myseat-Sit.position)%6==1:
                 print('小盲跟加注')
                 if InSuperRange(myhand): return (3,3)
-                if leftman==3 and LastManAfterFlop(Sit)==Sit.position: 
-                    if InOpenRange(myhand): return (2,0)
+                if sbCallRange(myhand): return (2,0)
                       
             #大盲位跟加注
             if (Sit.myseat-Sit.position)%6==2:
@@ -287,6 +286,16 @@ def InSuperRange(myhand):
     #AK也当超级大牌打
     if myhand[0].num+myhand[1].num>=27: return True
     else : return False
+
+#小盲可以跟注的牌
+def sbCallRange(myhand):
+    print ('判断是否小盲可以跟注的牌')
+    if myhand[0].num==myhand[1].num: return True
+    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14): return True
+    if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=17 : return True
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return True
+    if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return True
+    return False
 
 #前位可以开局的
 def InOpenRange(myhand):
