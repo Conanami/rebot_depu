@@ -41,15 +41,15 @@ from reader import LastManAfterFlop
 def IsOpenRange(Sit):
     if (Sit.position-Sit.myseat)%6==3:
         print('UTG')
-    elif (Sit.position-Sit.myseat)%6==2:
+    if (Sit.position-Sit.myseat)%6==2:
         print('MP')
-    elif (Sit.position-Sit.myseat)%6==1:
+    if (Sit.position-Sit.myseat)%6==1:
         print('CO')
-    elif (Sit.position-Sit.myseat)%6==0:
+    if (Sit.position-Sit.myseat)%6==0:
         print('BTN')
-    elif (Sit.position-Sit.myseat)%6==5:
+    if (Sit.position-Sit.myseat)%6==5:
         print('SB')
-    elif (Sit.position-Sit.myseat)%6==4:
+    if (Sit.position-Sit.myseat)%6==4:
         print('BB')
 
 
@@ -183,15 +183,15 @@ def beforeFlopDecision(Sit,callchip):
                 print('MP跟加注')
                 if leftman>=5:
                     if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
                     return (0,0)
                 if leftman<5 and leftman>2:
                     if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
                     return (0,0)
                 if leftman==2:
                     if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (3,3)
+                    if InOpenRange(myhand): return (2,0)
                     return (0,0)
             if (Sit.position-Sit.myseat)%6==1:
                 print('CO跟加注')
