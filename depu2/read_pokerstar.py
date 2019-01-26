@@ -451,7 +451,7 @@ def GetSituation(   wholeimg,
     #print(levelbb)
     rtSit.bb=levelbb
     #获得要跟注的筹码数量
-    rtSit.callchip=max(down_callchip,getCallchip(rtSit.betlist,rtSit.myseat))
+    rtSit.callchip=min(rtSit.chiplist[rtSit.myseat],max(down_callchip,getCallchip(rtSit.betlist,rtSit.myseat)))
     
     return rtSit
 

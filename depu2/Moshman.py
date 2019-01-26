@@ -59,23 +59,32 @@ def flopDecision(Sit):
     if leftman==2:
         #我在后位
         if MyTurn(Sit)==leftman:
-            if Sit.callchip==0:
-                return (3,1)
-            elif Sit.callchip<Sit.oldpot/1.8:
-                if winrate>0.92: return (3,1)
-                if winrate>0.8: return (3,1)
-                if winrate>0.7: return (3,3)
-                if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
-                return (0,0)
-            elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
-                if winrate>0.92: return (3,3)
-                if winrate>0.9: return (3,1)
-                if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
-                return (0,0)
-            elif Sit.callchip>Sit.oldpot:
-                if winrate>0.92: return (3,3)
-                if Sit.potsize/Sit.callchip>3 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
-                return (0,0)
+            #我没有下过注
+            if Sit.betlist[Sit.myseat]<=Sit.oldpot/2.1 :
+                print('我在后位，并没有认真下注过')
+                if Sit.callchip==0:
+                    #正常CBET
+                    return (3,1)
+                elif Sit.callchip<Sit.oldpot/1.8:
+                    if winrate>0.92: return (3,1)
+                    if winrate>0.8: return (3,1)
+                    if winrate>0.7: return (3,3)
+                    if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
+                    return (0,0)
+                elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
+                    if winrate>0.92: return (3,3)
+                    if winrate>0.9: return (3,1)
+                    if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
+                    return (0,0)
+                elif Sit.callchip>Sit.oldpot:
+                    if winrate>0.92: return (3,3)
+                    if Sit.potsize/Sit.callchip>3 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
+                    return (0,0)
+            #我已经做了半池下注，对手仍然加注我
+            if Sit.betlist[Sit.myseat]>Sit.oldpot/2.1 :
+                if winrate>0.97: return (3,4)
+                if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0) 
+                else: return (0,0)
         #我在前位
         elif MyTurn(Sit)==1:
             if Sit.callchip==0:

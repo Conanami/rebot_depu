@@ -148,7 +148,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(finalWinrate>=0.98): return (3,4)
                 #对手没啥实力，我价值下注，不下注就没钱了
                 if finalWinrate>0.94 and rtSit.potsize<50*rtSit.bb: return (3,3)
-                if(finalWinrate>0.85) and rtSit.potsize<25*rtSit.bb: return (3,1)
+                if(finalWinrate>0.83) and rtSit.potsize<30*rtSit.bb: return (3,1)
                 #没有摊牌价值，必须诈唬
                 if finalWinrate<0.4:
                     print('河牌咋呼')
