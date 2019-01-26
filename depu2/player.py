@@ -49,7 +49,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 elif(nextWinrate[1]<-0.03 and finalWinrate>0.9): return (3,1)               
                 #对手一过牌我就保持进攻，看看效果，看起来不行
                 #if MyTurn(rtSit)==2: return (3,1)
-                if MyTurn==2 and random.randint(10)>5:
+                if MyTurn==2: 
                     print('翻牌大家都示弱，转牌咋呼')
                     return (3,3) 
                 else: return (2,0)
@@ -149,10 +149,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 #对手没啥实力，我价值下注，不下注就没钱了
                 if finalWinrate>0.94 and rtSit.potsize<50*rtSit.bb: return (3,3)
                 if(finalWinrate>0.85) and rtSit.potsize<25*rtSit.bb: return (3,1)
-                #否则摊牌比牌
-                if random.randint(10)>=5:
+                #没有摊牌价值，必须诈唬
+                if finalWinrate<0.4:
                     print('河牌咋呼')
                     return (3,3)
+                #否则摊牌比牌
                 return (2,0)
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
