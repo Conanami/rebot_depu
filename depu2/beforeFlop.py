@@ -98,6 +98,8 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
+                if(InTryRange(myhand)):
+                    return (3,2)
                 if(InStealRange(myhand)):
                     return (0,0)
             #如果是CO
@@ -108,7 +110,7 @@ def beforeFlopDecision(Sit,callchip):
                 if(InOpenRange(myhand)):
                     return (3,2)
                 if(InTryRange(myhand)):
-                    print(InTryRange(myhand))
+                    #print(InTryRange(myhand))
                     return (3,2)
                 if QuiteGood(myhand) and leftman==4: 
                     return (0,0)
