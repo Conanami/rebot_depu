@@ -44,6 +44,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #print('测试是不是走到这里')
             if rtSit.callchip==0:
                 #特别大一定要过牌骗人
+                print('是否需要保护:', nextWinrate[1])
                 if finalWinrate>=0.98: return (2,0)
                 
                 elif(nextWinrate[1]<-0.03 and finalWinrate>0.9): return (3,1)               
@@ -64,7 +65,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.80): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (3,4)
                     if(IsDrawStraight(wholehandlist)): return(3,4)
-                    if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
+                    print('牌小不要跟，钱都输这里了')
+                    #if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
                     return (0,0)
                 
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
@@ -105,15 +107,17 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.betlist[rtSit.myseat]<=0):
                 
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize<15*rtSit.bb):
+                    print('多人底池转牌没必要继续')
                     if(finalWinrate>=0.94):  
                         if(nextWinrate[1]>=-0.01): return (3,3)
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.91): return (3,3)
-                    if(finalWinrate>=0.87): return (3,2)
-                    if(finalWinrate>=0.70): return (2,0)
+                    if(finalWinrate>=0.87): return (2,0)
+                    if(finalWinrate>=0.70): return (0,0)
                     if(IsDrawFlush(wholehandlist)): return (2,0)
                     if(IsDrawStraight(wholehandlist)): return(2,0)
-                    if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
+                    #print('多人底池转牌没必要继续')
+                    #if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
                     return (0,0)
                 if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
                     if(finalWinrate>=0.96):  
@@ -140,6 +144,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (2,0)
                 return (0,0)
         return (0,0)
+    #----------------河牌战斗-------------------------------------------
     if(pubnum==5):
         #还剩2个人
         if(leftman==2):
@@ -180,7 +185,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (0,0)
                 #对手表现出很强的实力
                 if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)/3 and rtSit.callchip<=(rtSit.potsize-rtSit.callchip)):
-                    print("对手下注半个底池，是在偷吗？")
+                    print("对手下注半个底池，是在偷吗？头铁跟跟看")
                     if(finalWinrate>=0.96): return (3,4)
                     if(rtSit.potsize<12*rtSit.bb):
                         if(finalWinrate>0.7): return (2,0)
@@ -189,7 +194,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(finalWinrate>=0.7): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>=20*rtSit.bb and rtSit.potsize<30*rtSit.bb):
-                        if(finalWinrate>=0.8): return (2,0)
+                        if(finalWinrate>=0.76): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>=30*rtSit.bb):
                         if(finalWinrate>=0.9): return (0,0)

@@ -30,14 +30,16 @@ def calcuWinrateNoWeight(rtSit):
 def calcuNumRate(wholecardlist,suit=0):
     cnt=0
     winRate=0
-    if len(wholecardlist)>=5: return 0
+    if len(wholecardlist)>=7: return 0
     for i in range(2,15):
         tmpCardList=copy.copy(wholecardlist)
         tmpCardList.append(card(suit,i))
         tmpWinRate=dealer.winRate(tmpCardList)
         leftCardCnt=getLeftNumCardCnt(i,wholecardlist)
+        #怎么会加权后一点胜率也不返回了？
         winRate=winRate+tmpWinRate*leftCardCnt
         cnt=cnt+leftCardCnt
+    #print('到底算出来是啥',winRate,cnt)
     return winRate/cnt
 
 #得到翻牌后最后一个人，对外

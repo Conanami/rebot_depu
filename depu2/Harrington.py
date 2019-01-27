@@ -702,11 +702,14 @@ def DontLikeRate(Sit,nowRate):
                 nextRate=calcuNumRate(wholehand,0)
                 rtRate=nextRate-nowRate
             #翻牌有同花可能
-            if len(SameSuit(Sit.cardlist))==2:
+            if len(SameSuit(Sit.cardlist))>=2:
                 #反正第四张只考虑不同花的，同花自己处理
+                print('考虑我害怕什么牌，并处理同花')
+
                 if SameSuit(Sit.cardlist)[0].suit<3: mysuit=3
                 else: mysuit=0
                 nextRate=calcuNumRate(wholehand,mysuit)-0.15
+                print('后一张牌的胜率',nextRate,nowRate)
                 rtRate=nextRate-nowRate
         if IsDrawFlush(wholehand)==True:
             #公共牌出现4张同花
@@ -723,7 +726,7 @@ def DontLikeRate(Sit,nowRate):
                 nextRate=calcuNumRate(wholehand,mysuit)
                 rtRate=nextRate-nowRate
             #公共牌出现2张同花
-            if len(SameSuit(Sit.cardlist))==2:
+            if len(SameSuit(Sit.cardlist))>=2:
                 if SameSuit(Sit.cardlist)[0].suit<3: mysuit=3
                 else: mysuit=0
                 nextRate=calcuNumRate(wholehand,mysuit)+0.15
