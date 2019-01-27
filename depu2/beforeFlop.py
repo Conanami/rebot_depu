@@ -88,7 +88,7 @@ def beforeFlopDecision(Sit,callchip):
                 if(InOpenRange(myhand)):
                     return (3,2)
                 if(InTryRange(myhand)):
-                    return (3,2)
+                    return (0,0)
                 if(InStealRange(myhand)):
                     return (0,0)
             #如果是MP
