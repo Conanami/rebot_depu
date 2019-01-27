@@ -87,6 +87,8 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
+                if(InTryRange(myhand)):
+                    return (3,2)
                 if(InStealRange(myhand)):
                     return (0,0)
             #如果是MP
@@ -222,7 +224,7 @@ def beforeFlopDecision(Sit,callchip):
                         if InSuperRange(myhand): return (3,3)
                         if InOpenRange(myhand): return (2,0)
                         if InStealRange(myhand): return (0,0)
-                        if InTryRange(myhand): return (0,0)
+                        if InTryRange(myhand): return (2,0)
                         return (0,0)
                 else:
                     print('btn跟别人的起始加注')
@@ -284,8 +286,9 @@ def InSuperRange(myhand):
     print ('判断是否超级大牌')
     if myhand[0].num==myhand[1].num and myhand[0].num>=12: return True
     #AK也当超级大牌打
-    if myhand[0].num+myhand[1].num>=27: return True
-    else : return False
+    #if myhand[0].num+myhand[1].num>=27: return True
+    #else : return False
+    return False
 
 #小盲可以跟注的牌
 def sbCallRange(myhand):

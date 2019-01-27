@@ -63,7 +63,9 @@ def flopDecision(Sit):
             if Sit.betlist[Sit.myseat]<=Sit.oldpot/2.1 :
                 print('我在后位，并没有认真下注过')
                 if Sit.callchip==0:
-                    #正常CBET
+                    #除了超大牌外
+                    if winrate>0.98: return (2,0)
+                    #所有牌正常CBET
                     return (3,1)
                 elif Sit.callchip<Sit.oldpot/1.8:
                     if winrate>0.95: return (3,3)
@@ -90,6 +92,8 @@ def flopDecision(Sit):
             if Sit.callchip==0:
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
                 if cardtypeOf(Sit.cardlist)==3: return (3,3)
+                print('超大牌必须迷惑对手')
+                if winrate>0.98: return (2,0)
                 return (3,1)
             #我已经做了半池下注，对手仍然加注我
             if Sit.betlist[Sit.myseat]>Sit.oldpot/2.1 :
@@ -103,7 +107,7 @@ def flopDecision(Sit):
                 if Sit.callchip>=Sit.oldpot/2 and Sit.callchip<=Sit.oldpot:
                     print('我在前位半池下注，后位加注我，我顶对或超对可以跟注一下')
                     if winrate>0.98: return (3,3)
-                    if winrate>0.91: return (2,0)
+                    if winrate>0.89: return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
                 if Sit.callchip>Sit.oldpot:
