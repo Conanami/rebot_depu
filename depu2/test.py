@@ -12,8 +12,8 @@ from Harrington import IsSameHand
 from Harrington import DontLikeRate
 from Harrington import MyTurn
 from reader import LastManAfterFlop
-from beforeFlop import IsFirst
-from beforeFlop import IsOpenRange
+from preFlop import IsOpenRange
+from preFlop import IsFirst
 
 def bbb():
     ''' 测试 '''
