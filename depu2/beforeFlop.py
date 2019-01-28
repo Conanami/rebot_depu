@@ -99,7 +99,7 @@ def beforeFlopDecision(Sit,callchip):
                 if(InOpenRange(myhand)):
                     return (3,2)
                 if(InTryRange(myhand)):
-                    return (3,2)
+                    return (0,0)
                 if(InStealRange(myhand)):
                     return (0,0)
             #如果是CO
@@ -149,7 +149,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand):
                         return (2,0)
                     if InTryRange(myhand):
-                        return (2,0)
+                        return (0,0)
                 
                 #print('小盲默认要偷')
                 #return (3,0)
@@ -171,7 +171,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand):  
                         return (2,0)
                     if InTryRange(myhand): 
-                        return (2,0)
+                        return (0,0)
                 
         
         #如果有人加注了，但还不是很大
@@ -234,7 +234,7 @@ def beforeFlopDecision(Sit,callchip):
                         if InSuperRange(myhand): return (3,3)
                         if InOpenRange(myhand): return (2,0)
                         if InStealRange(myhand): return (0,0)
-                        if InTryRange(myhand): return (0,0)
+                        if InTryRange(myhand): return (2,0)
                         return (0,0)
             #小盲位跟加注
             if (Sit.myseat-Sit.position)%6==1:
@@ -298,7 +298,7 @@ def sbCallRange(myhand):
     if myhand[0].num==myhand[1].num: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14): return True
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=17 : return True
-    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return True
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
     if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return True
     return False
 
