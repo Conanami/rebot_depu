@@ -317,9 +317,9 @@ def InTryRange(myhand):
     print('判断是否CO位开局')
     if myhand[0].num==myhand[1].num: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13): return True
-    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1: return True
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=17: return True 
     if myhand[0].num+myhand[1].num>=24: return True
-    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return True
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return False
     return False
 
 #BTN位可以开局的
