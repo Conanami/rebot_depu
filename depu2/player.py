@@ -76,8 +76,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.92): return (3,3)
                     if(finalWinrate>=0.80): return (2,0)
-                    
-                    if(rtSit.callchip/rtSit.potsize<=nextWinrate[1]):
+                    print('听牌胜率的计算',nextWinrate[1])
+                    #认为底池赔率略高于我的胜率增加
+                    if(rtSit.callchip/rtSit.potsize<=nextWinrate[1]*1.5):
                         if(IsDrawFlush(wholehandlist)): return (2,2)
                         if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
@@ -92,8 +93,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (0,0)
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
+                print('遭遇加注的情况')
                 if(finalWinrate>=0.98): return (3,4)
-                if rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92) and finalWinrate>0.92:
+                if rtSit.potsize/rtSit.callchip>0.12/(finalWinrate-0.85) and finalWinrate>0.9:
                     return (2,0)
                 return (0,0)
             #print('0000')
@@ -194,10 +196,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(rtSit.potsize>=12*rtSit.bb and rtSit.potsize<20*rtSit.bb): 
                         if(finalWinrate>=0.7): return (2,0)
                         return (0,0)
-                    if(rtSit.potsize>=20*rtSit.bb and rtSit.potsize<30*rtSit.bb):
+                    if(rtSit.potsize>=20*rtSit.bb and rtSit.potsize<40*rtSit.bb):
                         if(finalWinrate>=0.76): return (2,0)
                         return (0,0)
-                    if(rtSit.potsize>=30*rtSit.bb):
+                    if(rtSit.potsize>=40*rtSit.bb):
                         if(finalWinrate>=0.9): return (0,0)
                         return (0,0)
                     return (0,0)
