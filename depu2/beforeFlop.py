@@ -248,18 +248,28 @@ def beforeFlopDecision(Sit,callchip):
             #if InTryRange(myhand): return (2,0)
             return (0,0)
         #底池赔率可以，怎么都搞
-        if callchip>=10*Sit.bb: 
+        if callchip>=10*Sit.bb and Sit.betlist[Sit.myseat]<8*Sit.bb: 
             if InSuperRange(myhand): return (3,3)
             if InOpenRange(myhand) and Sit.potsize/callchip>5: return (2,0)
             if InStealRange(myhand) and Sit.potsize/callchip>7: return (2,0)
             return (0,0)
-
+        if callchip>6*Sit.bb and Sit.betlist[Sit.myseat]>=8*Sit.bb:
+            print('我3BET后被4BET')
+            if OnlyAAKK(myhand): return (3,4)
+            return (0,0)
 
         if callchip==0 : return (2,0)
         
     return (0,-1)
 
-#最厉害的
+#超级厉害
+def OnlyAAKK(myhand):
+    if myhand[0].num==myhand[1].num and myhand[0].num>=13: 
+        print ('AAKK跟人推光')
+        return True
+    return False
+
+#厉害的
 def InSuperRange(myhand):
     
     if myhand[0].num==myhand[1].num and myhand[0].num>=12: 
