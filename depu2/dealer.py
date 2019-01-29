@@ -501,6 +501,13 @@ def getLeftNumCardCnt(num,cardlist):
         if(card.num==num): cnt=cnt+1
     return 4-cnt
 
+#得到最大的牌
+def getHighCard(cardlist):
+    high=0
+    for card in cardlist:
+        if card.num>high:
+            high=card.num
+    return high
 
 #简单测试用的
 def ddd():

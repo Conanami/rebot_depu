@@ -44,10 +44,13 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #print('测试是不是走到这里')
             if rtSit.callchip==0:
                 #特别大一定要过牌骗人
-                print('是否需要保护:', nextWinrate[1])
                 if finalWinrate>=0.98: return (2,0)
-                
-                elif(nextWinrate[1]<-0.03 and finalWinrate>0.85): return (3,1)               
+                elif nextWinrate[1]<-0.03 and finalWinrate>0.85 and rtSit.potsize<20*rtSit.bb:
+                    print('是否需要保护:', nextWinrate[1])
+                    return (3,1)
+                elif nextWinrate[1]<-0.03 and finalWinrate>0.93:
+                    print('比较大的牌，应该保护')
+                    return (3,1)               
                 #对手一过牌我就保持进攻，看看效果，看起来不行
                 #if MyTurn(rtSit)==2: return (3,1)
                 if MyTurn==2: 
@@ -76,9 +79,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.92): return (3,3)
                     if(finalWinrate>=0.80): return (2,0)
-                    print('听牌胜率的计算',nextWinrate[1])
+                    if(rtSit.callchip/rtSit.potsize<0.1):
+                        print('奇怪底池赔率的计算，永远有诈唬的可能性')
+                        return (2,0)
                     #认为底池赔率略高于我的胜率增加
                     if(rtSit.callchip/rtSit.potsize<=nextWinrate[1]*1.5):
+                        print('听牌胜率的计算',nextWinrate[1])
                         if(IsDrawFlush(wholehandlist)): return (2,2)
                         if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
@@ -95,7 +101,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.betlist[rtSit.myseat]>0):
                 print('遭遇加注的情况')
                 if(finalWinrate>=0.98): return (3,4)
-                if rtSit.potsize/rtSit.callchip>0.12/(finalWinrate-0.85) and finalWinrate>0.9:
+                if rtSit.potsize/rtSit.callchip>0.15/(finalWinrate-0.85) and finalWinrate>0.89:
+                    print('已经套池，只能跟下去了')
                     return (2,0)
                 return (0,0)
             #print('0000')
@@ -156,9 +163,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(finalWinrate>=0.98): return (3,4)
                 #对手没啥实力，我价值下注，不下注就没钱了
                 if finalWinrate>0.94 and rtSit.potsize<50*rtSit.bb: return (3,3)
-                if(finalWinrate>0.83) and rtSit.potsize<30*rtSit.bb: return (3,1)
+                if(finalWinrate>0.75) and rtSit.potsize<30*rtSit.bb: return (3,1)
+                #尝试下2/3底池
+                if finalWinrate>0.93: return (3,3)
                 #没有摊牌价值，必须诈唬
-                if finalWinrate<0.4:
+                if finalWinrate<0.2:
                     print('河牌咋呼')
                     return (3,3)
                 #否则摊牌比牌
@@ -232,7 +241,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.betlist[rtSit.myseat]<=0):
                 #对手下了小注
                 if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
+                    print('对手下注很小，多人底池')
                     if(finalWinrate>=0.94): return (3,4)
+                    
+                    if rtSit.callchip/rtSit.potsize<=0.1 and finalWinrate>0.5: 
+                        print('惊人的小注，我总是跟注')
+                        return (2,0)
                     if(rtSit.potsize<12*rtSit.bb ):
                         if(finalWinrate>0.6): return (2,0)
                         return (0,0)
@@ -247,7 +261,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(rtSit.potsize>40*rtSit.bb):
                         if(finalWinrate>=0.94): return (3,4)
                         if(finalWinrate>=0.92): return (2,0)
-                        if(finalWinrate>=0.76): return (0,0)
+                        if(finalWinrate>=0.8): return (0,0)
                         return (0,0)
                     return (0,0)
                 #对手表现出很强的实力
@@ -344,6 +358,7 @@ def makeDecision(rtSit):
         print('最后胜率%.4f' % finalWinrate)
         #翻牌后的决策
         mydecision=afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit)
+        print('并非最终决定：',mydecision)
         finalDecision=mydecision
     
     #实际情况还要结合自己的筹码，才能决定到底点击哪里

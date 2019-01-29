@@ -37,37 +37,12 @@ from reader import LastManAfterFlop
 #         return (0,0)
 #     return (0,0)
 
-#判断手牌是否在openRange中，就是第一个人应该开始的范围
-def IsOpenRange(Sit):
-    if (Sit.position-Sit.myseat)%6==3:
-        print('UTG')
-    if (Sit.position-Sit.myseat)%6==2:
-        print('MP')
-    if (Sit.position-Sit.myseat)%6==1:
-        print('CO')
-    if (Sit.position-Sit.myseat)%6==0:
-        print('BTN')
-    if (Sit.position-Sit.myseat)%6==5:
-        print('SB')
-    if (Sit.position-Sit.myseat)%6==4:
-        print('BB')
 
 
 
 
-#判断是否第一个人
-def IsFirst(Sit):
-    pubcnt=getPubnum(Sit)
-    if pubcnt==0 :
-        cnt=0
-        for i in range(Sit.position+3,Sit.position+8):
-            if i%6==Sit.myseat and cnt==0:
-                return True
-            elif Sit.betlist[i%6]>0: 
-                cnt = cnt+1
-        return False
-    else:
-        return '不是翻前好不好'
+
+
 
 #新写一个翻前决策，把疯狂的全下都去掉先
 #2018-10-22 翻前决策重新写，无比重视紧和位置
@@ -155,7 +130,7 @@ def beforeFlopDecision(Sit,callchip):
                 #return (3,0)
             #如果是大盲，只剩2个人，不发起攻击，碰运气
             if callchip==0 and leftman==2 and (Sit.myseat-Sit.position)%6==2:
-                print('大盲')
+                print('大盲,只剩2人，无人加注')
                 if InSuperRange(myhand):
                     return (3,3)
                 if MyTurn(Sit)==2:
@@ -171,7 +146,8 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand):  
                         return (2,0)
                     if InTryRange(myhand): 
-                        return (0,0)
+                        return (2,0)
+                return (2,0)
                 
         
         #如果有人加注了，但还不是很大
