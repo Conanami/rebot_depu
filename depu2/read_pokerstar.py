@@ -35,6 +35,7 @@ class situation:
         self.oldpot=0
         self.bb=0
         self.callchip=0
+        self.raisechip=0
 
     def todict(self):
         ''' 结果转换为 dict对象 '''
@@ -93,7 +94,7 @@ class situation:
         result['bbnum'] = self.bb
         
         result['callchip'] = self.callchip
-        
+        result['raisechip'] = self.raisechip
         return result
     
     def __str__(self):
@@ -400,6 +401,19 @@ def GetSituation(   wholeimg,
     down_callchip=SinglePicToNum(wholeimg,downcall_picbox,numstart,call_num_sample_img,num_step,point_step,thres)
     print('down:'+str(down_callchip))
 
+    #最小加注的筹码量
+    x1=665
+    x2=x1+100
+    y1=550
+    y2=y1+16
+    numstart=0
+    num_step=11
+    point_step=11
+    thres=200
+    downraise_picbox=picbox(x1,y1,x2,y2)
+    down_raise=SinglePicToNum(wholeimg,downraise_picbox,numstart,call_num_sample_img,num_step,point_step,thres)
+    print('min-raise:'+str(down_raise))
+
     #读所有的下注
     #if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
     #else:
@@ -452,7 +466,7 @@ def GetSituation(   wholeimg,
     rtSit.bb=levelbb
     #获得要跟注的筹码数量
     rtSit.callchip=min(rtSit.chiplist[rtSit.myseat],max(down_callchip,getCallchip(rtSit.betlist,rtSit.myseat)))
-    
+    rtSit.raisechip=down_raise
     return rtSit
 
 #得到需要跟注的数量

@@ -49,7 +49,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     print('是否需要保护:', nextWinrate[1])
                     return (3,1)
                 elif nextWinrate[1]<-0.03 and finalWinrate>0.93:
-                    print('比较大的牌，应该保护')
+                    print('比较大的牌，应该保护，第一次测试4，2')
                     return (3,1)               
                 #对手一过牌我就保持进攻，看看效果，看起来不行
                 #if MyTurn(rtSit)==2: return (3,1)
@@ -367,6 +367,15 @@ def makeDecision(rtSit):
 
 
 #根据自己手里的筹码多少，下注一个比例
+#3，1   半池
+#3，2   2/3底池
+#3，3   底池
+#3，5   1/3底池
+#3，6   3/4底池
+#3，7   1.5底池
+#2，0   过牌/跟注
+#0，0   弃牌
+
 def getClickDecision(finalDecision,rtSit):
     #返回的决定
     rtDecision=finalDecision
@@ -411,4 +420,7 @@ def getClickDecision(finalDecision,rtSit):
     if rtSit.callchip>rtSit.chiplist[rtSit.myseat] and finalDecision[0]==2: rtDecision=(3,0)
     return rtDecision
     
+#获得下注的按键
+def getDragTarget(Sit,betsize):
+    return 500,500
 

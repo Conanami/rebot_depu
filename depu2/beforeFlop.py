@@ -261,8 +261,10 @@ def beforeFlopDecision(Sit,callchip):
 
 #最厉害的
 def InSuperRange(myhand):
-    print ('判断是否超级大牌')
-    if myhand[0].num==myhand[1].num and myhand[0].num>=12: return True
+    
+    if myhand[0].num==myhand[1].num and myhand[0].num>=12: 
+        print ('是超级大牌')
+        return True
     #AK也当超级大牌打
     #if myhand[0].num+myhand[1].num>=27: return True
     #else : return False
@@ -280,7 +282,7 @@ def sbCallRange(myhand):
 
 #前位可以开局的
 def InOpenRange(myhand):
-    print ('判断是否前位开局牌')
+    #print ('判断是否前位开局牌')
     if myhand[0].num==myhand[1].num: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14) and myhand[0].num+myhand[1].num>=24: return True
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=23 : return True
@@ -290,7 +292,7 @@ def InOpenRange(myhand):
 
 #CO位可以开局的
 def InTryRange(myhand):
-    print('判断是否CO位开局')
+    #print('判断是否CO位开局')
     if myhand[0].num==myhand[1].num: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13): return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=17: return True 
@@ -300,7 +302,7 @@ def InTryRange(myhand):
 
 #BTN位可以开局的
 def QuiteGood(myhand):
-    print('判断是否BTN位可以开局的牌')
+    #print('判断是否BTN位可以开局的牌')
     if myhand[0].num==myhand[1].num: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13): return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1: return True
