@@ -132,6 +132,7 @@ def getNumFromList(img,box,samplelist,thres=127):
     for i,v in enumerate(samplelist):
         if ( MatchPicToSample(img,box,v,thres) ):
             return i
+    return -1
 
 #从打开的文件，得到要处理的区域
 def imreadGreyImg(wholeimg,dcbox):
@@ -219,6 +220,7 @@ def findSampleInList(wholeimg,btnsample_img,btnboxlist,thres=127):
         mybox=(tmpbox.x1,tmpbox.y1,tmpbox.x2,tmpbox.y2)
         if(MatchPicToSample(wholeimg,mybox,btnsample_img,thres)):
             return i
+    return -1
 
 #得到一组状态
 def PicListToStatus(wholeimg,staboxlist,status_sample_img,thres=127):
