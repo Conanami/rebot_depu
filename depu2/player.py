@@ -53,9 +53,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (3,1)               
                 #对手一过牌我就保持进攻，看看效果，看起来不行
                 #if MyTurn(rtSit)==2: return (3,1)
-                if MyTurn==2: 
-                    print('翻牌大家都示弱，转牌咋呼')
-                    return (3,3) 
+                if MyTurn(rtSit)==2: 
+                    print('面对CHECK,永远转牌咋呼')
+                    return (3,1) 
                 else: return (2,0)
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
