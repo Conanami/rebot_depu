@@ -139,7 +139,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InStealRange(myhand): 
                         return (2,0)
                     if InTryRange(myhand):
-                        return (2,0)
+                        return (3,2)
                     if QuiteGood(myhand):
                         return (2,0)
                 if MyTurn(Sit)==1:
@@ -226,10 +226,9 @@ def beforeFlopDecision(Sit,callchip):
                     if leftman<=2 and MyTurn(Sit)==1: return (2,0)
                     else: return (2,0)
                 if leftman==2:
-                    if QuiteGood(myhand): 
-                        if MyTurn(Sit)==2 and Sit.potsize/Sit.callchip>=3: 
-                            print('对抗小盲有位置优势')
-                            return (2,0)
+                    if MyTurn(Sit)==2: 
+                        print('对抗小盲有位置优势')
+                        if InBBvsSb(myhand):  return (2,0)
                     elif InTryRange(myhand):
                         print('对抗一个玩家，保卫盲注')
                         return (2,0)
@@ -262,6 +261,26 @@ def beforeFlopDecision(Sit,callchip):
         if callchip==0 : return (2,0)
         
     return (0,-1)
+
+#大盲对抗小盲的，保卫大盲的牌
+def InBBvsSb(myhand):
+    #口袋对
+    if myhand[0].num==myhand[1].num: return True
+    #带AKQ的同花
+    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=12 or myhand[1].num>=12): return True
+    #同花连牌，54以上
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=9: return True 
+    #两张高牌
+    if myhand[0].num+myhand[1].num>=24: return True
+    #隔一张同花连牌，68以上
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=14 : return True
+    #不同花的两张连牌，67以上
+    if abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=13: return True
+    #带A的牌
+    if (myhand[0].num>=14 or myhand[1].num>=14) : return True
+    #带K的牌
+    if (myhand[0].num>=13 or myhand[1].num>=13) and myhand[0].num+myhand[1].num>=19 : return True
+return False
 
 #超级厉害
 def OnlyAAKK(myhand):
@@ -304,10 +323,15 @@ def InOpenRange(myhand):
 #CO位可以开局的
 def InTryRange(myhand):
     #print('判断是否CO位开局')
+    #口袋对
     if myhand[0].num==myhand[1].num: return True
+    #带AK的同花
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13): return True
-    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=17: return True 
+    #同花连牌，78以上
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=15: return True 
+    #两张高牌
     if myhand[0].num+myhand[1].num>=24: return True
+    #隔一张同花连牌，8T以上
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return False
     return False
 

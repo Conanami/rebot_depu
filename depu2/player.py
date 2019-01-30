@@ -209,7 +209,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(finalWinrate>=0.76): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>=40*rtSit.bb):
-                        if(finalWinrate>=0.9): return (0,0)
+                        print('有一定的胜率还是要跟的')
+                        if(finalWinrate>=0.93): return (2,0)
                         return (0,0)
                     return (0,0)
                 #面对一个超POT大下注
