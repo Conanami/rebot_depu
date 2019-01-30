@@ -280,7 +280,7 @@ def InBBvsSb(myhand):
     if (myhand[0].num>=14 or myhand[1].num>=14) : return True
     #带K的牌
     if (myhand[0].num>=13 or myhand[1].num>=13) and myhand[0].num+myhand[1].num>=19 : return True
-return False
+    return False
 
 #超级厉害
 def OnlyAAKK(myhand):
