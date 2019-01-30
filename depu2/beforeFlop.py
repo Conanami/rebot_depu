@@ -317,7 +317,9 @@ def InOpenRange(myhand):
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14) and myhand[0].num+myhand[1].num>=24: return True
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=23 : return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
-    if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return True
+    #KQ可以前位开局，但要小心
+    if myhand[0].num+myhand[1].num>=25: return True
+     
     return False
 
 #CO位可以开局的
