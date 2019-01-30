@@ -132,7 +132,7 @@ def getNumFromList(img,box,samplelist,thres=127):
     for i,v in enumerate(samplelist):
         if ( MatchPicToSample(img,box,v,thres) ):
             return i
-    return -1
+    #return -1
 
 #从打开的文件，得到要处理的区域
 def imreadGreyImg(wholeimg,dcbox):
@@ -220,7 +220,7 @@ def findSampleInList(wholeimg,btnsample_img,btnboxlist,thres=127):
         mybox=(tmpbox.x1,tmpbox.y1,tmpbox.x2,tmpbox.y2)
         if(MatchPicToSample(wholeimg,mybox,btnsample_img,thres)):
             return i
-    return -1
+    return None
 
 #得到一组状态
 def PicListToStatus(wholeimg,staboxlist,status_sample_img,thres=127):
@@ -341,6 +341,7 @@ def getSeat(handlist):
     for i in range(len(handlist)):
         if handlist[i][0] and handlist[i][1]:
             return i 
+    return -1
 
 #读整个图片，获取所有信息
 def GetSituation(   wholeimg, 
@@ -460,7 +461,11 @@ def GetSituation(   wholeimg,
     ]
     
     btn=findSampleInList(wholeimg,btnsample_img[0],btnboxlist,thres)
-    rtSit.position=btn
+    if btn is None:
+        rtSit.position=-1
+    else:
+        rtSit.position=btn
+    
     rtSit.statuslist=GetStatusList(rtSit.chiplist)
     
     #pokerstar获得大盲注级别，要读窗体TITLE
