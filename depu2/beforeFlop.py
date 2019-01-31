@@ -96,6 +96,9 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
+                if InBtnOpen(myhand):
+                    print('按钮位OPEN的牌')
+                    return (3,2)
                 if(InTryRange(myhand)):
                     return (0,0)
                 if QuiteGood(myhand): 
@@ -281,6 +284,22 @@ def InBBvsSb(myhand):
     #带K的牌
     if (myhand[0].num>=13 or myhand[1].num>=13) and myhand[0].num+myhand[1].num>=19 : return True
     return False
+
+#BTN位OPEN的牌
+def InBtnOpen(myhand):
+    #口袋对
+    if myhand[0].num==myhand[1].num: return True
+    #带AK的同花
+    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13): return True
+    #同花连牌，78以上
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=15: return True 
+    #两张高牌
+    if myhand[0].num+myhand[1].num>=23 and abs(myhand[0].num-myhand[1].num)<=2: return True
+    #隔一张同花连牌，8T以上
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return True
+    return False
+
+
 
 #超级厉害
 def OnlyAAKK(myhand):
