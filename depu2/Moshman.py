@@ -16,6 +16,7 @@ from dealer import IsFlush
 from reader import getWaitingman
 from dealer import IsGunshotStraight
 from dealer import cardtypeOf
+from dealer import getHighCard
 
 #得到我是第几个行动的人
 def MyTurn(Sit):
@@ -97,8 +98,12 @@ def flopDecision(Sit):
             if Sit.callchip==0:
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
                 if cardtypeOf(Sit.cardlist)==3: return (3,3)
-                print('超大牌必须迷惑对手')
-                if winrate>0.98: return (2,0)
+                if winrate>0.98:
+                    print('超大牌必须迷惑对手') 
+                    return (2,0)
+                if unconnectFlop(Sit) and (Sit.myseat-Sit.position)%6>2: 
+                    print('看起来翻牌不大像我的范围')
+                    return (2,0)
                 return (3,1)
             #我已经做了半池下注，对手仍然加注我
             if Sit.betlist[Sit.myseat]>Sit.oldpot/2.1 :
@@ -163,6 +168,10 @@ def flopDecision(Sit):
             return (0,0)
     return (0,0)
         
-            
-            
+#如果翻牌中牌的可能性小
+def unconnectFlop(Sit):
+    pubcardlist=getPubList(Sit)
+    if getHighCard(pubcardlist)<=8:
+        return True
+    return False
             
