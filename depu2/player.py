@@ -208,7 +208,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(rtSit.potsize>=20*rtSit.bb and rtSit.potsize<40*rtSit.bb):
                         if(finalWinrate>=0.76): return (2,0)
                         return (0,0)
-                    if(rtSit.potsize>=40*rtSit.bb):
+                    if(rtSit.potsize>=40*rtSit.bb and rtSit.potsize<65*rtSit.bb):
+                        print('有一定的胜率还是要跟的')
+                        if(finalWinrate>=0.87): return (2,0)
+                        return (0,0)
+                    if (rtSit.potsize>=65*rtSit.bb) :
                         print('有一定的胜率还是要跟的')
                         if(finalWinrate>=0.93): return (2,0)
                         return (0,0)
