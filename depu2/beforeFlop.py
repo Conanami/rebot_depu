@@ -149,7 +149,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand):  
                         return (2,0)
                     if InTryRange(myhand): 
-                        return (2,0)
+                        return (0,0)
                 return (2,0)
                 
         
@@ -234,9 +234,9 @@ def beforeFlopDecision(Sit,callchip):
                         if InBBvsSb(myhand):  return (2,0)
                     elif InTryRange(myhand):
                         print('对抗一个玩家，保卫盲注')
-                        return (2,0)
+                        return (0,0)
                 #这个也是测试用的，不一定好
-                if InTryRange(myhand) and leftman>=2: 
+                if InTryRange(myhand) and leftman>2: 
                     print('底池赔率还行，进去试试')
                     return (2,0)
         if callchip>=5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb:
@@ -289,14 +289,17 @@ def InBBvsSb(myhand):
 def InBtnOpen(myhand):
     #口袋对
     if myhand[0].num==myhand[1].num: return True
-    #带AK的同花
-    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13): return True
+    #带A的同花
+    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14): return True
     #同花连牌，78以上
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=15: return True 
-    #两张高牌
-    if myhand[0].num+myhand[1].num>=23 and abs(myhand[0].num-myhand[1].num)<=2: return True
-    #隔一张同花连牌，8T以上
-    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return True
+    #两张同花高牌
+    if myhand[0].num+myhand[1].num>=23 and abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit: return True
+    #正常两张大牌
+    if myhand[0].num+myhand[1].num>=24 and myhand[0].num>=10 and myhand[1].num>=10: return True
+
+    #隔一张同花连牌，8T以上，不能太松
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return False
     return False
 
 

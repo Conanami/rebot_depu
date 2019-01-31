@@ -114,13 +114,13 @@ def flopDecision(Sit):
                     if winrate>0.91: return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
-                if Sit.callchip>=Sit.oldpot/2 and Sit.callchip<=Sit.oldpot:
+                if Sit.callchip>=Sit.oldpot/2 and Sit.callchip<=Sit.oldpot*1.1:
                     print('我在前位半池下注，后位加注我，我顶对或超对可以跟注一下')
                     if winrate>0.98: return (3,3)
                     if winrate>0.89: return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
-                if Sit.callchip>Sit.oldpot:
+                if Sit.callchip>Sit.oldpot*1.1:
                     #顶对顶踢脚，我谁都不怕
                     print('超POT下注，只有超大牌才打光算了')
                     if winrate>0.96: return (3,3)
