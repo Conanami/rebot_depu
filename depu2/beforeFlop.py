@@ -305,7 +305,7 @@ def sbCallRange(myhand):
     print ('判断是否小盲可以跟注的牌')
     if myhand[0].num==myhand[1].num: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14): return True
-    if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=17 : return True
+    if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=17 and  abs(myhand[0].num-myhand[1].num)==1: return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
     if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return True
     return False
