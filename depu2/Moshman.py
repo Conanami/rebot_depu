@@ -191,7 +191,7 @@ def flopDecision(Sit):
 #如果翻牌中牌的可能性小
 def unconnectFlop(Sit):
     pubcardlist=getPubList(Sit)
-    if getHighCard(pubcardlist)<=8:
+    if getHighCard(pubcardlist)<=8 and SameSuit(pubcardlist)==False:
         return True
     return False
             
