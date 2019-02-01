@@ -93,6 +93,9 @@ def flopDecision(Sit):
                 if winrate>0.95: 
                     print('勉强跟注吧')
                     return (2,0)
+                if Sit.callchip/Sit.potsize<0.3 and winrate>0.9:
+                    print('对手只是不相信我的CBET，还是要继续战斗的')
+                    return (2,0)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0) 
                 else: return (0,0)
             
@@ -191,7 +194,8 @@ def flopDecision(Sit):
 #如果翻牌中牌的可能性小
 def unconnectFlop(Sit):
     pubcardlist=getPubList(Sit)
-    if getHighCard(pubcardlist)<=8 and SameSuit(pubcardlist)==False:
+    #三张都小于8，而且是彩虹面
+    if getHighCard(pubcardlist)<=8 and len(SameSuit(pubcardlist))<2:
         return True
     return False
             

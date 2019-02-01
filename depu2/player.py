@@ -73,8 +73,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.80): return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (3,4)
                     if(IsDrawStraight(wholehandlist)): return(3,4)
-                    print('牌小不要跟，钱都输这里了')
-                    #if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
+                    print('测试到这里吗？')
+                    if(rtSit.callchip/rtSit.potsize<nextWinrate[0]/2): 
+                        print('赔率实在太诱人，两高张都可以跟')
+                        return (2,0)
                     return (0,0)
                 
                 if(rtSit.callchip<rtSit.potsize/2 and rtSit.potsize>=15*rtSit.bb and rtSit.potsize<=30*rtSit.bb):
