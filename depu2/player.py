@@ -3,6 +3,7 @@ import dealer
 import math
 import random
 #import readpot
+from dealer import IsDraw
 from dealer import IsDrawFlush
 from dealer import IsDrawStraight
 from reader import getPubList
@@ -82,7 +83,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]>=-0.01): return (3,3)
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.92): return (3,3)
-                    if(finalWinrate>=0.80): return (2,0)
+                    if(finalWinrate>=0.8): return (2,0)
+                    if finalWinrate>0.75 and IsDraw(wholehandlist): return (2,0)
                     if(rtSit.callchip/rtSit.potsize<0.1):
                         print('奇怪底池赔率的计算，永远有诈唬的可能性')
                         return (2,0)

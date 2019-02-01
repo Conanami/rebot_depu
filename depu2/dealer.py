@@ -276,6 +276,11 @@ def IsDrawStraight(cardlist):
         return True
     return False
 
+#任何听牌都可以
+def IsDraw(cardlist):
+    if IsDrawFlush(cardlist) or IsDrawStraight(cardlist):
+        return True
+    return False
 
 
 #判断是否高张
