@@ -134,7 +134,7 @@ def flopDecision(Sit):
                     if winrate>0.98: return (3,3)
                     if winrate>0.91: return (2,0)
                     if Sit.callchip/Sit.potsize<0.14 and winrate>0.7: 
-                        print('总归套池了，不用想了')
+                        print('赔率太好，不用想了，当他诈唬')
                         return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
