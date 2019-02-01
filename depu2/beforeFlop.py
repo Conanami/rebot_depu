@@ -149,7 +149,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand):  
                         return (2,0)
                     if InTryRange(myhand): 
-                        return (0,0)
+                        return (2,0)
                 return (2,0)
                 
         
@@ -160,61 +160,32 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.position-Sit.myseat)%6==3 :
                 print('UTG跟加注')
                 if InSuperRange(myhand): return (3,3)
-                if InOpenRange(myhand): return (0,0)
-                #if leftman>=3 and InTryRange(myhand): return (2,0)
                 return (0,0)
             if (Sit.position-Sit.myseat)%6==2 :
                 print('MP跟加注')
-                if leftman>=5:
-                    if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (2,0)
-                    return (0,0)
-                if leftman<5 and leftman>2:
-                    if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (2,0)
-                    return (0,0)
-                if leftman==2:
-                    if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (2,0)
-                    return (0,0)
+                if InSuperRange(myhand): return (3,3)
+                if InMPCallOpen(myhand): return (2,0)
+                return (0,0)
             if (Sit.position-Sit.myseat)%6==1:
                 print('CO跟加注')
-                if leftman>=5:
-                    if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (2,0)
-                    #if InTryRange(myhand): return (2,0)
-                    return (0,0)
-                if leftman==4:
-                    if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (2,0)
-                    #if InTryRange(myhand): return (2,0)
-                    return (0,0)
-                if leftman==3:
-                    if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (2,0)
-                    #if InTryRange(myhand): return (2,0)
-                    return (0,0)
-                if leftman==2:
-                    if InSuperRange(myhand): return (3,3)
-                    if InOpenRange(myhand): return (2,0)
-                    return (0,0)
+                if InSuperRange(myhand): return (3,3)
+                if InCoCallOpen(myhand): return (2,0)
+                return (0,0)
             #按钮位，跟加注
             if (Sit.position-Sit.myseat)%6==0:
                 if Sit.betlist[Sit.myseat]>0:
                     print('btn跟别人再加注')
-                    if leftman<=6 and leftman>=2:
+                    if leftman==2:
                         if InSuperRange(myhand): return (3,3)
-                        if InOpenRange(myhand): return (2,0)
-                        if InStealRange(myhand): return (0,0)
-                        if InTryRange(myhand): return (0,0)
+                        if InCoCallOpen(myhand): return (2,0)
+                        if InBtnCall3Bet(myhand): return (2,0)
                         return (0,0)
                 else:
                     print('btn跟多人的起始加注')
-                    if leftman<=6 and leftman>2:
+                    if leftman>2:
                         if InSuperRange(myhand): return (3,3)
-                        if InOpenRange(myhand): return (2,0)
-                        if InStealRange(myhand): return (0,0)
-                        if InTryRange(myhand): return (2,0)
+                        if InCoCallOpen(myhand): return (2,0)
+                        if InBtnCall3Bet(myhand): return (2,0)
                         return (0,0)
             #小盲位跟加注
             if (Sit.myseat-Sit.position)%6==1:
@@ -305,8 +276,8 @@ def InBtnOpen(myhand):
     if myhand[0].num==myhand[1].num: return True
     #带A的同花
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14): return True
-    #同花连牌，78以上
-    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=15: return True 
+    #同花连牌，67以上
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=13: return True 
     #两张同花高牌
     if myhand[0].num+myhand[1].num>=23 and abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit: return True
     #正常两张大牌
@@ -315,6 +286,14 @@ def InBtnOpen(myhand):
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return False
     return False
 
+def InBtnCall3Bet(myhand):
+    #口袋对
+    if myhand[0].num==myhand[1].num: return True
+    #同花连牌，67以上
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=13: return True 
+    #AK可以call
+    if myhand[0].num+myhand[1].num==27: return True
+    return False
 
 
 #超级厉害
@@ -345,6 +324,25 @@ def sbCallRange(myhand):
     if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return True
     return False
 
+#可以在CO跟加注的牌
+def InCoCallOpen(myhand):
+    #口袋对
+    if myhand[0].num==myhand[1].num: return True
+    #AK,AQ
+    if myhand[0].num+myhand[1].num>=26: return True
+    #同花连张结构牌
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1: return True
+
+#可以在MP位跟加注的牌
+def InMPCallOpen(myhand):
+    #口袋对
+    if myhand[0].num==myhand[1].num: return True
+    #AK,AQ
+    if myhand[0].num+myhand[1].num>=26: return True
+    #同花连张结构牌
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=21: return True
+    return False
+
 #前位可以开局的
 def InOpenRange(myhand):
     #print ('判断是否前位开局牌')
@@ -352,7 +350,7 @@ def InOpenRange(myhand):
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14) and myhand[0].num+myhand[1].num>=24: return True
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=23 : return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
-    #KQ可以前位开局，但要小心
+    #KQ，AJ可以前位开局，但要小心
     if myhand[0].num+myhand[1].num>=25: return True
      
     return False
