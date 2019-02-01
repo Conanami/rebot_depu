@@ -98,7 +98,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if InBtnOpen(myhand):
                     print('按钮位OPEN的牌')
-                    return (3,2)
+                    return (0,0)
                 if(InTryRange(myhand)):
                     return (0,0)
                 if QuiteGood(myhand): 
@@ -116,7 +116,7 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand):
                         return (3,2)
                     if InTryRange(myhand):
-                        return (3,2)
+                        return (0,0)
                     if QuiteGood(myhand):
                         return (0,0)
                     return (0,0)
@@ -206,11 +206,11 @@ def beforeFlopDecision(Sit,callchip):
                         if InSuperRange(myhand): return (3,3)
                         if InOpenRange(myhand): return (2,0)
                         if InStealRange(myhand): return (0,0)
-                        if InTryRange(myhand): return (2,0)
+                        if InTryRange(myhand): return (0,0)
                         return (0,0)
                 else:
-                    print('btn跟别人的起始加注')
-                    if leftman<=6 and leftman>=2:
+                    print('btn跟多人的起始加注')
+                    if leftman<=6 and leftman>2:
                         if InSuperRange(myhand): return (3,3)
                         if InOpenRange(myhand): return (2,0)
                         if InStealRange(myhand): return (0,0)
@@ -220,7 +220,7 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.myseat-Sit.position)%6==1:
                 print('小盲跟加注')
                 if InSuperRange(myhand): return (3,3)
-                if sbCallRange(myhand): return (2,0)
+                if sbCallRange(myhand): return (0,0)
                       
             #大盲位跟加注
             if (Sit.myseat-Sit.position)%6==2:
@@ -245,7 +245,7 @@ def beforeFlopDecision(Sit,callchip):
             if CallRange(myhand): return (3,3)
             if leftman==2 and MyTurn(Sit)==2 and Sit.myseat==Sit.position: return (0,0)
             if leftman==2 and MyTurn(Sit)==2 and InTryRange(myhand): return (0,0)
-            if leftman==2 and InOpenRange(myhand) and MyTurn(Sit)==2: return (2,0)
+            if leftman==2 and InOpenRange(myhand) and MyTurn(Sit)==2: return (0,0)
             if InOpenRange(myhand) and Sit.potsize/callchip>3: return (0,0) 
             if QuiteGood(myhand) and Sit.potsize/callchip>5: return (0,0)
             #还是要认怂，这么凶的人少见
@@ -261,6 +261,7 @@ def beforeFlopDecision(Sit,callchip):
         if callchip>6*Sit.bb and Sit.betlist[Sit.myseat]>=8*Sit.bb:
             print('我3BET后被4BET')
             if OnlyAAKK(myhand): return (3,4)
+            if callchip/Sit.potsize<0.3 and InSuperRange(myhand) : return (2,0)
             return (0,0)
 
         if callchip==0 : return (2,0)

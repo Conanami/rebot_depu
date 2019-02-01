@@ -419,8 +419,7 @@ def GetSituation(   wholeimg,
     print('min-raise:'+str(down_raise))
 
     #读所有的下注
-    #if(callchip==0): rtSit.betlist=[0,0,0,0,0,0]
-    #else:
+    
 
     betWidth=120
     betHeight=12
@@ -428,12 +427,12 @@ def GetSituation(   wholeimg,
     point_step=num_step
     thres=160
     numstart=0
-    betboxlist=[picbox(290,344,337+betWidth,344+betHeight), \
-                picbox(158,315,200+betWidth,315+betHeight), \
-                picbox(180,191,220+betWidth,191+betHeight), \
-                picbox(335,158,385+betWidth,158+betHeight), \
-                picbox(430,191,483+betWidth,191+betHeight), \
-                picbox(490,316,557+betWidth,316+betHeight)
+    betboxlist=[picbox(260,344,337+betWidth,344+betHeight), \
+                picbox(128,315,200+betWidth,315+betHeight), \
+                picbox(150,191,220+betWidth,191+betHeight), \
+                picbox(305,158,385+betWidth,158+betHeight), \
+                picbox(400,191,483+betWidth,191+betHeight), \
+                picbox(460,316,557+betWidth,316+betHeight)
     ]
     rtSit.betlist=PicListToNum(wholeimg,betboxlist,numstart,dc_num_sample_img,num_step,point_step,thres)
 
