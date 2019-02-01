@@ -350,6 +350,7 @@ def GetSituation(   wholeimg,
                     pub_suit_sample_img,
                     pub_num_sample_img,
                     call_num_sample_img,
+                    pot_num_sample_img,
                     btnsample_img,
                     levelbb=100):
     
@@ -364,7 +365,7 @@ def GetSituation(   wholeimg,
     #读所有人手里还剩的筹码
     
     numstart=0
-    chipWidth=90
+    chipWidth=120
     chipHeight=14
     num_step=9
     point_step=9
@@ -385,7 +386,7 @@ def GetSituation(   wholeimg,
     numstart=0
     thres=200
     dcpicbox=picbox(x1,y1,x2,y2)
-    potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,chip_num_sample_img,num_step,point_step,thres)
+    potsize=SinglePicToNum(wholeimg,dcpicbox,numstart,pot_num_sample_img,num_step,point_step,thres)
     rtSit.potsize=potsize
 
     
@@ -531,6 +532,20 @@ class sampleconfig:
         self.chip_num_sample_img=file2img(chip_num_sample)
         
         #底池和大小盲的字符样本
+        pot_num_sample=[r'depu2\samples\pot_num\pot_0.png', \
+                        r'depu2\samples\pot_num\pot_1.png', \
+                        r'depu2\samples\pot_num\pot_2.png', \
+                        r'depu2\samples\pot_num\pot_3.png', \
+                        r'depu2\samples\pot_num\pot_4.png', \
+                        r'depu2\samples\pot_num\pot_5.png', \
+                        r'depu2\samples\pot_num\pot_6.png', \
+                        r'depu2\samples\pot_num\pot_7.png', \
+                        r'depu2\samples\pot_num\pot_8.png', \
+                        r'depu2\samples\pot_num\pot_9.png', \
+                        r'depu2\samples\pot_num\pot_dot.png'
+        ]
+        self.pot_num_sample_img=file2img(pot_num_sample)
+
         #如果没有小数点的，就把dc_dot换成dc_wan
         dc_num_sample=[r'depu2\samples\dc_num\dc_0.png', \
                     r'depu2\samples\dc_num\dc_1.png', \
@@ -585,6 +600,7 @@ def analysisImg(wholeimg,levelbb=100):
                         config.pub_suit_sample_img,
                         config.pub_num_sample_img,
                         config.call_num_sample_img,
+                        config.pot_num_sample_img,
                         config.btnsample_img,
                         levelbb)
 

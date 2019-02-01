@@ -56,7 +56,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if MyTurn(rtSit)==2: 
                     print('面对CHECK,永远转牌咋呼')
                     return (3,1) 
-                else: return (2,0)
+                else: 
+                    if finalWinrate>0.85: 
+                        print('转牌觉得自己挺大的，还是要保持进攻')
+                        return (3,1)
+                    return (2,0)
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
                 
@@ -72,7 +76,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     #if(rtSit.callchip/rtSit.potsize<finalWinrate): return (2,0)
                     return (0,0)
                 
-                if(rtSit.callchip<rtSit.potsize/leftman and rtSit.potsize>=15*rtSit.bb):
+                if(rtSit.callchip<rtSit.potsize/2 and rtSit.potsize>=15*rtSit.bb and rtSit.potsize<=30*rtSit.bb):
                     print('转牌下小注，我根据底池赔率决定走不走')
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (3,3)
@@ -87,6 +91,48 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         print('听牌胜率的计算',nextWinrate[1])
                         if(IsDrawFlush(wholehandlist)): return (2,2)
                         if(IsDrawStraight(wholehandlist)): return(2,2)
+                    return (0,0)
+                if(rtSit.callchip<rtSit.potsize/2 and rtSit.callchip>=rtSit.potsize/3 
+                    and rtSit.potsize>=30*rtSit.bb and rtSit.potsize<=60*rtSit.bb):
+                    print('底池有点大了，我要考虑清楚')
+                    if(finalWinrate>=0.98):  
+                        if(nextWinrate[1]>=-0.01): return (3,3)
+                        if(nextWinrate[1]<-0.03): return (3,4)
+                    if(finalWinrate>=0.92): return (3,3)
+                    if(finalWinrate>=0.80): return (2,0)
+                    if(rtSit.callchip/rtSit.potsize<0.1):
+                        print('奇怪底池赔率的计算，永远有诈唬的可能性')
+                        return (2,0)
+                    #认为底池赔率略高于我的胜率增加
+                    if(rtSit.callchip/rtSit.potsize<=nextWinrate[1]):
+                        print('听牌胜率的计算',nextWinrate[0],nextWinrate[1])
+                        if(IsDrawFlush(wholehandlist)): return (2,2)
+                        if(IsDrawStraight(wholehandlist)): return(2,2)
+                    return (0,0)
+                if(rtSit.callchip<rtSit.potsize/2 and rtSit.callchip>=rtSit.potsize/3 
+                    and rtSit.potsize>=60*rtSit.bb):
+                    print('底池非常大了，绝对要进行常考')
+                    if(finalWinrate>=0.98):  
+                        if(nextWinrate[1]>=-0.01): return (3,3)
+                        if(nextWinrate[1]<-0.03): return (3,4)
+                    if(finalWinrate>=0.92): return (3,3)
+                    if(finalWinrate>=0.80): return (2,0)
+                    if(rtSit.callchip/rtSit.potsize<0.1):
+                        print('奇怪底池赔率的计算，永远有诈唬的可能性')
+                        return (2,0)
+                    #认为底池赔率略高于我的胜率增加
+                    if nextWinrate[0]<0.8:
+                        print('转牌跟注河牌翻身没啥机会')
+                        if(rtSit.callchip/rtSit.potsize<=nextWinrate[1]/2):
+                            print('听牌胜率的计算',nextWinrate[0],nextWinrate[1])
+                            if(IsDrawFlush(wholehandlist)): return (2,2)
+                            if(IsDrawStraight(wholehandlist)): return(2,2)
+                    if nextWinrate[0]>=0.8:
+                        print('转牌跟注河牌翻身有点机会')
+                        if(rtSit.callchip/rtSit.potsize<=nextWinrate[1]):
+                            print('听牌胜率的计算',nextWinrate[0],nextWinrate[1])
+                            if(IsDrawFlush(wholehandlist)): return (2,2)
+                            if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
                 if(rtSit.callchip>=rtSit.potsize/leftman):
                     print('转牌，下注好大，啥意思？',nextWinrate[1])

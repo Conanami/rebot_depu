@@ -154,8 +154,9 @@ def beforeFlopDecision(Sit,callchip):
                 
         
         #如果有人加注了，但还不是很大
-        if callchip>=Sit.bb and callchip<=6*Sit.bb:
+        if callchip>=Sit.bb and callchip<=6*Sit.bb and Sit.betlist[Sit.myseat]<2*Sit.bb:
             #print('测试到了这里')
+            print('跟第一次加注的情况')
             if (Sit.position-Sit.myseat)%6==3 :
                 print('UTG跟加注')
                 if InSuperRange(myhand): return (3,3)
@@ -244,6 +245,7 @@ def beforeFlopDecision(Sit,callchip):
             if CallRange(myhand): return (3,3)
             if leftman==2 and MyTurn(Sit)==2 and Sit.myseat==Sit.position: return (0,0)
             if leftman==2 and MyTurn(Sit)==2 and InTryRange(myhand): return (0,0)
+            if leftman==2 and InOpenRange(myhand) and MyTurn(Sit)==2: return (2,0)
             if InOpenRange(myhand) and Sit.potsize/callchip>3: return (0,0) 
             if QuiteGood(myhand) and Sit.potsize/callchip>5: return (0,0)
             #还是要认怂，这么凶的人少见
@@ -297,7 +299,6 @@ def InBtnOpen(myhand):
     if myhand[0].num+myhand[1].num>=23 and abs(myhand[0].num-myhand[1].num)<=2 and myhand[0].suit==myhand[1].suit: return True
     #正常两张大牌
     if myhand[0].num+myhand[1].num>=24 and myhand[0].num>=10 and myhand[1].num>=10: return True
-
     #隔一张同花连牌，8T以上，不能太松
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return False
     return False
@@ -335,7 +336,7 @@ def sbCallRange(myhand):
 #前位可以开局的
 def InOpenRange(myhand):
     #print ('判断是否前位开局牌')
-    if myhand[0].num==myhand[1].num: return True
+    if myhand[0].num==myhand[1].num and myhand[0].num>6: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14) and myhand[0].num+myhand[1].num>=24: return True
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=23 : return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
