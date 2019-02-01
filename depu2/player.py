@@ -213,8 +213,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 #尝试下2/3底池
                 if finalWinrate>0.93: return (3,3)
                 #没有摊牌价值，必须诈唬
-                if finalWinrate<0.2:
-                    print('河牌咋呼')
+                if finalWinrate<0.2 and rtSit.potsize<30*rtSit.bb:
+                    print('河牌咋呼,只在小底池')
                     return (3,3)
                 #否则摊牌比牌
                 return (2,0)
