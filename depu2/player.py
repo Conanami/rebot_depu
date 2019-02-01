@@ -147,8 +147,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             if(rtSit.betlist[rtSit.myseat]>0):
                 print('遭遇加注的情况')
                 if(finalWinrate>=0.98): return (3,4)
-                if rtSit.potsize/rtSit.callchip>0.15/(finalWinrate-0.85) and finalWinrate>0.89:
-                    print('已经套池，只能跟下去了')
+                if rtSit.potsize/rtSit.callchip>0.2/(finalWinrate-0.8) and finalWinrate>0.8:
+                    print('赔率可以，已经套池，跟下去吧')
                     return (2,0)
                 return (0,0)
             #print('0000')
@@ -196,7 +196,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
                 if(finalWinrate>=0.98): return (3,4)
-                if rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92) and finalWinrate>0.92:
+                if rtSit.callchip/rtSit.potsize<=0.25 and finalWinrate>0.87:
+                    print('这种赔率，我有点牌力，虽然落后但弃不掉')
+                    return (2,0)
+                if rtSit.potsize/rtSit.callchip>0.15/(finalWinrate-0.85) and finalWinrate>0.85:
                     return (2,0)
                 return (0,0)
         return (0,0)

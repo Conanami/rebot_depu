@@ -87,7 +87,9 @@ def flopDecision(Sit):
                     return (0,0)
             #我已经做了半池下注，对手仍然加注我
             if Sit.betlist[Sit.myseat]>Sit.oldpot/2.1 :
-                if winrate>0.97: return (3,4)
+                if winrate>0.99: 
+                    print('总归打光了')
+                    return (3,4)
                 if winrate>0.95: 
                     print('勉强跟注吧')
                     return (2,0)

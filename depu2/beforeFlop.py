@@ -220,12 +220,18 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.myseat-Sit.position)%6==1:
                 print('小盲跟加注')
                 if InSuperRange(myhand): return (3,3)
+                if InBB3Bet(myhand): 
+                    print('小盲位置不利只能加注')
+                    return (3,3)
                 if sbCallRange(myhand): return (0,0)
                       
             #大盲位跟加注
             if (Sit.myseat-Sit.position)%6==2:
                 print('大盲位跟加注')
                 if InSuperRange(myhand): return (3,3)
+                if InBB3Bet(myhand) and MyTurn(Sit)<leftman: 
+                    print('大盲位置不利只能3BET')
+                    return (3,3)
                 if InOpenRange(myhand): 
                     if leftman<=2 and MyTurn(Sit)==1: return (2,0)
                     else: return (2,0)
@@ -267,6 +273,11 @@ def beforeFlopDecision(Sit,callchip):
         if callchip==0 : return (2,0)
         
     return (0,-1)
+
+#大盲需要3BET威胁对手的牌
+def InBB3Bet(myhand):
+    #AK位置不利可以直接3BET
+    if myhand[0].num+myhand[1].num==27 : return True
 
 #大盲对抗小盲的，保卫大盲的牌
 def InBBvsSb(myhand):
