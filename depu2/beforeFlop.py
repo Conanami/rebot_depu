@@ -98,7 +98,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if InBtnOpen(myhand):
                     print('按钮位OPEN的牌')
-                    return (0,0)
+                    return (3,2)
                 if(InTryRange(myhand)):
                     return (0,0)
                 if QuiteGood(myhand): 
