@@ -69,20 +69,20 @@ def flopDecision(Sit):
                     #所有牌正常CBET
                     return (3,1)
                 elif Sit.callchip<Sit.oldpot/1.8:
-                    if winrate>0.95: return (3,3)
+                    if winrate>0.95: return (3,4)
                     if winrate>0.8: return (2,0)
                     if winrate>0.7: return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
                 elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
-                    if winrate>0.95: return (3,3)
+                    if winrate>0.95: return (3,4)
                     if winrate>0.75: 
                         print('中对，面对CBET不能太弱')
                         return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
                 elif Sit.callchip>Sit.oldpot:
-                    if winrate>0.95: return (3,3)
+                    if winrate>0.95: return (3,4)
                     if Sit.potsize/Sit.callchip>3 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
                     return (0,0)
             #我已经做了半池下注，对手仍然加注我
@@ -134,7 +134,7 @@ def flopDecision(Sit):
                 print('虽然落后也要拼命')
                 if Sit.callchip<Sit.oldpot/2:
                     print('对手仍然加注我')
-                    if winrate>0.98: return (3,3)
+                    if winrate>0.98: return (3,4)
                     if winrate>0.91: return (2,0)
                     if Sit.callchip/Sit.potsize<0.14 and winrate>0.7: 
                         print('赔率太好，不用想了，当他诈唬')
@@ -143,14 +143,14 @@ def flopDecision(Sit):
                     return (0,0)
                 if Sit.callchip>=Sit.oldpot/2 and Sit.callchip<=Sit.oldpot*1.1:
                     print('我在前位半池下注，后位加注我，我顶对或超对可以跟注一下')
-                    if winrate>0.98: return (3,3)
+                    if winrate>0.98: return (3,4)
                     if winrate>0.89: return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
                 if Sit.callchip>Sit.oldpot*1.1:
                     #顶对顶踢脚，我谁都不怕
                     print('超POT下注，只有超大牌才打光算了')
-                    if winrate>0.96: return (3,3)
+                    if winrate>0.96: return (3,4)
                     if Sit.potsize/Sit.callchip>2.9 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
                     return (0,0)
             #我没有做下注，或者我下注很小，对手下注我
