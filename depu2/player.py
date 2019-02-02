@@ -195,11 +195,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(IsDrawStraight(publist)): return (2,0)
                     return (0,0)
                 if(rtSit.callchip>=rtSit.potsize/leftman):
+                    print('转牌正常跟加注，不用太暴露牌力')
                     if(nextWinrate[1]>0.3): return (3,4)
                     if(nextWinrate[1]>0.15): return (2,0)
                     if(finalWinrate>=0.97):  
                         if(nextWinrate[1]>=-0.01): return (2,0)
-                        if(nextWinrate[1]<-0.03): return (3,4)
+                        if(nextWinrate[1]<-0.03): return (3,3)
                     if rtSit.callchip<=80*rtSit.bb:   
                         print('是到这里了吗？')             
                         if(finalWinrate>=0.8): return (2,0)
