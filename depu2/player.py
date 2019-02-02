@@ -61,7 +61,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if finalWinrate>0.85 and rtSit.potsize<15*rtSit.bb*leftman: 
                         print('转牌觉得自己挺大的，还是要保持进攻')
                         return (3,1)
-                    return (2,0)
+                
+                if IsDraw(wholehandlist) and rtSit.potsize<10*rtSit.bb*leftman:
+                    print('小底池听牌要保持攻击力')
+                    return (3,1)
+                return (2,0)
             #如果我还没有下注
             if(rtSit.betlist[rtSit.myseat]<=0):
                 
