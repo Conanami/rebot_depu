@@ -216,7 +216,7 @@ def beforeFlopDecision(Sit,callchip):
                 #这个也是测试用的，不一定好
                 if InTryRange(myhand) and leftman>2: 
                     print('底池赔率还行，进去试试')
-                    return (2,0)
+                    return (0,0)
         if callchip>=5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb:
             print('我被3BET了')
             if CallRange(myhand): return (3,3)

@@ -101,12 +101,15 @@ def flopDecision(Sit):
             
             if Sit.betlist[Sit.myseat]>=Sit.oldpot*1.5 :
                 print('对方下注，我加注，对方还能再加')
+                if Sit.callchip/Sit.potsize<0.1: 
+                    print('反正打光了')
+                    return (2,0)
                 if winrate>0.985: 
                     print('只能打光了，大牌撞大牌')
                     return (3,4)
-                if winrate>0.95: 
-                    print('勉强也跟不动了')
-                    return (0,0)
+                if winrate>0.95 and Sit.callchip/Sit.potsize<0.3:
+                    print('套池只能勉强打')
+                    return (2,0)
                 if (IsDrawFlush(myhand) or IsDrawStraight(myhand)) and Sit.callchip/Sit.potsize<0.3:
                     print('底池赔率还行，只能拼命了')
                     return (2,0) 
