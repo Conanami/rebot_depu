@@ -286,7 +286,7 @@ def InBtnOpen(myhand):
     #隔一张同花连牌，8T以上，不能太松
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return True
     #做一个按钮永远偷的实验
-    return True
+    return False
 
 def InBtnCall3Bet(myhand):
     #口袋对
