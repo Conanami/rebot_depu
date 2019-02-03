@@ -66,6 +66,8 @@ def beforeFlopDecision(Sit,callchip):
                     return (0,0)
                 if(InStealRange(myhand)):
                     return (0,0)
+                #UTG做一个永远加注的实验
+                return (3,2)
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP是否开局')
@@ -88,7 +90,7 @@ def beforeFlopDecision(Sit,callchip):
                     #print(InTryRange(myhand))
                     return (3,2)
                 if QuiteGood(myhand) and leftman==4: 
-                    return (0,0)
+                    return (3,2)
             #如果是BTN
             if (Sit.position-Sit.myseat)%6==0:
                 print('BTN无人入池')
@@ -115,11 +117,12 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,2)
                     if InOpenRange(myhand):
                         return (3,2)
+                    #0204做一个永远加注的实验
                     if InTryRange(myhand):
-                        return (0,0)
+                        return (3,0)
                     if QuiteGood(myhand):
-                        return (0,0)
-                    return (0,0)
+                        return (3,0)
+                    return (3,0)
                 if leftman>2 and (Sit.myseat-Sit.position)%6==1:
                     print('小盲可以溜入')
                     if InSuperRange(myhand): 
