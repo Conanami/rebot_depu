@@ -120,10 +120,10 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,2)
                     #0204做一个永远加注的实验
                     if InTryRange(myhand):
-                        return (3,0)
+                        return (0,0)
                     if QuiteGood(myhand):
-                        return (3,0)
-                    return (3,0)
+                        return (0,0)
+                    return (0,0)
                 if leftman>2 and (Sit.myseat-Sit.position)%6==1:
                     print('小盲可以溜入')
                     if InSuperRange(myhand): 
