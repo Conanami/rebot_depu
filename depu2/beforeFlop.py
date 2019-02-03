@@ -207,6 +207,7 @@ def beforeFlopDecision(Sit,callchip):
                     if leftman<=2 and MyTurn(Sit)==1: return (2,0)
                     else: return (2,0)
                 if leftman==2:
+                    print('这里位置有错误？',MyTurn(Sit))
                     if MyTurn(Sit)==2: 
                         print('对抗小盲有位置优势')
                         if InBBvsSb(myhand):  return (2,0)

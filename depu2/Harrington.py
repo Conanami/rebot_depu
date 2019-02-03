@@ -606,14 +606,15 @@ def MyFlushTop(myhand,publist):
 
     
 
-#得到我是第几个行动的人
+#得到我是翻后第几个行动的人
 def MyTurn(Sit):
     cnt=1
     for i in range(Sit.position+1,Sit.position+6):
         tmpi=i%6
         if tmpi==Sit.myseat: return cnt
         else:
-            if Sit.chiplist[tmpi]>=0 or Sit.betlist[tmpi]>=0:
+            #如果有人全下等于没有人
+            if Sit.chiplist[tmpi]>=0:
                 cnt=cnt+1
     return cnt
 #转牌决策

@@ -241,7 +241,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 #没有摊牌价值，必须诈唬
                 if finalWinrate<0.2 and rtSit.potsize<30*rtSit.bb:
                     print('河牌咋呼,只在小底池')
-                    return (3,3)
+                    return (3,4)
                 #否则摊牌比牌
                 return (2,0)
             #如果我还没有下注
@@ -282,11 +282,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         return (0,0)
                     if(rtSit.potsize>=40*rtSit.bb and rtSit.potsize<65*rtSit.bb):
                         print('有一定的胜率还是要跟的')
-                        if(finalWinrate>=0.87): return (2,0)
+                        if(finalWinrate>=0.82): return (2,0)
                         return (0,0)
                     if (rtSit.potsize>=65*rtSit.bb) :
                         print('有一定的胜率还是要跟的')
-                        if(finalWinrate>=0.93): return (2,0)
+                        #0203，从0.92改成0.87，河牌面对1/2底池的下注，头比较铁，超对跟到底
+                        if(finalWinrate>=0.87): return (2,0)
                         return (0,0)
                     return (0,0)
                 #面对一个超POT大下注
