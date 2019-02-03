@@ -89,6 +89,7 @@ def beforeFlopDecision(Sit,callchip):
                 if(InTryRange(myhand)):
                     #print(InTryRange(myhand))
                     return (3,2)
+                #0204,CO放宽范围的实验
                 if QuiteGood(myhand) and leftman==4: 
                     return (3,2)
             #如果是BTN
@@ -289,7 +290,7 @@ def InBtnOpen(myhand):
     #隔一张同花连牌，8T以上，不能太松
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return True
     #做一个按钮永远偷的实验
-    return False
+    return True
 
 def InBtnCall3Bet(myhand):
     #口袋对
