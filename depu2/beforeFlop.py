@@ -64,7 +64,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(QuiteGood(myhand)):
                     #UTG做一个经常加注的实验
-                    return (3,2)
+                    return (0,0)
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP是否开局')
@@ -74,7 +74,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(QuiteGood(myhand)):
                     #MP做一个经常加注的实验
-                    return (3,2)
+                    return (0,0)
                 if(InTryRange(myhand)):
                     return (0,0)
                 if(InStealRange(myhand)):
