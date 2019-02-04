@@ -62,12 +62,9 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
-                if(InTryRange(myhand)):
-                    return (0,0)
-                if(InStealRange(myhand)):
-                    return (0,0)
-                #UTG做一个永远加注的实验
-                return (3,2)
+                if(QuiteGood(myhand)):
+                    #UTG做一个经常加注的实验
+                    return (3,2)
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP是否开局')
@@ -89,9 +86,9 @@ def beforeFlopDecision(Sit,callchip):
                 if(InTryRange(myhand)):
                     #print(InTryRange(myhand))
                     return (3,2)
-                #0204,CO放宽范围的实验
+                #0204,CO放宽范围的实验，CO位还是不能太松
                 if QuiteGood(myhand) and leftman==4: 
-                    return (3,2)
+                    return (0,0)
             #如果是BTN
             if (Sit.position-Sit.myseat)%6==0:
                 print('BTN无人入池')
@@ -290,7 +287,7 @@ def InBtnOpen(myhand):
     #隔一张同花连牌，8T以上，不能太松
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return True
     #做一个按钮永远偷的实验
-    return True
+    return False
 
 def InBtnCall3Bet(myhand):
     #口袋对
@@ -376,7 +373,7 @@ def InTryRange(myhand):
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2 and myhand[0].num+myhand[1].num>=18 : return False
     return False
 
-#BTN位可以开局的
+#前40%的牌，任何两张能打配合的牌
 def QuiteGood(myhand):
     #print('判断是否BTN位可以开局的牌')
     if myhand[0].num==myhand[1].num: return True
