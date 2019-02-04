@@ -72,6 +72,9 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
+                if(QuiteGood(myhand)):
+                    #MP做一个经常加注的实验
+                    return (3,2)
                 if(InTryRange(myhand)):
                     return (0,0)
                 if(InStealRange(myhand)):
@@ -382,6 +385,10 @@ def QuiteGood(myhand):
     #if myhand[0].num+myhand[1].num>=24: return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==2: return True
     if myhand[0].num+myhand[1].num>=23: return True
+    #带A带K的牌
+    if (myhand[0].num>=13 or myhand[1].num>=13): return True
+    #两张大牌连张
+    if abs(myhand[0].num-myhand[1].num)==1 and myhand[0].num+myhand[1].num>=17: return True
     if myhand[0].suit!=myhand[1].suit and abs(myhand[0].num-myhand[1].num)>=3 and myhand[0].num+myhand[1].num<23: return False
     
     return False
