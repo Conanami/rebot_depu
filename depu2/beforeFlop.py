@@ -64,7 +64,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(QuiteGood(myhand)):
                     #UTG做一个经常加注的实验
-                    return (0,0)
+                    return (3,2)
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP是否开局')
@@ -74,7 +74,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(QuiteGood(myhand)):
                     #MP做一个经常加注的实验
-                    return (0,0)
+                    return (3,2)
                 if(InTryRange(myhand)):
                     return (0,0)
                 if(InStealRange(myhand)):
@@ -91,7 +91,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 #0204,CO放宽范围的实验，CO位还是不能太松
                 if QuiteGood(myhand) and leftman==4: 
-                    return (0,0)
+                    return (3,2)
             #如果是BTN
             if (Sit.position-Sit.myseat)%6==0:
                 print('BTN无人入池')
@@ -103,10 +103,10 @@ def beforeFlopDecision(Sit,callchip):
                     print('按钮位OPEN的牌')
                     return (3,2)
                 if(InTryRange(myhand)):
-                    return (0,0)
+                    return (3,2)
                 if QuiteGood(myhand): 
                     #print('执行到这里了吗？')
-                    return (0,0)
+                    return (3,2)
                 if leftman==3: return (0,0)
                 return (0,0)
         if callchip<Sit.bb :
@@ -120,9 +120,9 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,2)
                     #0204做一个永远加注的实验
                     if InTryRange(myhand):
-                        return (0,0)
+                        return (3,2)
                     if QuiteGood(myhand):
-                        return (0,0)
+                        return (3,2)
                     return (0,0)
                 if leftman>2 and (Sit.myseat-Sit.position)%6==1:
                     print('小盲可以溜入')
@@ -144,11 +144,11 @@ def beforeFlopDecision(Sit,callchip):
                     if InOpenRange(myhand):  
                         return (3,2)
                     if InStealRange(myhand): 
-                        return (2,0)
+                        return (3,2)
                     if InTryRange(myhand):
                         return (3,2)
                     if QuiteGood(myhand):
-                        return (2,0)
+                        return (3,2)
                 if MyTurn(Sit)==1:
                     if InOpenRange(myhand):  
                         return (2,0)
