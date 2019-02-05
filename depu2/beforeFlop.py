@@ -181,6 +181,8 @@ def beforeFlopDecision(Sit,callchip):
                     print('btn跟别人再加注')
                     if leftman==2:
                         if InSuperRange(myhand): return (3,3)
+                        #AK在BTN位3BET对手，表示我也会3BET
+                        if InBB3Bet(myhand): return (3,3)
                         #0205，BTN也不能太弱，被大盲小盲一3BET就走
                         if InBtnCall3Bet(myhand): return (2,0)
                         return (0,0)
