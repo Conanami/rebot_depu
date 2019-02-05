@@ -181,12 +181,14 @@ def beforeFlopDecision(Sit,callchip):
                     print('btn跟别人再加注')
                     if leftman==2:
                         if InSuperRange(myhand): return (3,3)
-                        if InCoCallOpen(myhand): return (2,0)
+                        #0205，BTN也不能太弱，被大盲小盲一3BET就走
                         if InBtnCall3Bet(myhand): return (2,0)
                         return (0,0)
                 else:
+                    #0205，这里是个BUG
                     print('btn跟多人的起始加注')
-                    if leftman>2:
+                    
+                    if leftman>4:
                         if InSuperRange(myhand): return (3,3)
                         if InCoCallOpen(myhand): return (2,0)
                         if InBtnCall3Bet(myhand): return (2,0)
@@ -354,7 +356,8 @@ def InOpenRange(myhand):
     #print ('判断是否前位开局牌')
     if myhand[0].num==myhand[1].num and myhand[0].num>6: return True
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14) and myhand[0].num+myhand[1].num>=24: return True
-    if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=23 : return True
+    #KQ,KJs，别的不玩
+    if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=24 : return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
     #KQ，AJ可以前位开局，但要小心
     if myhand[0].num+myhand[1].num>=25: return True
