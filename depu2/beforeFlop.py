@@ -247,6 +247,8 @@ def beforeFlopDecision(Sit,callchip):
         if callchip>6*Sit.bb and Sit.betlist[Sit.myseat]>=8*Sit.bb:
             print('我3BET后被4BET')
             if OnlyAAKK(myhand): return (3,4)
+            #AK不能怂
+            if InBB3Bet(myhand): return (3,4)
             if callchip/Sit.potsize<0.3 and InSuperRange(myhand) : return (2,0)
             return (0,0)
 
