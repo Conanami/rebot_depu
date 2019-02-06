@@ -185,9 +185,16 @@ def flopDecision(Sit):
     elif leftman>2:
         #我在后位没人下注，多人需要两次确认
         if Sit.callchip==0:
-            #多人底池还是需要主动一点
-            if winrate>0.83: return (3,3)
-            if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
+            if MyTurn(Sit)<leftman:
+                #多人底池前位还是需要主动一点，
+                # 0206 顶对大踢脚才主动，小踢脚还是保守一点
+                if winrate>0.88: return (3,3)
+                if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
+            if MyTurn(Sit)==leftman:
+                #多人底池后位还是需要主动一点，
+                # 0206 多人底池后位可以凶一点点
+                if winrate>0.85: return (3,3)
+                if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
             return (2,0)
         elif Sit.callchip<Sit.oldpot/1.8:
             if winrate>0.95: return (3,3)
