@@ -107,10 +107,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(rtSit.callchip<rtSit.potsize/2 and rtSit.callchip>=rtSit.potsize/3 
                     and rtSit.potsize>=30*rtSit.bb and rtSit.potsize<=60*rtSit.bb):
                     print('底池有点大了，我要考虑清楚')
-                    if(finalWinrate>=0.98):  
+                    if(finalWinrate>=0.985):  
                         if(nextWinrate[1]>=-0.01): return (3,3)
                         if(nextWinrate[1]<-0.03): return (3,4)
-                    if(finalWinrate>=0.92): return (3,3)
+                    if(finalWinrate>=0.92): return (2,0)
                     #0205转牌还是不要跟大底池的，保存实力，超对跟不动啊
                     if(finalWinrate>=0.80): 
                         print('转牌跟不动大底池，大下注')
