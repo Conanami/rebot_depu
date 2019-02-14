@@ -86,12 +86,14 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
-                if(InTryRange(myhand)):
-                    #print(InTryRange(myhand))
-                    return (3,2)
-                #0204,CO放宽范围的实验，CO位还是不能太松
-                if QuiteGood(myhand) and leftman==4: 
-                    return (3,2)
+                #0214如果钱多可以打得松一点，钱少就只能紧
+                if Sit.chiplist[Sit.myseat]>150*Sit.bb:
+                    if(InTryRange(myhand)):
+                        #print(InTryRange(myhand))
+                        return (3,2)
+                    #0204,CO放宽范围的实验，CO位还是不能太松
+                    if QuiteGood(myhand) and leftman==4: 
+                        return (3,2)
             #如果是BTN
             if (Sit.position-Sit.myseat)%6==0:
                 print('BTN无人入池')
@@ -99,14 +101,16 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
-                if InBtnOpen(myhand):
-                    print('按钮位OPEN的牌')
-                    return (3,2)
-                if(InTryRange(myhand)):
-                    return (3,2)
-                if QuiteGood(myhand): 
-                    #print('执行到这里了吗？')
-                    return (3,2)
+                #0214，如果钱多可以打得松一点
+                if Sit.chiplist[Sit.myseat]>150*Sit.bb:
+                    if InBtnOpen(myhand):
+                        print('按钮位OPEN的牌')
+                        return (3,2)
+                    if(InTryRange(myhand)):
+                        return (3,2)
+                    if QuiteGood(myhand): 
+                        #print('执行到这里了吗？')
+                        return (3,2)
                 if leftman==3: return (0,0)
                 return (0,0)
         if callchip<Sit.bb :

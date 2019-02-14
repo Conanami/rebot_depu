@@ -281,7 +281,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         return (2,0)
                     return (0,0)
                 #对手表现出很强的实力
-                if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)/3 and rtSit.callchip<=(rtSit.potsize-rtSit.callchip)):
+                #0214半池才在这里，满池不在这里
+                if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)/3 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)*0.8):
                     print("对手下注半个底池，是在偷吗？头铁跟跟看")
                     if(finalWinrate>=0.96): return (3,4)
                     if(rtSit.potsize<12*rtSit.bb):
@@ -303,8 +304,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(finalWinrate>=0.87): return (2,0)
                         return (0,0)
                     return (0,0)
-                #面对一个超POT大下注
-                if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)):
+                #面对一个满池甚至超POT大下注
+                if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)*0.8):
+                    print('满池左右的下注，相当的自信')
                     if(finalWinrate>=0.97): return (3,4)
                     if rtSit.callchip<=30*rtSit.bb:                
                         if(finalWinrate>=0.91): return (2,0)
