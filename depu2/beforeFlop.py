@@ -251,7 +251,12 @@ def beforeFlopDecision(Sit,callchip):
             if InBB3Bet(myhand): return (3,4)
             if callchip/Sit.potsize<0.3 and InSuperRange(myhand) : return (2,0)
             return (0,0)
-
+        #0214补一下，3人底池怎么会走不到这里了
+        #如果底池赔率已经小于0.16了，怎么都跟到底了，别想了
+        if callchip/Sit.potsize<0.16: 
+            print('反正套池了，全部打光，啥也别想了')
+            return (2,0)
+        
         if callchip==0 : return (2,0)
         
     return (0,-1)
