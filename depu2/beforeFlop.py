@@ -62,9 +62,11 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
-                if(QuiteGood(myhand)):
-                    #UTG做一个经常加注的实验
-                    return (3,2)
+                #0214如果钱多可以打得松一点，钱少就只能紧
+                if Sit.chiplist[Sit.myseat]>150*Sit.bb:
+                    if(QuiteGood(myhand)):
+                        #UTG做一个经常加注的实验
+                        return (3,2)
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP是否开局')
@@ -72,9 +74,11 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
-                if(QuiteGood(myhand)):
-                    #MP做一个经常加注的实验
-                    return (3,2)
+                #0214如果钱多可以打得松一点，钱少就只能紧
+                if Sit.chiplist[Sit.myseat]>150*Sit.bb:
+                    if(QuiteGood(myhand)):
+                        #MP做一个经常加注的实验
+                        return (3,2)
                 if(InTryRange(myhand)):
                     return (0,0)
                 if(InStealRange(myhand)):
