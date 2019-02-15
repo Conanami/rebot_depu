@@ -162,7 +162,9 @@ def flopDecision(Sit):
                         print('真正的大牌跟注就行')
                         return (2,0)
                     if winrate>0.9: return (3,3)
-                    if winrate>0.8: return (3,3)
+                    if winrate>0.8: 
+                        print('顶对以上跟一下吧，没必要这么大的底池')
+                        return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
                 if Sit.callchip>=Sit.oldpot/2 and Sit.callchip<=Sit.oldpot:
