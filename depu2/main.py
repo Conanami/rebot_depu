@@ -189,7 +189,9 @@ def run_game(q):
                         logging.info('完成解析图像')
                         if(rt is not None):
                             game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
-                            handle(window_left, window_top, rt)
+                            #如果赚了2块，就退出不玩了，这样测试可以保证每天的盈利
+                            if(rt.chiplist[rt.myseat]<200*rt.bb):
+                                handle(window_left, window_top, rt)
                     else: needCnt=needCnt+1
                 else:
                     needCnt=0

@@ -150,7 +150,8 @@ def flopDecision(Sit):
                 if Sit.callchip>Sit.oldpot*1.1:
                     #顶对顶踢脚，我谁都不怕
                     print('超POT下注，只有超大牌才打光算了')
-                    if winrate>0.96: return (3,4)
+                    if winrate>0.98: return (3,4)
+                    if winrate>0.9: return (2,0)
                     if Sit.potsize/Sit.callchip>2.9 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
                     return (0,0)
             #我没有做下注，或者我下注很小，对手下注我
