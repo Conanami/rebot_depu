@@ -17,6 +17,7 @@ from reader import getWaitingman
 from dealer import IsGunshotStraight
 from dealer import cardtypeOf
 from dealer import getHighCard
+from reader import IsDry
 
 #得到我是第几个行动的人
 def MyTurn(Sit):
@@ -167,21 +168,25 @@ def flopDecision(Sit):
                         return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
-                if Sit.callchip>=Sit.oldpot/2 and Sit.callchip<=Sit.oldpot:
+                #0218 满池不考虑
+                if Sit.callchip>=Sit.oldpot/2 and Sit.callchip<Sit.oldpot:
                     print('我在前位，最后一个CBET了，我中对以上招架一下')
-                    if winrate>0.98: 
+                    if winrate>0.98 and IsDry(Sit): 
                         print('真正的大牌跟注就行')
                         return (2,0)
                     if winrate>0.9: return (3,3)
-                    if winrate>0.8: return (3,3)
+                    if winrate>0.8: return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
-                if Sit.callchip>Sit.oldpot:
+                if Sit.callchip>=Sit.oldpot:
+                    print('打个满池，牛逼坏了')
                     #顶对顶踢脚，我谁都不怕
                     if winrate>0.98: 
                         print('真正的大牌跟注就行')
                         return (2,0)
-                    if winrate>0.92: return (3,3)
+                    #0218，他打超池有毛病吗？
+                    if winrate>0.92: 
+                        return (3,3)
                     if Sit.potsize/Sit.callchip>3 and (IsDrawFlush(myhand) or IsDrawStraight(myhand)): return (2,0)
                     return (0,0)
         

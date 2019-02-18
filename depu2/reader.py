@@ -6,6 +6,7 @@ import copy
 from dealer import printCard
 from dealer import card
 from dealer import getLeftNumCardCnt
+from dealer import SameSuit
 
 
 #得到目前的公共牌数量，对外
@@ -150,3 +151,8 @@ def getPubList(rtSit):
     return rtSit.cardlist
 
 
+def IsDry(Sit):
+    #如果牌面没有同花听牌
+    if len(SameSuit(Sit.cardlist))<2: return True
+    return False
+    

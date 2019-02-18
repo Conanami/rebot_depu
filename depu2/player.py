@@ -99,10 +99,15 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(IsDrawFlush(wholehandlist)): return (2,2)
                         if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
+                if rtSit.callchip/rtSit.potsize<=0.05:
+                    #0218，又一个逻辑漏洞
+                    print('这种底池赔率是在搞笑吧')
+                    return (2,0)
                 if rtSit.callchip/rtSit.potsize<=0.15:
                     #0203加入，弥补一个逻辑漏洞
                     print('这种底池赔率不要考虑了，死跟')
                     if finalWinrate>0.8: return (2,0)
+                
                 
                 if(rtSit.callchip<rtSit.potsize/2 and rtSit.callchip>=rtSit.potsize/3 
                     and rtSit.potsize>=30*rtSit.bb and rtSit.potsize<=60*rtSit.bb):
