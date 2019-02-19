@@ -14,6 +14,9 @@ from Harrington import MyTurn
 from reader import LastManAfterFlop
 from preFlop import IsOpenRange
 from preFlop import IsFirst
+from handRange import RankHand
+from reader import getMyHand
+from dealer import card
 
 def bbb():
     ''' 测试 '''
@@ -32,6 +35,9 @@ def bbb():
     #判断在我之前的人是否都弃牌
     print(IsFirst(rtSit))
     print(IsOpenRange(rtSit))
+    
+    myhand=[card(2,14),card(2,2)]
+    print(RankHand(myhand))
     #print(MyTurn(rtSit))
     
     #winrate=calcuWinrateNoWeight(rtSit)
