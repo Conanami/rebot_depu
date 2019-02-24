@@ -154,12 +154,21 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                             if(IsDrawFlush(wholehandlist)): return (2,2)
                             if(IsDrawStraight(wholehandlist)): return(2,2)
                     return (0,0)
-                if rtSit.callchip/rtSit.potsize/2.9:
+                #0224还有好多逻辑漏洞，这里面对一个小下注居然跟不动了
+                if rtSit.callchip<rtSit.potsize/2.9 and rtSit.callchip<10*rtSit.bb:
+                    print('小底池，面对一个半池左右的下注')
+                    if finalWinrate>0.98: return (3,4)
+                    callrate=0.6
+                    if rtSit.callchip/rtSit.potsize<(finalWinrate-callrate)/callrate and finalWinrate>callrate: 
+                        print('底池赔率好，一定要跟下去')
+                        return (2,0)
+                if rtSit.callchip<rtSit.potsize/2.9:
                     print('面对一个半池左右的下注')
                     if finalWinrate>0.98: return (3,4)
                     if finalWinrate>0.92 and IsDraw(wholehandlist): 
                         print('本身胜率也可以，还有听牌')
                         return (2,0)
+                
                 if(rtSit.callchip>=rtSit.potsize/leftman):
                     print('转牌，下注好大，啥意思？',nextWinrate[1])
                     if(finalWinrate>=0.97):  
@@ -391,7 +400,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)):
                     if(finalWinrate>=0.98): return (3,4)
                     if rtSit.callchip<=30*rtSit.bb:                
-                        if(finalWinrate>=0.92): return (2,0)
+                        if(finalWinrate>=0.9): 
+                            print('小底池就算是超池我也跟得动，明显是偷')
+                            return (2,0)
                         return (0,0)
                     return (0,0)
                 return (0,0)
