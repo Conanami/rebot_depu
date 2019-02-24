@@ -129,7 +129,8 @@ def flopDecision(Sit):
                 if unconnectFlop(Sit) and (Sit.myseat-Sit.position)%6>2: 
                     print('看起来翻牌不大像我的范围')
                     return (2,0)
-                return (3,0)
+                #这里有点问题
+                return (2,0)
             #我已经做了半池下注，对手仍然加注我
             if Sit.betlist[Sit.myseat]>Sit.oldpot/2.1 :
                 print('虽然落后也要拼命')
