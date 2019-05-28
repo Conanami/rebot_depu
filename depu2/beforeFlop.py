@@ -65,7 +65,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 #0214如果钱多可以打得松一点，钱少就只能紧
                 #测试一下永远偷
-                if Sit.chiplist[Sit.myseat]>70*Sit.bb:
+                if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>5:
                     return (3,2)
         
                     
@@ -73,7 +73,7 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP是否开局')
                 #测试一下永远偷
-                if Sit.chiplist[Sit.myseat]>70*Sit.bb:
+                if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>5:
                     return (3,2)
                 if(InSuperRange(myhand)): 
                     return (3,2)
@@ -94,7 +94,7 @@ def beforeFlopDecision(Sit,callchip):
             if (Sit.position-Sit.myseat)%6==1:
                 print('CO是否开局')
                 #测试一下永远偷
-                if Sit.chiplist[Sit.myseat]>70*Sit.bb:
+                if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>5:
                     return (3,2)
                 if(InSuperRange(myhand)): 
                     return (3,2)
@@ -220,7 +220,7 @@ def beforeFlopDecision(Sit,callchip):
                 if InBB3Bet(myhand): 
                     print('小盲位置不利只能加注')
                     return (3,3)
-                if sbCallRange(myhand): return (0,0)
+                if sbCallRange(myhand): return (2,0)
                       
             #大盲位跟加注
             if (Sit.myseat-Sit.position)%6==2:
@@ -356,7 +356,7 @@ def sbCallRange(myhand):
     if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14): return True
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=17 and  abs(myhand[0].num-myhand[1].num)==1: return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
-    if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return True
+    if myhand[0].num+myhand[1].num>=25 and (myhand[0].num>=14 or myhand[1].num>=14): return False
     return False
 
 #可以在CO跟加注的牌

@@ -25,7 +25,7 @@ def bbb():
     start =time.clock()
    
     #这段是最主要的测试
-    file_name=r'tmp\dz_0224110734.png' 
+    file_name=r'tmp\dz_0528174622.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))
@@ -39,9 +39,9 @@ def bbb():
     print('范围内',IsOpenRange(rtSit))
     print('决策结果%s %s' % (p.makeDecision(rtSit)))
 
-    myhand=[card(3,6),card(2,8)]
-    print(RankHand(myhand))
-    print(InRangeHand(myhand,51))
+    # myhand=[card(3,6),card(2,8)]
+    # print(RankHand(myhand))
+    # print(InRangeHand(myhand,51))
     #print(MyTurn(rtSit))
     
     #winrate=calcuWinrateNoWeight(rtSit)

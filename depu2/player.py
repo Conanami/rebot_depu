@@ -73,10 +73,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.98): return (2,0)
                     if(finalWinrate>=0.93): return (2,0)
                     if(finalWinrate>=0.90): return (2,0)
-                    if(finalWinrate>=0.80): return (2,0)
+                    if(finalWinrate>=0.70): 
+                        print('小池小赔率，随便跟跟看啦')
+                        return (2,0)
                     if(IsDrawFlush(wholehandlist)): return (3,4)
                     if(IsDrawStraight(wholehandlist)): return(3,4)
-                    print('测试到这里吗？')
+                    #print('测试到这里吗？')
                     if(rtSit.callchip/rtSit.potsize<nextWinrate[0]/2): 
                         print('赔率实在太诱人，两高张都可以跟')
                         return (2,0)
@@ -90,6 +92,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.92): return (3,3)
                     if(finalWinrate>=0.8): return (2,0)
                     if finalWinrate>0.75 and IsDraw(wholehandlist): return (2,0)
+                    if finalWinrate>0.7: 
+                        print('这么小的底池，老子不怕不怕')
+                        return (2,0)
                     if(rtSit.callchip/rtSit.potsize<0.1):
                         print('奇怪底池赔率的计算，永远有诈唬的可能性')
                         return (2,0)
@@ -177,7 +182,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.85 and nextWinrate[1]>0.1): 
                         return (2,0)
                     if(nextWinrate[1]>=rtSit.callchip/rtSit.potsize): return (2,0)
+                    if rtSit.potsize<=20*rtSit.bb:
+                        print('下注比例大，但底池小呀')
+                        if finalWinrate>0.7: return (2,0)
                     return (0,0)
+
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
                 print('遭遇加注的情况')
