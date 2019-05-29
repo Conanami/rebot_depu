@@ -206,9 +206,15 @@ def beforeFlopDecision(Sit,callchip):
                         return (0,0)
                 else:
                     #0205，这里是个BUG
-                    print('btn跟多人的起始加注')
                     
+                    if leftman==4:
+                        print('btn跟一人的OPEN')
+                        if InSuperRange(myhand): return (3,3)
+                        if InCoCallOpen(myhand): return (2,0)
+                        if InBtnCall3Bet(myhand): return (2,0)
+                        
                     if leftman>4:
+                        print('btn跟多人的起始加注')
                         if InSuperRange(myhand): return (3,3)
                         if InCoCallOpen(myhand): return (2,0)
                         if InBtnCall3Bet(myhand): return (2,0)

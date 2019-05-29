@@ -284,9 +284,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     print('对手河牌下小注')
                     if(finalWinrate>=0.94): return (3,4)
                     #根据最后胜率来决定
-                    if rtSit.potsize<=20*rtSit.bb:
+                    if rtSit.potsize<=20*rtSit.bb or rtSit.callchip<=10*rtSit.bb:
                         if(rtSit.potsize/rtSit.callchip>0.6/(finalWinrate-0.4) and finalWinrate>=0.4): 
-                            print('20bb小池子，我头就是硬')
+                            print('小池子跟小注，打死也跟了，我头就是硬')
                             return (2,0)
                     if(rtSit.potsize<12*rtSit.bb):
                         if(finalWinrate>0.60): return (2,0)

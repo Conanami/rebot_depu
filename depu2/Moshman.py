@@ -118,8 +118,12 @@ def flopDecision(Sit):
         #我在前位
         elif MyTurn(Sit)==1:
             if Sit.callchip==0:
-                if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
-                if cardtypeOf(Sit.cardlist)==3: return (3,3)
+                if IsDrawFlush(myhand) or IsDrawStraight(myhand): 
+                    print('听牌勇敢走这里')
+                    return (3,3)
+                if cardtypeOf(Sit.cardlist)==3 and getHighCard(Sit.cardlist)<=12: 
+                    print('ABB面只能这么玩，看看效果')
+                    return (3,3)
                 if winrate>0.98:
                     print('超大牌必须迷惑对手') 
                     return (2,0)
