@@ -218,7 +218,9 @@ def flopDecision(Sit):
             return (0,0)
         elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
             if winrate>0.95: return (3,3)
-            if winrate>0.9: return (2,0)
+            if winrate>0.87: 
+                print('三人池也不用这么弱吧')
+                return (2,0)
             if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
         elif Sit.callchip>Sit.oldpot:
             if winrate>0.97: return (3,4)

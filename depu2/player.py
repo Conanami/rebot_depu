@@ -89,7 +89,14 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.98):  
                         if(nextWinrate[1]>=-0.01): return (3,3)
                         if(nextWinrate[1]<-0.03): return (3,4)
-                    if(finalWinrate>=0.92): return (3,3)
+                    if(finalWinrate>=0.92): 
+                        if random.randint(0,9)>4:
+                            print('92%，面对连续两条街，到底该如何决定')
+                            return (3,3)
+                        else:
+                            print('92%，还是低调一点')
+                            return (2,0)
+                    
                     if(finalWinrate>=0.8): return (2,0)
                     if finalWinrate>0.75 and IsDraw(wholehandlist): return (2,0)
                     if finalWinrate>0.7: 
@@ -194,7 +201,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if rtSit.potsize/rtSit.callchip>0.15/(finalWinrate-0.85) and finalWinrate>0.85 and rtSit.potsize<=50*rtSit.bb:
                     print('赔率可以，已经套池，跟下去吧')
                     return (2,0)
-                if rtSit.potsize/rtSit.callchip>0.1/(finalWinrate-0.9) and finalWinrate>0.9:
+                if rtSit.potsize/rtSit.callchip>0.11/(finalWinrate-0.89) and finalWinrate>0.89:
                     print('大牌大底池，小牌小底池')
                     return (2,0)
                 return (0,0)

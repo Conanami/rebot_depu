@@ -115,6 +115,9 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,2)
                 if(InOpenRange(myhand)):
                     return (3,2)
+                if random.randint(0,9)>4 and QuiteGood(myhand):
+                    print('普通牌可以选择性入池')
+                    return (3,2)
                 #0214，如果钱多可以打得松一点
                 if Sit.chiplist[Sit.myseat]>150*Sit.bb:
                     if InBtnOpen(myhand):
@@ -245,7 +248,10 @@ def beforeFlopDecision(Sit,callchip):
                         if InBBvsSb(myhand):  return (2,0)
                     elif InTryRange(myhand):
                         print('对抗一个玩家，保卫盲注')
-                        return (0,0)
+                        return (2,0)
+                    elif Sit.callchip/Sit.potsize<0.3:
+                        print('底池赔率实在好,随便什么牌都保卫')
+                        if QuiteGood(myhand): return (2,0)
                 #这个也是测试用的，不一定好
                 if InTryRange(myhand) and leftman>2: 
                     print('底池赔率还行，进去试试')
