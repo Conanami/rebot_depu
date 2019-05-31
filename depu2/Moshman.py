@@ -117,6 +117,7 @@ def flopDecision(Sit):
                 else: return (0,0)
         #我在前位
         elif MyTurn(Sit)==1:
+            print('翻后我先行动')
             if Sit.callchip==0:
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): 
                     print('听牌勇敢走这里')

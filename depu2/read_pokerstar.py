@@ -419,9 +419,7 @@ def GetSituation(   wholeimg,
     down_raise=SinglePicToNum(wholeimg,downraise_picbox,numstart,call_num_sample_img,num_step,point_step,thres)
     print('min-raise:'+str(down_raise))
     
-    if down_callchip==-1: 
-        #print('对手全下后我要全跟的情况')
-        down_callchip=down_raise
+    
     #读所有的下注
     
 
