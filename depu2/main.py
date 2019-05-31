@@ -143,10 +143,10 @@ def handle(game_area_left, game_area_top, rtSit):
 
 #下注
 def raisebet(game_area_left,game_area_top,target):
-    pyautogui.moveTo(game_area_left+target[0]+random.randint(0,10),game_area_top+target[1]+random.randint(0,2),0.3)
+    pyautogui.moveTo(game_area_left+target[0]+random.randint(0,10),game_area_top+target[1]+random.randint(0,2),0.17)
     pyautogui.click()
     betbtn=750,550
-    pyautogui.moveTo(game_area_left+betbtn[0]+random.randint(0,10),game_area_top+betbtn[1]+random.randint(0,10),0.3)
+    pyautogui.moveTo(game_area_left+betbtn[0]+random.randint(0,10),game_area_top+betbtn[1]+random.randint(0,10),0.19)
     pyautogui.click()
 
 #拖动下注

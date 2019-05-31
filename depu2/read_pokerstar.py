@@ -369,7 +369,8 @@ def GetSituation(   wholeimg,
     chipHeight=14
     num_step=9
     point_step=9
-    thres=200
+    #0531调整了一下阈值，对识别比较关键
+    thres=160
     chipboxlist=[picbox(382,450,382+chipWidth,450+chipHeight) , \
                 picbox(41,354,41+chipWidth,354+chipHeight),  \
                 picbox(41,182,41+chipWidth,182+chipHeight),  \
@@ -417,7 +418,10 @@ def GetSituation(   wholeimg,
     downraise_picbox=picbox(x1,y1,x2,y2)
     down_raise=SinglePicToNum(wholeimg,downraise_picbox,numstart,call_num_sample_img,num_step,point_step,thres)
     print('min-raise:'+str(down_raise))
-
+    
+    if down_callchip==-1: 
+        #print('对手全下后我要全跟的情况')
+        down_callchip=down_raise
     #读所有的下注
     
 

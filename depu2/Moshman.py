@@ -127,7 +127,7 @@ def flopDecision(Sit):
                 if winrate>0.98:
                     print('超大牌必须迷惑对手') 
                     return (2,0)
-                if winrate>0.84: 
+                if winrate>0.78: 
                     print('必要的价值下注')
                     return (3,3)
                 if unconnectFlop(Sit) and (Sit.myseat-Sit.position)%6>2: 
