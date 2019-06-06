@@ -94,7 +94,7 @@ def flopDecision(Sit):
                 if winrate>0.95: 
                     print('勉强跟注吧')
                     return (2,0)
-                if Sit.callchip/Sit.potsize<0.3 and winrate>0.9:
+                if Sit.callchip/Sit.potsize<0.4 and winrate>0.9:
                     print('对手只是不相信我的CBET，还是要继续战斗的')
                     return (2,0)
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0) 
@@ -181,7 +181,7 @@ def flopDecision(Sit):
                         print('真正的大牌跟注就行')
                         return (2,0)
                     if winrate>0.9: return (3,3)
-                    if winrate>0.8: return (2,0)
+                    if winrate>0.7: return (2,0)
                     if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (2,0)
                     return (0,0)
                 if Sit.callchip>=Sit.oldpot:

@@ -57,6 +57,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if MyTurn(rtSit)==2 and rtSit.potsize<10*rtSit.bb*leftman: 
                     print('面对CHECK,和没有加注的池，永远转牌咋呼')
                     return (3,1) 
+                elif MyTurn(rtSit)==1 and rtSit.potsize<4*rtSit.bb*leftman:
+                    print('对手翻牌面对我的CHECK也CHECK，应该是示弱，我出击')
+                    return (3,1)
                 else: 
                     if finalWinrate>0.85 and rtSit.potsize<15*rtSit.bb*leftman: 
                         print('转牌觉得自己挺大的，还是要保持进攻')
@@ -223,8 +226,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]>=-0.01): return (3,3)
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.91): return (3,3)
-                    if(finalWinrate>=0.87): return (2,0)
-                    if(finalWinrate>=0.70): return (0,0)
+                    if(finalWinrate>=0.82): 
+                        print('我顶对，应该不怕')
+                        return (2,0)
+                    if(finalWinrate>=0.7): return (0,0)
                     if(IsDrawFlush(wholehandlist)): return (2,0)
                     if(IsDrawStraight(wholehandlist)): return(2,0)
                     #print('多人底池转牌没必要继续')
