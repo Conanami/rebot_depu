@@ -108,7 +108,7 @@ def flopDecision(Sit):
                 if winrate>0.985: 
                     print('只能打光了，大牌撞大牌')
                     return (3,4)
-                if winrate>0.95 and Sit.callchip/Sit.potsize<0.3:
+                if winrate>0.95 and Sit.callchip/Sit.potsize<0.33:
                     print('套池只能勉强打')
                     return (2,0)
                 if (IsDrawFlush(myhand) or IsDrawStraight(myhand)) and Sit.callchip/Sit.potsize<0.3:
@@ -187,8 +187,8 @@ def flopDecision(Sit):
                 if Sit.callchip>=Sit.oldpot:
                     print('打个满池，牛逼坏了')
                     #顶对顶踢脚，我谁都不怕
-                    if winrate>0.98: 
-                        print('真正的大牌跟注就行')
+                    if winrate>0.98 and IsDry(Sit): 
+                        print('真正的大牌跟注就行，牌面干燥')
                         return (2,0)
                     #0218，他打超池有毛病吗？
                     if winrate>0.92: 
@@ -211,14 +211,18 @@ def flopDecision(Sit):
                 if IsDrawFlush(myhand) or IsDrawStraight(myhand): return (3,3)
             return (2,0)
         elif Sit.callchip<Sit.oldpot/1.8:
-            if winrate>0.95: return (3,3)
+            if winrate>0.97:
+                print('多人底池，威胁别人的牌还是要温柔一点') 
+                return (3,3)
             if IsDrawFlush(myhand) or IsDrawStraight(myhand): 
                 print('多人底池听牌不宜太凶，因为对手全部弃牌概率不高，而CBET是纯诈唬的概率也不高')
                 return (2,0)
             if winrate>0.8: return (2,0)
             return (0,0)
         elif Sit.callchip>=Sit.oldpot/1.8 and Sit.callchip<=Sit.oldpot:
-            if winrate>0.95: return (3,3)
+            if winrate>0.97: 
+                print('面对多人下注，小心为上，除非特别大才加注')
+                return (3,3)
             if winrate>0.87: 
                 print('三人池也不用这么弱吧')
                 return (2,0)

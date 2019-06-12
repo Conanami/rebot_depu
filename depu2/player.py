@@ -132,9 +132,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.92): return (2,0)
                     #0205转牌还是不要跟大底池的，保存实力，超对跟不动啊
-                    if(finalWinrate>=0.80): 
-                        print('转牌跟不动大底池，大下注')
-                        return (0,0)
+                    if finalWinrate>=0.80 and rtSit.callchip<12*rtSit.bb: 
+                        #超对面对转牌牌面，也不用太弱。
+                        print('转牌跟动大底池，大下注')
+                        return (2,0)
                     if(rtSit.callchip/rtSit.potsize<0.1):
                         print('奇怪底池赔率的计算，永远有诈唬的可能性')
                         return (2,0)
@@ -226,7 +227,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(nextWinrate[1]>=-0.01): return (3,3)
                         if(nextWinrate[1]<-0.03): return (3,4)
                     if(finalWinrate>=0.91): return (3,3)
-                    if(finalWinrate>=0.82): 
+                    if(finalWinrate>=0.80): 
                         print('我顶对，应该不怕')
                         return (2,0)
                     if(finalWinrate>=0.7): return (0,0)
@@ -343,10 +344,11 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)*0.8):
                     print('满池左右的下注，相当的自信')
                     if(finalWinrate>=0.97): return (3,4)
-                    if rtSit.callchip<=18*rtSit.bb:
+                    if rtSit.callchip<=24*rtSit.bb:
                         print('有胜率就跟吧，对方有可能是诈唬')
-                        if finalWinrate>=0.7: return (2,0)
-                    if rtSit.callchip<=30*rtSit.bb:                
+                        if finalWinrate>=0.8: return (2,0)
+                    if rtSit.callchip<=40*rtSit.bb:
+                        print('河牌面对满池也不用这么弱吧，跟跟看')                
                         if(finalWinrate>=0.91): return (2,0)
                         return (0,0)
                     

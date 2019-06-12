@@ -279,19 +279,21 @@ def beforeFlopDecision(Sit,callchip):
         if callchip<5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb:
             print('对手给我个好赔率，有位置就干吧')
             if leftman==2 and MyTurn(Sit)==2: return (2,0)
-        if callchip>=5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb:
+            if leftman>2 and InBBvsSb(myhand): return (2,0)
+        if callchip>=5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb and callchip<=10*Sit.bb:
             print('我被3BET了')
             if CallRange(myhand): return (3,3)
             if leftman==2 and InOpenRange(myhand) and MyTurn(Sit)==2: 
-                if random.randint(1,9)>4:
+                if random.randint(1,9)>7:
                     return (3,3)
                 else:
                     return (2,0)
             if InBtnCall3Bet(myhand): 
-                if random.randint(1,9)>4:
+                if random.randint(1,9)>8:
                     return (3,3)
                 else:
                     return (2,0)
+                     
         
             if sbCallRange(myhand) and Sit.potsize/callchip>3: return (2,0) 
             
@@ -302,6 +304,9 @@ def beforeFlopDecision(Sit,callchip):
             #还是要认怂，这么凶的人少见
             #if InOpenRange(myhand) and MyTurn(Sit)==1: return (3,4)
             #if InTryRange(myhand): return (2,0)
+        if callchip>10*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb:
+            print('对手疯狂了')
+            if AllinRange(myhand): return (3,3)
             return (0,0)
         #底池赔率可以，怎么都搞
         if callchip>=10*Sit.bb and Sit.betlist[Sit.myseat]<8*Sit.bb: 
@@ -309,6 +314,7 @@ def beforeFlopDecision(Sit,callchip):
             if InOpenRange(myhand) and Sit.potsize/callchip>5: return (2,0)
             if InStealRange(myhand) and Sit.potsize/callchip>7: return (2,0)
             return (0,0)
+        
         if callchip>6*Sit.bb and Sit.betlist[Sit.myseat]>=8*Sit.bb:
             print('我3BET后被4BET')
             if OnlyAAKK(myhand): return (3,4)
@@ -325,6 +331,11 @@ def beforeFlopDecision(Sit,callchip):
         if callchip==0 : return (2,0)
         
     return (0,-1)
+
+
+#全下范围
+def AllinRange(myhand):
+    if myhand[0].num==myhand[1].num and myhand[0].num>=13: return True
 
 #大盲需要3BET威胁对手的牌
 def InBB3Bet(myhand):
