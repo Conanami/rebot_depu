@@ -184,6 +184,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if finalWinrate>0.92 and IsDraw(wholehandlist): 
                         print('本身胜率也可以，还有听牌')
                         return (2,0)
+                    #0613 这个还是太弱了，好多逻辑漏洞，
+                    if finalWinrate>0.8:
+                        print('两人对战，0.8的胜率也需要跟')
+                        return (2,0)
                 
                 if(rtSit.callchip>=rtSit.potsize/leftman):
                     print('转牌，下注好大，啥意思？',nextWinrate[1])
