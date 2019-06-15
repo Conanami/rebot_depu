@@ -21,8 +21,8 @@ from Harrington import DontLikeRate
 from Moshman import flopDecision
 from Harrington import MyTurn
 from beforeFlop import beforeFlopDecision
-
-
+from dealer import cardtypeOf
+from dealer import SameSuit
 
 #返回值第一个是决定，0弃牌，1过牌，2跟注，3加注，对应不同按键
 #待整理的函数
@@ -44,8 +44,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
         if(leftman==2):
             #print('测试是不是走到这里')
             if rtSit.callchip==0:
-                #特别大一定要过牌骗人
-                if finalWinrate>=0.98: return (2,0)
+                #特别大看情况过牌骗人
+                if finalWinrate>=0.98: 
+                    if nextWinrate[1]<-0.15: 
+                        print(nextWinrate[1],'如果很领先，不希望看到河牌，还是保护吧')
+                        return (3,1)
+                    return (2,0)
                 elif nextWinrate[1]<-0.03 and finalWinrate>0.85 and rtSit.potsize<20*rtSit.bb:
                     print('是否需要保护:', nextWinrate[1])
                     return (3,1)
@@ -211,6 +215,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (2,0)
                 if rtSit.potsize/rtSit.callchip>0.11/(finalWinrate-0.89) and finalWinrate>0.89:
                     print('大牌大底池，小牌小底池')
+                    #0615加入判断同花面的反击
+                    if cardtypeOf(wholehandlist)<9 and len(SameSuit(publist))>=3:
+                        print('外面有同花面，我要小心')
+                        return (0,0)
                     return (2,0)
                 return (0,0)
             #print('0000')
@@ -269,10 +277,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     print('这种赔率，我有点牌力，虽然落后但弃不掉')
                     return (2,0)
                 if rtSit.potsize/rtSit.callchip>0.15/(finalWinrate-0.85) and finalWinrate>0.85:
+                    print('没办法套池了，跟吧')
                     return (2,0)
                 return (0,0)
         return (0,0)
     #----------------河牌战斗-------------------------------------------
+    #0615河牌还需要好好调整
     if(pubnum==5):
         #还剩2个人
         if(leftman==2):
@@ -360,8 +370,10 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (0,0)
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
-                if(finalWinrate>=0.98): return (3,4)
-                if rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92) and finalWinrate>0.92:
+                if(finalWinrate>=0.97): return (3,4)
+                if rtSit.potsize/rtSit.callchip>0.15/(finalWinrate-0.85) and finalWinrate>0.85:
+                    #0615河牌不能太弱
+                    print('河牌套池干到底试试')
                     return (2,0)
                 return (0,0)
             return (0,0)
@@ -381,7 +393,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 #对手下了小注
                 if(rtSit.callchip>0 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)/3):
                     print('对手下注很小，多人底池')
-                    if(finalWinrate>=0.98): return (3,4)
+                    if(finalWinrate>=0.97): return (3,4)
                     
                     if rtSit.callchip/rtSit.potsize<=0.1 and finalWinrate>0.5: 
                         print('惊人的小注，我总是跟注')
@@ -393,12 +405,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(finalWinrate>=0.8): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>15*rtSit.bb*leftman and rtSit.potsize<=40*rtSit.bb*leftman):
-                        if(finalWinrate>=0.98): return (3,4)
+                        if(finalWinrate>=0.97): return (3,4)
                         if(finalWinrate>=0.91): return (2,0)
                         if(finalWinrate>=0.76): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>40*rtSit.bb*leftman):
-                        if(finalWinrate>=0.98): return (3,4)
+                        if(finalWinrate>=0.97): return (3,4)
                         if(finalWinrate>=0.92): return (0,0)
                         if(finalWinrate>=0.8): return (0,0)
                         return (0,0)
@@ -406,7 +418,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 #对手表现出很强的实力
                 if(rtSit.callchip>=(rtSit.potsize-rtSit.callchip)/3 and rtSit.callchip<(rtSit.potsize-rtSit.callchip)):
                     print('多人底池，对手下注1/2底池左右')
-                    if(finalWinrate>=0.98): return (3,4)
+                    if(finalWinrate>=0.97): return (3,4)
                     
                     if rtSit.callchip/rtSit.potsize<=0.1 and finalWinrate>0.5: 
                         print('惊人的小注，我总是跟注')
@@ -418,12 +430,12 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         if(finalWinrate>=0.8): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>15*rtSit.bb*leftman and rtSit.potsize<=40*rtSit.bb*leftman):
-                        if(finalWinrate>=0.98): return (3,4)
+                        if(finalWinrate>=0.97): return (3,4)
                         if(finalWinrate>=0.91): return (2,0)
                         if(finalWinrate>=0.76): return (2,0)
                         return (0,0)
                     if(rtSit.potsize>40*rtSit.bb*leftman):
-                        if(finalWinrate>=0.98): return (3,4)
+                        if(finalWinrate>=0.97): return (3,4)
                         if(finalWinrate>=0.92): return (0,0)
                         if(finalWinrate>=0.8): return (0,0)
                         return (0,0)
@@ -440,7 +452,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 return (0,0)
             #如果我下注后遭到对方反击
             if(rtSit.betlist[rtSit.myseat]>0):
-                if(finalWinrate>=0.98): return (3,4)
+                if(finalWinrate>=0.97): return (3,4)
                 if rtSit.potsize/rtSit.callchip>0.08/(finalWinrate-0.92) and finalWinrate>0.92:
                     return (2,0)
                 return (0,0)

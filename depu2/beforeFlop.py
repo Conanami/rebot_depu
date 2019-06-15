@@ -187,10 +187,10 @@ def beforeFlopDecision(Sit,callchip):
                 if InSuperRange(myhand): return (3,3)
                 return (0,0)
             if (Sit.position-Sit.myseat)%6==2 :
-                print('MP跟加注')
+                print('MP跟加注，位置一般不能太激进')
                 if InSuperRange(myhand): return (3,3)
                 if InMPCallOpen(myhand): 
-                    if random.randint(1,9)>5 :
+                    if random.randint(1,9)>3 :
                         return (2,0)
                     else:
                         return (3,3)
@@ -276,10 +276,12 @@ def beforeFlopDecision(Sit,callchip):
                 if InTryRange(myhand) and leftman>2: 
                     print('底池赔率还行，进去试试')
                     return (0,0)
-        if callchip<5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb:
+        if callchip<5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb and callchip/Sit.potsize<0.4:
             print('对手给我个好赔率，有位置就干吧')
             if leftman==2 and MyTurn(Sit)==2: return (2,0)
-            if leftman>2 and InBBvsSb(myhand): return (2,0)
+            if leftman>2 and InBBvsSb(myhand) and MyTurn(Sit)==leftman: 
+                #0615,人多位置差就别干了。
+                return (2,0)
         if callchip>=5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb and callchip<=10*Sit.bb:
             print('我被3BET了')
             if CallRange(myhand): return (3,3)
@@ -288,7 +290,7 @@ def beforeFlopDecision(Sit,callchip):
                     return (3,3)
                 else:
                     return (2,0)
-            if InBtnCall3Bet(myhand): 
+            if InBtnCall3Bet(myhand) and MyTurn(Sit)==leftman: 
                 if random.randint(1,9)>8:
                     return (3,3)
                 else:
