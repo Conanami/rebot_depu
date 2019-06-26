@@ -274,7 +274,9 @@ def beforeFlopDecision(Sit,callchip):
                         if QuiteGood(myhand): return (2,0)
                 #这个也是测试用的，不一定好
                 if InTryRange(myhand) and leftman>2: 
+                    
                     print('底池赔率还行，进去试试')
+                    if Sit.potsize/Sit.callchip>=3.3: return (2,0)
                     return (0,0)
         if callchip<5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb and callchip/Sit.potsize<0.4:
             print('对手给我个好赔率，有位置就干吧')
@@ -320,8 +322,8 @@ def beforeFlopDecision(Sit,callchip):
         if callchip>6*Sit.bb and Sit.betlist[Sit.myseat]>=8*Sit.bb:
             print('我3BET后被4BET')
             if OnlyAAKK(myhand): return (3,4)
-            #AK不能怂
-            if InBB3Bet(myhand): return (3,4)
+            #AK不能怂，AK还是怂吧
+            if InBB3Bet(myhand): return (0,0)
             if callchip/Sit.potsize<0.3 and InSuperRange(myhand) : return (2,0)
             return (0,0)
         #0214补一下，3人底池怎么会走不到这里了
