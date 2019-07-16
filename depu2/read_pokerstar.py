@@ -312,6 +312,17 @@ def getHandCard(wholeimg,sixboxlist,pub_suit_sample_img,pub_num_sample_img,numli
         rtHandcard.append((leftcard,rightcard))
     return rtHandcard
 
+#判断是否需要回到座位，该方法对外公开
+def NeedBackseat(wholeimg):
+    x=1
+    y=1
+    w=1
+    h=1
+    thres=250
+    backseatbox=(x,y,x+w,y+h)
+    IsBackseat=MatchPicToSample(wholeimg,backseatbox,config.foldsample_img[1],thres)
+    return IsBackseat
+
 #判断是否需要解析整个图片，该方法对外公开
 def NeedAnalyse(wholeimg):
     x=433

@@ -17,6 +17,7 @@ from Harrington import DontLikeRate
 from Moshman import flopDecision
 from Harrington import MyTurn
 from reader import LastManAfterFlop
+from preFlop import IsFirst
 
 #新的翻前决策函数
 # def beforeFlopDecision2(Sit,callchip):
@@ -53,8 +54,8 @@ def beforeFlopDecision(Sit,callchip):
     pubcnt=getPubnum(Sit)
     print('还剩%s个人' % leftman)
     if(pubcnt==0 and len(myhand)==2):
-        #如果前面没有人加注
-        if(callchip==Sit.bb and Sit.betlist[Sit.myseat]<=0):
+        #如果前面没有人加注,我是第一个
+        if(callchip==Sit.bb and Sit.betlist[Sit.myseat]<=0 and IsFirst(Sit)):
             #如果是UTG
             if (Sit.position-Sit.myseat)%6==3:
                 print('UTG是否开局')
@@ -66,15 +67,15 @@ def beforeFlopDecision(Sit,callchip):
                 #0214如果钱多可以打得松一点，钱少就只能紧
                 #测试一下永远偷
                 if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>5 and QuiteGood(myhand):
-                    return (3,2)
+                    return (0,0)
         
                     
             #如果是MP
             if (Sit.position-Sit.myseat)%6==2:
                 print('MP是否开局')
                 #测试一下永远偷
-                if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>6 and QuiteGood(myhand):
-                    return (3,2)
+                #if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>6 and QuiteGood(myhand):
+                #    return (3,2)
                 if(InSuperRange(myhand)): 
                     return (3,2)
                 if(InOpenRange(myhand)):
@@ -93,9 +94,6 @@ def beforeFlopDecision(Sit,callchip):
             #如果是CO
             if (Sit.position-Sit.myseat)%6==1:
                 print('CO是否开局')
-                #测试一下永远偷
-                if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>6 and QuiteGood(myhand):
-                    return (3,2)
                 if(InSuperRange(myhand)): 
                     return (3,2)
                 if(InOpenRange(myhand)):
@@ -139,11 +137,7 @@ def beforeFlopDecision(Sit,callchip):
                         return (3,2)
                     if InOpenRange(myhand):
                         return (3,2)
-                    #0204做一个永远加注的实验
-                    if InTryRange(myhand):
-                        return (3,2)
-                    if QuiteGood(myhand):
-                        return (3,2)
+                   
                     return (0,0)
                 if leftman>2 and (Sit.myseat-Sit.position)%6==1:
                     print('小盲可以溜入')
@@ -167,9 +161,9 @@ def beforeFlopDecision(Sit,callchip):
                     if InStealRange(myhand): 
                         return (3,2)
                     if InTryRange(myhand):
-                        return (3,2)
+                        return (2,0)
                     if QuiteGood(myhand):
-                        return (3,2)
+                        return (2,0)
                 if MyTurn(Sit)==1:
                     if InOpenRange(myhand):  
                         return (2,0)
@@ -177,7 +171,125 @@ def beforeFlopDecision(Sit,callchip):
                         return (2,0)
                 return (2,0)
                 
+        #如果前面有人LIMP进来，好奇怪的打法
+        if(callchip==Sit.bb and Sit.betlist[Sit.myseat]<=0 and IsFirst(Sit)==False):
+            #如果是UTG
+            print('现在是有人LIMP吗?')
+            if (Sit.position-Sit.myseat)%6==3:
+                print('UTG是否跟LIMP')
+
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (2,0)
+                #0214如果钱多可以打得松一点，钱少就只能紧
+                #测试一下永远偷
+                if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>5 and QuiteGood(myhand):
+                    return (0,0)
         
+                    
+            #如果是MP
+            if (Sit.position-Sit.myseat)%6==2:
+                print('MP是否跟LIMP')
+                #测试一下永远偷
+                #if Sit.chiplist[Sit.myseat]>70*Sit.bb and random.randint(0,9)>6 and QuiteGood(myhand):
+                #    return (3,2)
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (2,0)
+                #0214如果钱多可以打得松一点，钱少就只能紧
+                if Sit.chiplist[Sit.myseat]>150*Sit.bb:
+                    if(InTryRange(myhand)):
+                        return (0,0)
+                if(QuiteGood(myhand)):
+                #MP做一个经常加注的实验
+                    return (0,0)
+                if(InTryRange(myhand)):
+                    return (0,0)
+                if(InStealRange(myhand)):
+                    return (0,0)
+            #如果是CO
+            if (Sit.position-Sit.myseat)%6==1:
+                print('CO是否跟LIMP')
+               
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (2,0)
+                #0214如果钱多可以打得松一点，钱少就只能紧
+                if Sit.chiplist[Sit.myseat]>150*Sit.bb:
+                    if(InTryRange(myhand)):
+                        #print(InTryRange(myhand))
+                        return (2,0)
+                    #0204,CO放宽范围的实验，CO位还是不能太松
+                    if QuiteGood(myhand) and leftman==4: 
+                        return (0,0)
+            #如果是BTN
+            if (Sit.position-Sit.myseat)%6==0:
+                print('BTN跟limp')
+                if(InSuperRange(myhand)): 
+                    return (3,2)
+                if(InOpenRange(myhand)):
+                    return (2,0)
+                if random.randint(0,9)>4 and QuiteGood(myhand):
+                    print('普通牌可以选择性入池')
+                    return (2,0)
+                #0214，如果钱多可以打得松一点
+                if Sit.chiplist[Sit.myseat]>150*Sit.bb:
+                    if InBtnOpen(myhand):
+                        print('按钮位OPEN的牌')
+                        return (2,0)
+                    if(InTryRange(myhand)):
+                        return (2,0)
+                    if QuiteGood(myhand): 
+                        #print('执行到这里了吗？')
+                        return (0,0)
+                if leftman==3: return (0,0)
+                return (0,0)
+        if callchip<Sit.bb :
+            #如果是小盲
+            if callchip==Sit.bb/2:
+                if leftman==2 and (Sit.myseat-Sit.position)%6==1:
+                    print('小盲单挑大盲')
+                    if InSuperRange(myhand): 
+                        return (3,2)
+                    if InOpenRange(myhand):
+                        return (2,0)
+                   
+                    return (0,0)
+                if leftman>2 and (Sit.myseat-Sit.position)%6==1:
+                    print('小盲可以溜入')
+                    if InSuperRange(myhand): 
+                        return (3,3)
+                    if InOpenRange(myhand):
+                        return (2,0)
+                    if InTryRange(myhand):
+                        return (0,0)
+                
+                #print('小盲默认要偷')
+                #return (3,0)
+            #如果是大盲，只剩2个人，不发起攻击，碰运气
+            if callchip==0 and leftman==2 and (Sit.myseat-Sit.position)%6==2:
+                print('大盲,只剩2人，无人加注')
+                if InSuperRange(myhand):
+                    return (3,3)
+                if MyTurn(Sit)==2:
+                    if InOpenRange(myhand):  
+                        return (3,2)
+                    if InStealRange(myhand): 
+                        return (2,0)
+                    if InTryRange(myhand):
+                        return (2,0)
+                    if QuiteGood(myhand):
+                        return (2,0)
+                if MyTurn(Sit)==1:
+                    if InOpenRange(myhand):  
+                        return (2,0)
+                    if InTryRange(myhand): 
+                        return (2,0)
+                return (2,0)
+            
         #如果有人加注了，但还不是很大
         if callchip>=Sit.bb and callchip<=6*Sit.bb and Sit.betlist[Sit.myseat]<2*Sit.bb:
             #print('测试到了这里')
@@ -279,8 +391,14 @@ def beforeFlopDecision(Sit,callchip):
                     if Sit.potsize/Sit.callchip>=3.3: return (2,0)
                     return (0,0)
         if callchip<5*Sit.bb and Sit.betlist[Sit.myseat]<=4*Sit.bb and callchip/Sit.potsize<0.4:
-            print('对手给我个好赔率，有位置就干吧')
-            if leftman==2 and MyTurn(Sit)==2: return (2,0)
+           
+            if InSuperRange(myhand): return (3,3)
+            if leftman==2 and MyTurn(Sit)==1:
+                print('对手给我个好赔率，有点牌没位置，还是跟进去')
+                if IsFuture(myhand): return (2,0)
+            if leftman==2 and MyTurn(Sit)==2:  
+                print('对手给我个好赔率，有位置就干吧')
+                return (2,0)
             if leftman>2 and InBBvsSb(myhand) and MyTurn(Sit)==leftman: 
                 #0615,人多位置差就别干了。
                 return (2,0)
@@ -336,6 +454,13 @@ def beforeFlopDecision(Sit,callchip):
         
     return (0,-1)
 
+#后面能发展很好的牌，有个好赔率
+def IsFuture(myhand):
+    if myhand[0].num==myhand[1].num: return True
+    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13) : return True
+    if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)<=2 : return True
+    #AK也不能太怂了
+    if myhand[0].num+myhand[1].num>=27: return True
 
 #全下范围
 def AllinRange(myhand):
@@ -447,13 +572,15 @@ def InMPCallOpen(myhand):
 #前位可以开局的
 def InOpenRange(myhand):
     #print ('判断是否前位开局牌')
-    if myhand[0].num==myhand[1].num and myhand[0].num>6: return True
-    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=14 or myhand[1].num>=14) and myhand[0].num+myhand[1].num>=24: return True
+    #口袋对都可以
+    if myhand[0].num==myhand[1].num and myhand[0].num>=2: return True
+    #带AK的同花可以偷池
+    if myhand[0].suit==myhand[1].suit and (myhand[0].num>=13 or myhand[1].num>=13) and myhand[0].num+myhand[1].num>=19: return True
     #KQ,KJs，别的不玩
     if myhand[0].suit==myhand[1].suit and myhand[0].num+myhand[1].num>=24 : return True
     if myhand[0].suit==myhand[1].suit and abs(myhand[0].num-myhand[1].num)==1 : return False
-    #KQ，AJ可以前位开局，但要小心
-    if myhand[0].num+myhand[1].num>=25: return True
+    #kj+，At+可以前位开局，但要小心
+    if myhand[0].num+myhand[1].num>=24: return True
      
     return False
 

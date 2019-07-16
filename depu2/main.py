@@ -16,6 +16,7 @@ from pynput import keyboard
 from pynput.keyboard import Listener
 from read_pokerstar import analysisImg
 from read_pokerstar import NeedAnalyse
+from read_pokerstar import NeedBackseat
 from multiprocessing import Queue
 from alltitle import findTitle
 import player as p
@@ -180,6 +181,8 @@ def run_game(q):
             if window_left:
                 #pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
+                logging.info('是否需要归位？')
+                
                 logging.info('是否需要解析:'+str(needCnt))
                 if ( NeedAnalyse (game_area_image.convert('L'))): 
                     if(needCnt>=1):

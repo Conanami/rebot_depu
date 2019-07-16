@@ -58,8 +58,8 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     return (3,1)               
                 #对手一过牌我就保持进攻，看看效果，看起来不行
                 #if MyTurn(rtSit)==2: return (3,1)
-                if MyTurn(rtSit)==2 and rtSit.potsize<10*rtSit.bb*leftman: 
-                    print('面对CHECK,和没有加注的池，永远转牌咋呼')
+                if MyTurn(rtSit)==2 and rtSit.potsize<4*rtSit.bb*leftman: 
+                    print('面对CHECK,和两条街示弱，永远转牌咋呼')
                     return (3,1) 
                 elif MyTurn(rtSit)==1 and rtSit.potsize<4*rtSit.bb*leftman:
                     print('对手翻牌面对我的CHECK也CHECK，应该是示弱，我出击')
@@ -99,7 +99,7 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     if(finalWinrate>=0.92): 
                         if random.randint(0,9)>4:
                             print('92%，面对连续两条街，到底该如何决定')
-                            return (3,3)
+                            return (2,0)
                         else:
                             print('92%，还是低调一点')
                             return (2,0)
@@ -220,6 +220,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                         print('外面有同花面，我要小心')
                         return (0,0)
                     return (2,0)
+                if rtSit.potsize/rtSit.callchip>4.5 and (IsDrawFlush(wholehandlist) or IsDrawStraight(wholehandlist)):
+                    print('这么好的赔率，听牌还是要试试的')
+                    return (2,0)
                 return (0,0)
             #print('0000')
         if(leftman>=3):
@@ -295,13 +298,14 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                     #0203，这里0.8的改动，到底该不该价值下注，有点疑惑
                     #0205, 这里改成0.85，找大哥式下注还是要避免
                     print('这里到底该不该价值下注？')
-                    return (3,1)
+                    if random.randint(0,9)>4: return (3,3)
+                    else: return (3,1)
                 #尝试下2/3底池
                 if finalWinrate>0.93: return (3,3)
                 #没有摊牌价值，必须诈唬
-                if finalWinrate<0.2 and rtSit.potsize<30*rtSit.bb:
+                if finalWinrate<0.4 and finalWinrate>0.1 and rtSit.potsize<28*rtSit.bb:
                     print('河牌咋呼,只在小底池')
-                    return (3,4)
+                    return (3,1)
                 #否则摊牌比牌
                 return (2,0)
             #如果我还没有下注
