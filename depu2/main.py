@@ -187,9 +187,10 @@ def run_game(q):
             if window_left:
                 #pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
-                logging.info('是否需要归位？')
+                
                 #game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
                 if ( NeedBackseat(game_area_image.convert('L')) ):
+                    logging.info('回到座位了')
                     ClickBackSeat(window_left,window_top)
                 else:
                     logging.info('是否需要解析:'+str(needCnt))
