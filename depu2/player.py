@@ -306,6 +306,9 @@ def afterFlopDecision(pubnum,nextWinrate,finalWinrate,leftman,rtSit):
                 if finalWinrate<0.4 and finalWinrate>0.1 and rtSit.potsize<28*rtSit.bb:
                     print('河牌咋呼,只在小底池')
                     return (3,1)
+                if finalWinrate>0.8 and rtSit.potsize<15*rtSit.bb:
+                    print('大家都没实力，我最后有增强')
+                    return (3,3)
                 #否则摊牌比牌
                 return (2,0)
             #如果我还没有下注

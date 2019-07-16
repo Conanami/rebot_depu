@@ -137,6 +137,9 @@ def flopDecision(Sit):
                     print('看起来翻牌不大像我的范围')
                     return (2,0)
                 #这里有点问题
+                if unconnectFlop(Sit) and ((Sit.myseat-Sit.position)%6==1 or (Sit.myseat-Sit.position)%6==2):
+                    print('看起来翻牌挺像我的盲注跟注范围，加个CBET')
+                    return (3,1)
                 return (2,0)
             #我已经做了半池下注，对手仍然加注我
             if Sit.betlist[Sit.myseat]>Sit.oldpot/2.1 :
@@ -242,7 +245,7 @@ def flopDecision(Sit):
 def unconnectFlop(Sit):
     pubcardlist=getPubList(Sit)
     #三张都小于8，而且是彩虹面
-    if getHighCard(pubcardlist)<=8 and len(SameSuit(pubcardlist))<2:
+    if getHighCard(pubcardlist)<=9 and len(SameSuit(pubcardlist))<2:
         return True
     return False
             
