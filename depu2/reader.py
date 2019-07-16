@@ -7,6 +7,9 @@ from dealer import printCard
 from dealer import card
 from dealer import getLeftNumCardCnt
 from dealer import SameSuit
+from dealer import getHighCard
+from dealer import getMidCard
+from dealer import getLowCard
 
 
 #得到目前的公共牌数量，对外
@@ -150,9 +153,13 @@ def IsAfter(rtSit):
 def getPubList(rtSit):
     return rtSit.cardlist
 
-
+#干燥的翻牌，要有定义
 def IsDry(Sit):
-    #如果牌面没有同花听牌
-    if len(SameSuit(Sit.cardlist))<2: return True
+    #如果牌面没有同花听牌，感觉也没有明显的顺子。
+    if len(Sit.cardlist)==3:
+        if len(SameSuit(Sit.cardlist))<2 and getHighCard(Sit.cardlist)-getMidCard(Sit.cardlist)>2 \
+            and getMidCard(Sit.cardlist)-getLowCard(Sit.cardlist)>2  \
+            and getMidCard(Sit.cardlist)<10: 
+                return True
     return False
     

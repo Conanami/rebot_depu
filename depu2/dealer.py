@@ -514,6 +514,33 @@ def getHighCard(cardlist):
             high=card.num
     return high
 
+#得到最小的牌
+def getLowCard(cardlist):
+    low=16
+    for card in cardlist:
+        if card.num<low:
+            low=card.num
+    return low
+
+#得到中间的牌
+def getMidCard(cardlist):
+    high=getHighCard(cardlist)
+    low=getLowCard(cardlist)
+    if high==low:
+        mid=high
+    for card in cardlist:
+        if card.num<high and card.num>low:
+            mid=card.num
+        else:
+            if card.num>low and card.num==high:
+                mid=high
+            elif card.num<high and card.num==low:
+                mid=low
+    return mid
+
+        
+    
+
 #简单测试用的
 def ddd():
     mylist=[card(0,9),card(0,6),card(2,5),card(0,4),card(3,2),card(0,13),card(3,3)]
