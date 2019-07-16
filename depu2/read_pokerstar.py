@@ -314,13 +314,13 @@ def getHandCard(wholeimg,sixboxlist,pub_suit_sample_img,pub_num_sample_img,numli
 
 #判断是否需要回到座位，该方法对外公开
 def NeedBackseat(wholeimg):
-    x=1
-    y=1
-    w=1
-    h=1
+    x=650
+    y=509
+    w=80
+    h=20
     thres=250
     backseatbox=(x,y,x+w,y+h)
-    IsBackseat=MatchPicToSample(wholeimg,backseatbox,config.foldsample_img[1],thres)
+    IsBackseat=MatchPicToSample(wholeimg,backseatbox,config.foldsample_img[2],thres)
     return IsBackseat
 
 #判断是否需要解析整个图片，该方法对外公开
@@ -593,7 +593,8 @@ class sampleconfig:
             
         #fold按钮样本
         foldsample=[r'depu2\samples\fold_btn.png',
-                    r'depu2\samples\check_btn.png']
+                    r'depu2\samples\check_btn.png',
+                    r'depu2\samples\backseat_btn.png']
         self.foldsample_img=file2img(foldsample)
 
 

@@ -18,6 +18,7 @@ from handRange import RankHand
 from handRange import InRangeHand
 from reader import getMyHand
 from dealer import card
+from read_pokerstar import NeedBackseat
 
 
 def bbb():
@@ -25,10 +26,11 @@ def bbb():
     start =time.clock()
    
     #这段是最主要的测试
-    file_name=r'tmp\dz_0530133858.png' 
+    file_name=r'tmp\dz_0716134848.png' 
     wholeimg=Image.open(file_name).convert('L')
     #要解析的图片，和后面一堆样本图片
     #print(NeedAnalyse(wholeimg))
+    print(NeedBackseat(wholeimg))
     rtSit=analysisImg(wholeimg,0.02)
     
     #入库

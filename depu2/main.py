@@ -158,6 +158,12 @@ def dragbet(game_area_left,game_area_top,target):
     pyautogui.moveTo(game_area_left+betbtn[0]+random.randint(0,10),game_area_top+betbtn[1]+random.randint(0,10),0.3)
     pyautogui.click()
 
+#点击回到座位
+def ClickBackSeat(game_area_left,game_area_top):
+    backseatpos=650,509
+    pyautogui.moveTo(game_area_left+backseatpos[0]+random.randint(0,10),game_area_top+backseatpos[1]+random.randint(0,10),0.3)
+    pyautogui.click()
+
 
 @async
 def run_game(q):
@@ -182,22 +188,26 @@ def run_game(q):
                 #pyautogui.moveTo(game_area_left,game_area_top)
                 game_area_image = get_game_data(window_left, window_top, window_right-window_left, window_bottom-window_top)
                 logging.info('是否需要归位？')
-                
-                logging.info('是否需要解析:'+str(needCnt))
-                if ( NeedAnalyse (game_area_image.convert('L'))): 
-                    if(needCnt>=1):
-                        logging.info('开始解析图像')
-                        levelbb=getLevel(window_title)
-                        rt = analysisImg(game_area_image.convert('L'),levelbb)
-                        logging.info('完成解析图像')
-                        if(rt is not None):
-                            game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
-                            #如果赚了2块，就退出不玩了，这样测试可以保证每天的盈利
-                            #if(rt.chiplist[rt.myseat]<200*rt.bb):
-                            handle(window_left, window_top, rt)
-                    else: needCnt=needCnt+1
+                #game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
+                if ( NeedBackseat(game_area_image.convert('L')) ):
+                    ClickBackSeat(window_left,window_top)
                 else:
-                    needCnt=0
+                    logging.info('是否需要解析:'+str(needCnt))
+                    if ( NeedAnalyse (game_area_image.convert('L'))): 
+                        if(needCnt>=1):
+                            logging.info('开始解析图像')
+                            levelbb=getLevel(window_title)
+                            rt = analysisImg(game_area_image.convert('L'),levelbb)
+                            logging.info('完成解析图像')
+                            if(rt is not None):
+                                game_area_image.save(r'tmp/dz_%s%s.png' % (time.strftime("%m%d", time.localtime()), time.strftime("%H%M%S", time.localtime())))
+                                #如果赚了2块，就退出不玩了，这样测试可以保证每天的盈利
+                                #if(rt.chiplist[rt.myseat]<200*rt.bb):
+                                handle(window_left, window_top, rt)
+                        else: needCnt=needCnt+1
+                    else:
+                        needCnt=0
+                
             time.sleep(0.8)
         else:
             lastkey = keyboard.KeyCode.from_char('r') 
